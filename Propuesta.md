@@ -6,9 +6,9 @@
 
 - legajo - Apellido(s), Nombre(s)
 
-*       - Fonseca, José
+* 00001 - Fonseca, José
 * 45337 - Galcerán, Ignacio Agustín
-*       - Gómez, Fernando
+* 00002 - Gómez, Fernando
 
 ### Repositorios
 
