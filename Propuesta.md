@@ -23,7 +23,7 @@ Una aplicación de gestión de inventario diseñada para pequeñas empresas de d
 
 ### Modelo
 
-- [imagen del modelo](https://prnt.sc/rv8D3w1tqOiV)
+- [imagen del modelo](https://prnt.sc/YLzB0n9mSmZf)
 
 ### Alcance Funcional
 
