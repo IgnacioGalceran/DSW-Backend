@@ -23,7 +23,7 @@ Una aplicación de gestión de turnos médicos diseñada para facilitar la progr
 
 ### Modelo
 
-- [imagen del modelo](https://prnt.sc/YLzB0n9mSmZf)
+- [imagen del modelo](https://prnt.sc/omZxFf0pCRG1)
 
 ### Alcance Funcional
 
