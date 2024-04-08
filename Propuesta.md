@@ -38,11 +38,11 @@ Una aplicación de gestión de turnos médicos diseñada para facilitar la progr
 
 #### Adicionales para Aprobación
 
-| Req      | Detalle                                                                                                                                                                   |
-| :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| CRUD     | 1. CRUD de Médicos <br> 2. CRUD de Pacientes <br> 3. CRUD de Turnos <br> 4. CRUD Tipo de turnos <br> 5. CRUD Especialidad médica 6. CRUD Localidad <br> 7. CRUD Provincia |
-| Listado  | 1. Visualizar historial de turnos médicos realizados<br>2. Lista de turnos pendientes de confirmación                                                                     |
-| CUU/Epic | 1. Permitir a los pacientes reprogramar sus turnos <br> <br> 2. Permitir a los pacientes cancelar turnos                                                                  |
+| Req      | Detalle                                                                                                                                                                        |
+| :------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| CRUD     | 1. CRUD de Médicos <br> 2. CRUD de Pacientes <br> 3. CRUD de Turnos <br> 4. CRUD Tipo de turnos <br> 5. CRUD Especialidad médica <br> 6. CRUD Localidad <br> 7. CRUD Provincia |
+| Listado  | 1. Visualizar historial de turnos médicos realizados<br>2. Lista de turnos pendientes de confirmación                                                                          |
+| CUU/Epic | 1. Permitir a los pacientes reprogramar sus turnos <br> <br> 2. Permitir a los pacientes cancelar turnos                                                                       |
 
 #### Alcance Adicional Voluntario
 
