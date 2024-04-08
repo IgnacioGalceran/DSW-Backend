@@ -19,7 +19,7 @@
 
 ### Descripción
 
-Una aplicación de gestión de inventario diseñada para pequeñas empresas de distribución, que les permite administrar eficientemente sus productos, proveedores y cantidad de stock. Simplifica el seguimiento de inventario y la gestión de proveedores.
+Una aplicación de gestión de turnos médicos diseñada para facilitar la programación eficiente de citas entre médicos y pacientes. Simplifica el proceso de reserva, seguimiento y gestión de turnos médicos.
 
 ### Modelo
 
