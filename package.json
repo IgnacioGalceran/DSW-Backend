@@ -1,11 +1,11 @@
 {
-  "name": "05.01-express-simple-api",
-  "version": "1.0.0",
+  "name": "turnos-medico-backend",
   "type": "module",
+  "version": "1.0.0",
   "description": "",
   "main": "app.js",
   "scripts": {
-    "dev": "tsc-watch --noClear -p ./tsconfig.json --onSuccess \"node ./dist/app.js\""
+    "dev": "tsc-watch --noClear -p ./tsconfig.json --onSuccess \"node ./dist/src/app.js\""
   },
   "keywords": [],
   "author": "",
