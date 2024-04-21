@@ -17,9 +17,9 @@ export class Paciente extends Persona {
     nombre: string,
     apellido: string,
     idRol: string,
-    telefono: string,
     direccion: string,
     idLocalidad: string,
+    telefono: string,
     public tipoDni: string,
     public dni: string,
     public id = crypto.randomUUID()
