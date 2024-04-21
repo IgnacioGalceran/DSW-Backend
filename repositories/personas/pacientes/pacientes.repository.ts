@@ -2,39 +2,49 @@ import { Paciente } from "../../../models/personas/personas";
 import { Repository } from "../../../shared/repository";
 import { listaPacientes } from "../../../models/personas/personas.js";
 
+function encontrarPaciente(id: string): {
+  indice: number;
+  data: Paciente | undefined;
+} {
+  let i = -1;
+  const pacienteABorrar = listaPacientes.find((paciente, index) => {
+    if (paciente.id === id) {
+      i = index;
+    }
+    return paciente.id === id;
+  });
+
+  return { indice: i, data: pacienteABorrar };
+}
+
 export class PacienteRepository implements Repository<Paciente> {
   public findAll(): Paciente[] {
     return listaPacientes;
   }
 
   public findOne(item: { id: string }): Paciente | undefined {
+    //A implementar
     throw new Error();
   }
 
   public add(item: Paciente): Paciente | undefined {
+    //A implementar
     throw new Error();
   }
 
   public update(item: Paciente): Paciente | undefined {
+    //A implementar
     throw new Error();
   }
 
-  public remove(item: { id: string }): {
-    indice: number;
-    pacienteABorrar: Paciente | undefined;
-  } {
-    let i = -1;
-    const pacienteABorrar: Paciente | undefined = listaPacientes.find(
-      (paciente, index) => {
-        if (paciente.id === item.id) {
-          i = index;
-        }
-        return paciente.id === item.id;
-      }
-    );
+  public remove(item: { id: string }): Paciente | undefined {
+    const paciente = encontrarPaciente(item.id);
 
-    listaPacientes.splice(i, 1);
+    //Agregar validaciones!! (que pasa si no lo encuentra)
 
-    return { indice: i, pacienteABorrar: pacienteABorrar };
+    //borra paciente de la lista
+    listaPacientes.splice(paciente.indice, 1);
+
+    return paciente.data;
   }
 }

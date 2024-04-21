@@ -14,11 +14,11 @@ export function findAll(req: Request, res: Response): Response {
 }
 
 export function remove(req: Request, res: Response): Response {
-  const paciente = repository.remove({ id: req.params.id });
+  const pacienteABorrar = repository.remove({ id: req.params.id });
 
   return res.status(200).json({
     message: "Paciente borrado.",
     error: false,
-    data: paciente.pacienteABorrar,
+    data: pacienteABorrar,
   });
 }

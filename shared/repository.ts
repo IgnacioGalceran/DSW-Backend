@@ -3,8 +3,5 @@ export interface Repository<T> {
   findOne(item: { id: string }): T | undefined;
   add(item: T): T | undefined;
   update(item: T): T | undefined;
-  remove(item: { id: string }): {
-    indice: number;
-    pacienteABorrar: T | undefined;
-  };
+  remove(item: { id: string }): T | undefined;
 }
