@@ -1,6 +1,6 @@
 import express from "express";
-import { router as PacientesRouter } from "../routes/personas/pacientes/pacientes.routes.js";
-import { router as MedicosRouter } from "../routes/personas/medicos/medicos.routes.js";
+import { router as PacientesRouter } from "./personas/pacientes/pacientes.routes.js";
+import { router as MedicosRouter } from "./personas/medicos/medicos.routes.js";
 
 const app = express();
 

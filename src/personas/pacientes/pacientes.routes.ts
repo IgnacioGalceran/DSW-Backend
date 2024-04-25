@@ -1,8 +1,5 @@
 import express from "express";
-import {
-  findAll,
-  remove,
-} from "../../../controllers/personas/pacientes/pacientes.controller.js";
+import { findAll, remove } from "./pacientes.controller.js";
 
 export const router = express.Router();
 

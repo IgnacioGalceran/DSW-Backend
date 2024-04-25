@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { PacienteRepository } from "../../../repositories/personas/pacientes/pacientes.repository.js";
+import { PacienteRepository } from "./pacientes.repository.js";
 
 const repository = new PacienteRepository();
 

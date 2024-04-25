@@ -1,5 +1,5 @@
 import express from "express";
-import { listaPacientes } from "../../../models/personas/personas.js";
+import { listaPacientes } from "../personas.entity.js";
 
 export const router = express.Router();
 
