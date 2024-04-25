@@ -1,5 +1,5 @@
-import { Paciente } from "../personas.entity";
-import { Repository } from "../../../shared/repository";
+import { Paciente } from "../personas.entity.js";
+import { Repository } from "../../../shared/repository.js";
 import { listaPacientes } from "../personas.entity.js";
 
 function encontrarPaciente(id: string): {
@@ -17,34 +17,49 @@ function encontrarPaciente(id: string): {
   return { indice: i, data: pacienteABorrar };
 }
 
+function borrarPaciente(id: string): Paciente | undefined {
+  const pacienteABorrar = encontrarPaciente(id);
+  listaPacientes.splice(pacienteABorrar.indice, 1);
+
+  return pacienteABorrar.data;
+}
+
 export class PacienteRepository implements Repository<Paciente> {
   public findAll(): Paciente[] {
     return listaPacientes;
   }
 
   public findOne(item: { id: string }): Paciente | undefined {
-    //A implementar
-    throw new Error();
+    return encontrarPaciente(item.id).data;
   }
 
   public add(item: Paciente): Paciente | undefined {
-    //A implementar
-    throw new Error();
+    const pacienteNuevo = new Paciente(
+      item.nombre,
+      item.apellido,
+      item.idRol,
+      item.direccion,
+      item.idLocalidad,
+      item.telefono,
+      item.tipoDni,
+      item.dni
+    );
+
+    if (!pacienteNuevo) return;
+
+    listaPacientes.push(pacienteNuevo);
+    return pacienteNuevo;
   }
 
   public update(item: Paciente): Paciente | undefined {
-    //A implementar
-    throw new Error();
+    const pacienteAActualizar = encontrarPaciente(item.id);
+
+    if (!pacienteAActualizar.data) return;
+
+    listaPacientes[pacienteAActualizar.indice] = pacienteAActualizar.data;
   }
 
   public remove(item: { id: string }): Paciente | undefined {
-    const paciente = encontrarPaciente(item.id);
-
-    //Agregar validaciones!! (que pasa si no lo encuentra)
-
-    //borra paciente de la lista
-    listaPacientes.splice(paciente.indice, 1);
-
-    return paciente.data;
+    return borrarPaciente(item.id);
   }
 }
