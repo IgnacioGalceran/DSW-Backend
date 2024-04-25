@@ -4,13 +4,21 @@ import { PacienteRepository } from "./pacientes.repository.js";
 const repository = new PacienteRepository();
 
 export function findAll(req: Request, res: Response): Response {
-  const listaPacientes = repository.findAll();
+  try {
+    const listaPacientes = repository.findAll();
 
-  return res.status(200).json({
-    message: "Pacientes encontrados.",
-    error: false,
-    data: listaPacientes,
-  });
+    return res.status(200).json({
+      message: "Pacientes encontrados.",
+      error: false,
+      data: listaPacientes,
+    });
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message,
+      error: true,
+      data: null,
+    });
+  }
 }
 
 export function findOne(req: Request, res: Response): Response {
