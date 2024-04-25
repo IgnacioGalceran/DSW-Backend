@@ -1,6 +1,6 @@
-import { Paciente } from "../../../models/personas/personas";
+import { Paciente } from "../personas.entity";
 import { Repository } from "../../../shared/repository";
-import { listaPacientes } from "../../../models/personas/personas.js";
+import { listaPacientes } from "../personas.entity.js";
 
 function encontrarPaciente(id: string): {
   indice: number;
