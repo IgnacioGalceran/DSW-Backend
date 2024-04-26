@@ -56,6 +56,14 @@
  *               type: string
  *             apellido:
  *               type: string
+ *             idRol:
+ *               type: string
+ *             telefono:
+ *               type: string
+ *             direccion:
+ *               type: string
+ *             idLocalidad:
+ *               type: string
  *             tipoDni:
  *               type: string
  *             dni:
@@ -91,6 +99,14 @@
  *             nombre:
  *               type: string
  *             apellido:
+ *               type: string
+ *             idRol:
+ *               type: string
+ *             telefono:
+ *               type: string
+ *             direccion:
+ *               type: string
+ *             idLocalidad:
  *               type: string
  *             tipoDni:
  *               type: string

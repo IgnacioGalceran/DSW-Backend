@@ -49,8 +49,9 @@ export function findOne(req: Request, res: Response): Response {
 
 export function add(req: Request, res: Response): Response {
   try {
-    const input = req.body;
-    const pacienteAInsertar = repository.add({ ...input });
+    const pacienteAInsertar = repository.add({
+      ...req.body.sanitizePacientesInput,
+    });
 
     return res.status(200).json({
       message: "Paciente creado correctamente.",
@@ -68,9 +69,10 @@ export function add(req: Request, res: Response): Response {
 
 export function update(req: Request, res: Response): Response {
   try {
-    const id = req.params.id;
-    const input = req.body;
-    const pacienteAActualizar = repository.update({ id, ...input });
+    const pacienteAActualizar = repository.update({
+      id: req.params.id,
+      ...req.body.sanitizePacientesInput,
+    });
 
     if (!pacienteAActualizar) {
       return res.status(404).json({

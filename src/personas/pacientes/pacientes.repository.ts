@@ -55,8 +55,9 @@ export class PacienteRepository implements Repository<Paciente> {
     const pacienteAActualizar = encontrarPaciente(item.id);
 
     if (!pacienteAActualizar.data) return;
-
-    listaPacientes[pacienteAActualizar.indice] = pacienteAActualizar.data;
+    console.log(item);
+    listaPacientes[pacienteAActualizar.indice] = item;
+    return item;
   }
 
   public remove(item: { id: string }): Paciente | undefined {
