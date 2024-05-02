@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { PacienteRepository } from "./pacientes.repository.js";
+import { NotFound, Repeated } from "../../../shared/errors.js";
 
 const repository = new PacienteRepository();
 
@@ -25,20 +26,20 @@ export function findOne(req: Request, res: Response): Response {
   try {
     const pacienteEncontrado = repository.findOne({ id: req.params.id });
 
-    if (!pacienteEncontrado) {
-      return res.status(404).json({
-        message: "Paciente no encontrado.",
-        error: true,
-        data: null,
-      });
-    }
-
     return res.status(200).json({
       message: "Paciente encontrado.",
       error: false,
       data: pacienteEncontrado,
     });
   } catch (error: any) {
+    if (error instanceof NotFound) {
+      return res.status(400).json({
+        message: error.message,
+        error: true,
+        data: null,
+      });
+    }
+
     return res.status(500).json({
       message: error.message,
       error: true,
@@ -59,6 +60,14 @@ export function add(req: Request, res: Response): Response {
       data: pacienteAInsertar,
     });
   } catch (error: any) {
+    if (error instanceof Repeated) {
+      return res.status(400).json({
+        message: error.message,
+        error: true,
+        data: null,
+      });
+    }
+
     return res.status(200).json({
       message: error.message,
       error: true,
@@ -74,20 +83,20 @@ export function update(req: Request, res: Response): Response {
       ...req.body.sanitizePacientesInput,
     });
 
-    if (!pacienteAActualizar) {
-      return res.status(404).json({
-        message: "Paciente no encontrado.",
-        error: true,
-        data: null,
-      });
-    }
-
     return res.status(200).json({
       message: "Paciente actualizado correctamente.",
       error: false,
       data: pacienteAActualizar,
     });
   } catch (error: any) {
+    if (error instanceof Repeated || error instanceof NotFound) {
+      return res.status(400).json({
+        message: error.message,
+        error: true,
+        data: null,
+      });
+    }
+
     return res.status(200).json({
       message: error.message,
       error: true,
@@ -100,20 +109,20 @@ export function remove(req: Request, res: Response): Response {
   try {
     const pacienteABorrar = repository.remove({ id: req.params.id });
 
-    if (!pacienteABorrar) {
-      return res.status(404).json({
-        message: "Paciente no encontrado.",
-        error: true,
-        data: null,
-      });
-    }
-
     return res.status(200).json({
       message: "Paciente borrado correctamente.",
       error: false,
       data: pacienteABorrar,
     });
   } catch (error: any) {
+    if (error instanceof NotFound) {
+      return res.status(400).json({
+        message: error.message,
+        error: true,
+        data: null,
+      });
+    }
+
     return res.status(200).json({
       message: error.message,
       error: true,
