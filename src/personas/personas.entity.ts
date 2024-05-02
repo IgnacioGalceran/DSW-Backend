@@ -26,10 +26,6 @@ export class Paciente extends Persona {
   ) {
     super(nombre, apellido, idRol, direccion, idLocalidad, telefono, id);
   }
-
-  public get fullName(): string {
-    return this.nombre + " " + this.apellido;
-  }
 }
 
 // export class Medico extends Persona {
