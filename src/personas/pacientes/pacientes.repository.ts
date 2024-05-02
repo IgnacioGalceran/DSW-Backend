@@ -39,7 +39,6 @@ function checkearDniOTelefonoRepetidos(item: Paciente): void {
     telefono: false,
   };
   repetido.dni = listaPacientes.some((paciente) => paciente.dni === item.dni);
-  console.log(item);
   repetido.telefono = listaPacientes.some(
     (paciente) => paciente.telefono === item.telefono
   );
