@@ -20,6 +20,6 @@ app.use((_, res) => {
 app.listen(3000, () => {
   console.log("Server running on port 3000");
   console.log(
-    "Documentación de API disponible en http://localhost:3000/api-endpoints"
+    "Documentación de API disponible en http://localhost:3000/api-endpoints."
   );
 });
