@@ -1,71 +1,52 @@
-import crypto from "node:crypto";
+import {
+  Entity,
+  Property,
+  ManyToMany,
+  Cascade,
+  ManyToOne,
+  Rel,
+  Collection,
+} from "@mikro-orm/core";
+import { BaseEntity } from "../../shared/baseEntity.entity.js";
 
-export class Persona {
-  constructor(
-    public nombre: string,
-    public apellido: string,
-    public idRol: string,
-    public telefono: string,
-    public direccion: string,
-    public idLocalidad: string,
-    public id = crypto.randomUUID()
-  ) {}
+@Entity()
+export class Personas extends BaseEntity {
+  @Property({ nullable: false })
+  nombre!: string;
+
+  @Property({ nullable: false })
+  apellido!: string;
+
+  @Property({ nullable: false })
+  idRol!: string;
+
+  @Property({ nullable: false })
+  telefono!: string;
+
+  @Property({ nullable: false })
+  direccion!: string;
+
+  @Property({ nullable: false })
+  idLocalidad!: string;
+
+  // @ManyToOne(() => Rol, { nullable: false })
+  // characterClass!: Rel<CharacterClass>
+
+  // @ManyToMany(() => Item, (item) => item.characters, {
+  //   cascade: [Cascade.ALL],
+  //   owner: true,
+  // })
+  // items = new Collection<Item>(this)
 }
 
-export class Paciente extends Persona {
-  constructor(
-    nombre: string,
-    apellido: string,
-    idRol: string,
-    direccion: string,
-    idLocalidad: string,
-    telefono: string,
-    public tipoDni: string,
-    public dni: string,
-    public id = crypto.randomUUID()
-  ) {
-    super(nombre, apellido, idRol, direccion, idLocalidad, telefono, id);
-  }
+@Entity()
+export class Pacientes extends Personas {
+  @Property({ nullable: false })
+  tipoDni!: string;
 
-  public get fullName(): string {
-    return this.nombre + " " + this.apellido;
-  }
+  @Property({ nullable: false })
+  dni!: string;
 }
 
 // export class Medico extends Persona {
-//   constructor(
-//     nombre: string,
-//     apellido: string,
-//     rol: string,
-//     public especialidad: string,
-//     id: string = crypto.randomUUID()
-//   ) {
-//     super(nombre, apellido, rol, id);
-//   }
-// public get fullName(): string {
-//   return this.nombre + " " + this.apellido;
 // }
-// }
-
-export const listaPacientes: Paciente[] = [
-  new Paciente(
-    "Ignacio",
-    "Galceran",
-    "2",
-    "3462536843",
-    "Calle 62",
-    "3",
-    "dni",
-    "40969962"
-  ),
-  new Paciente(
-    "Jose",
-    "Fonseca",
-    "2",
-    "3456845216",
-    "Calle 50",
-    "1",
-    "dni",
-    "41526485"
-  ),
-];
