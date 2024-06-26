@@ -24,7 +24,12 @@ export async function findAll(req: Request, res: Response): Promise<Response> {
 export async function findOne(req: Request, res: Response): Promise<Response> {
   try {
     const paciente = await service.findOne({ id: req.params.id });
+    // console.log(paciente)
+    
+    
 
+    
+    
     return res.status(200).json({
       message: "Paciente encontrado.",
       error: false,
