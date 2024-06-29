@@ -1,6 +1,6 @@
-import { orm } from "../../../shared/orm.js";
-import { Pacientes } from "../personas.entity.js";
-import { Service } from "../../../shared/service.js";
+import { orm } from "../../shared/orm.js";
+import { Pacientes } from "../pacientes/pacientes.entity.js";
+import { Service } from "../../shared/service.js";
 import { ObjectId } from "mongodb";
 
 const em = orm.em;
