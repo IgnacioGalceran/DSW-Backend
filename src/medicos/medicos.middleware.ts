@@ -11,12 +11,12 @@ export default function sanitizeMedicosInput(
     idRol: req.body.idRol,
     telefono: req.body.telefono,
     direccion: req.body.direccion,
-    idEspecialidad: req.body.idEspecialidad,
+    especialidad: req.body.especialidad,
     matricula: req.body.matricula,
     horaDesde: req.body.horaDesde,
     horaHasta: req.body.horaHasta,
     diasAtencion: req.body.diasAtencion,
-    idLocalidad: req.body.idLocalidad
+    idLocalidad: req.body.idLocalidad,
   };
 
   Object.keys(req.body.sanitizedInput).forEach((key) => {

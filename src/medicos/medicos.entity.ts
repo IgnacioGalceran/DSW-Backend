@@ -1,14 +1,4 @@
-import {
-  PrimaryKey,
-  SerializedPrimaryKey,
-  Entity,
-  Property,
-  ManyToMany,
-  Cascade,
-  ManyToOne,
-  Rel,
-  Collection,
-} from "@mikro-orm/core";
+import { Entity, Property, OneToOne, Rel } from "@mikro-orm/core";
 import { Especialidades } from "../especialidades/especialidades.entity.js";
 import { BaseEntity } from "../../shared/baseEntity.entity.js";
 
@@ -27,9 +17,6 @@ export class Medicos extends BaseEntity {
   telefono!: string;
 
   @Property({ nullable: false })
-  idEspecialidad!: string;
-
-  @Property({ nullable: false })
   horaDesde!: string;
 
   @Property({ nullable: false })
@@ -38,6 +25,6 @@ export class Medicos extends BaseEntity {
   @Property({ nullable: false })
   diasAtencion!: string;
 
-  // @ManyToOne(() => Especialidades, { nullable: false })
-  //   Especialidades!: Rel<Especialidades>
+  @OneToOne({ nullable: false })
+  especialidad!: Especialidades;
 }

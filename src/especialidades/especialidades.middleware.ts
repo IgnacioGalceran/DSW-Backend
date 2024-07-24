@@ -6,8 +6,8 @@ export default function sanitizeMedicosInput(
   next: NextFunction
 ) {
   req.body.sanitizedInput = {
-    descEsp: req.body.descEsp
-  }; 
+    descEsp: req.body.descEsp,
+  };
 
   Object.keys(req.body.sanitizedInput).forEach((key) => {
     if (req.body.sanitizedInput[key] === undefined) {

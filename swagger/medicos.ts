@@ -60,16 +60,16 @@
  *               type: string
  *             tipoDni:
  *               type: string
- *             idEspecialidad:
+ *             especialidad:
  *               type: string
  *             horaDesde:
  *               type: string
  *             horaHasta:
  *               type: string
  *             matricula:
- *               type: string 
+ *               type: string
  *             diasAtencion:
- *               type: string         
+ *               type: string
  *     responses:
  *       201:
  *         description: medico creado correctamente.
@@ -111,11 +111,11 @@
  *             horaHasta:
  *               type: string
  *             matricula:
- *               type: string 
+ *               type: string
  *             diasAtencion:
- *               type: string 
+ *               type: string
  *             email:
- *               type: string          
+ *               type: string
  *     responses:
  *       201:
  *         description: medico actualizado correctamente.
@@ -159,9 +159,9 @@
  *             horaHasta:
  *               type: string
  *             matricula:
- *               type: string 
+ *               type: string
  *             diasAtencion:
- *               type: string  
+ *               type: string
  *             email:
  *               type: string
  *     responses:
