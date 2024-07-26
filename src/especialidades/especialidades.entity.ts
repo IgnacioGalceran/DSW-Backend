@@ -11,7 +11,7 @@ import { Medicos } from "../medicos/medicos.entity.js";
 @Entity()
 export class Especialidades extends BaseEntity {
   @Property({ nullable: false })
-  descEsp!: string;
+  nombre!: string;
 
   @OneToMany(() => Medicos, (medico) => medico.especialidad)
   medicos = new Collection<Medicos>(this);

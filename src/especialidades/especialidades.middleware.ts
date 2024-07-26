@@ -6,7 +6,7 @@ export default function sanitizeMedicosInput(
   next: NextFunction
 ) {
   req.body.sanitizedInput = {
-    descEsp: req.body.descEsp,
+    nombre: req.body.nombre,
   };
 
   Object.keys(req.body.sanitizedInput).forEach((key) => {

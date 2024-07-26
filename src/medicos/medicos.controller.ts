@@ -6,7 +6,7 @@ const service = new MedicoService();
 export async function findAll(req: Request, res: Response): Promise<Response> {
   try {
     const medicos = await service.findAll();
-    console.log(medicos);
+
     return res.status(200).json({
       message: "Medicos encontrados.",
       error: false,

@@ -32,6 +32,6 @@ export class Medicos extends BaseEntity {
   @Property({ nullable: false })
   diasAtencion!: string;
 
-  @ManyToOne(() => Especialidades)
-  especialidad!: Especialidades;
+  @ManyToOne(() => Especialidades, { nullable: true })
+  especialidad?: Especialidades | null;
 }

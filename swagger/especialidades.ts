@@ -52,7 +52,7 @@
  *         schema:
  *           type: object
  *           properties:
- *             descEsp:
+ *             nombre:
  *               type: string
  *     responses:
  *       201:
@@ -82,8 +82,8 @@
  *         schema:
  *           type: object
  *           properties:
- *             descEsp:
- *               type: string 
+ *             nombre:
+ *               type: string
  *     responses:
  *       201:
  *         description: especialidad actualizado correctamente.
@@ -114,7 +114,7 @@
  *         schema:
  *           type: object
  *           properties:
- *             descEsp:
+ *             nombre:
  *               type: string
  *     responses:
  *       201:
