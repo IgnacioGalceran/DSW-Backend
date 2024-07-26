@@ -1,4 +1,10 @@
-import { Property, Entity, OneToOne, Rel } from "@mikro-orm/core";
+import {
+  Property,
+  Entity,
+  OneToMany,
+  Cascade,
+  Collection,
+} from "@mikro-orm/core";
 import { BaseEntity } from "../../shared/baseEntity.entity.js";
 import { Medicos } from "../medicos/medicos.entity.js";
 
@@ -7,6 +13,6 @@ export class Especialidades extends BaseEntity {
   @Property({ nullable: false })
   descEsp!: string;
 
-  @OneToOne(() => Medicos, (medico) => medico.especialidad)
-  medico!: Rel<Medicos>;
+  @OneToMany(() => Medicos, (medico) => medico.especialidad)
+  medicos = new Collection<Medicos>(this);
 }
