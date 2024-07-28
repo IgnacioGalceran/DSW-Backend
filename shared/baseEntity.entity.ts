@@ -1,5 +1,5 @@
 import { PrimaryKey, SerializedPrimaryKey } from "@mikro-orm/core";
-import { ObjectId } from "@mikro-orm/mongodb";
+import { DateTimeType, ObjectId, Property } from "@mikro-orm/mongodb";
 
 export abstract class BaseEntity {
   @PrimaryKey()
@@ -8,16 +8,12 @@ export abstract class BaseEntity {
   @SerializedPrimaryKey()
   id?: string;
 
-  /*
-
   @Property({ type: DateTimeType })
-  createdAt? = new Date()
+  createdAt? = new Date();
 
   @Property({
     type: DateTimeType,
     onUpdate: () => new Date(),
   })
-  updatedAt? = new Date()
-
-  */
+  updatedAt? = new Date();
 }

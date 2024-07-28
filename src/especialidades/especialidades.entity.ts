@@ -14,5 +14,5 @@ export class Especialidades extends BaseEntity {
   nombre!: string;
 
   @OneToMany(() => Medicos, (medico) => medico.especialidad)
-  medicos = new Collection<Medicos>(this);
+  medicos? = new Collection<Medicos>(this);
 }
