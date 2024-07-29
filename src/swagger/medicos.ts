@@ -69,7 +69,7 @@
  *             matricula:
  *               type: string
  *             diasAtencion:
- *               type: string
+ *               type: string[]
  *     responses:
  *       201:
  *         description: medico creado correctamente.

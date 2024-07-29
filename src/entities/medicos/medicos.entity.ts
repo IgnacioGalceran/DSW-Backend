@@ -30,7 +30,7 @@ export class Medicos extends BaseEntity {
   horaHasta!: string;
 
   @Property({ nullable: false })
-  diasAtencion!: string;
+  diasAtencion!: string[];
 
   @ManyToOne(() => Especialidades, { nullable: true })
   especialidad?: Especialidades | null;
