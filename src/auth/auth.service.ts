@@ -32,9 +32,7 @@ export class AuthService {
   public async registerPaciente(item: RegisterPaciente): Promise<any> {
     const paciente = new Pacientes();
     Object.assign(paciente, item);
-
     await em.persistAndFlush(paciente);
-
     return paciente;
   }
 
