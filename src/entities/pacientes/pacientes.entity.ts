@@ -12,6 +12,9 @@ import { BaseEntity } from "../../shared/baseEntity.entity.js";
 
 @Entity()
 export class Pacientes extends BaseEntity {
+  @Property({ nullable: true })
+  uid?: string;
+
   @Property({ nullable: false })
   dni!: string;
 
@@ -23,13 +26,4 @@ export class Pacientes extends BaseEntity {
 
   @Property({ nullable: false })
   apellido!: string;
-
-  @Property({ nullable: false })
-  direccion!: string;
-
-  @Property({ nullable: false })
-  telefono!: string;
-
-  @Property({ nullable: false })
-  idLocalidad!: string;
 }

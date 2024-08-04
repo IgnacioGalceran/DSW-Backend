@@ -11,6 +11,9 @@ import { BaseEntity } from "../../shared/baseEntity.entity.js";
 
 @Entity()
 export class Medicos extends BaseEntity {
+  @Property({ nullable: true })
+  uid?: string;
+
   @Property({ nullable: false })
   matricula!: string;
 

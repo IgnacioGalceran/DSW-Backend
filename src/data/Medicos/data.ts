@@ -2,6 +2,7 @@ import { Medicos } from "../../entities/medicos/medicos.entity";
 
 export const listaMedicos: Medicos[] = [
   {
+    uid: "123",
     matricula: "45876",
     nombre: "María",
     apellido: "López",
@@ -12,6 +13,7 @@ export const listaMedicos: Medicos[] = [
     especialidad: null,
   },
   {
+    uid: "123asd",
     matricula: "27654",
     nombre: "Juan",
     apellido: "Martínez",
@@ -22,6 +24,7 @@ export const listaMedicos: Medicos[] = [
     especialidad: null,
   },
   {
+    uid: "asd23",
     matricula: "39876",
     nombre: "Ana",
     apellido: "García",
@@ -32,6 +35,7 @@ export const listaMedicos: Medicos[] = [
     especialidad: null,
   },
   {
+    uid: "asd43",
     matricula: "54321",
     nombre: "Carlos",
     apellido: "Rodríguez",
@@ -42,6 +46,7 @@ export const listaMedicos: Medicos[] = [
     especialidad: null,
   },
   {
+    uid: "kdfn",
     matricula: "65432",
     nombre: "Laura",
     apellido: "Hernández",
@@ -52,6 +57,7 @@ export const listaMedicos: Medicos[] = [
     especialidad: null,
   },
   {
+    uid: "rngd",
     matricula: "76543",
     nombre: "Pablo",
     apellido: "Sánchez",
@@ -62,6 +68,7 @@ export const listaMedicos: Medicos[] = [
     especialidad: null,
   },
   {
+    uid: "ngtj",
     matricula: "87654",
     nombre: "Elena",
     apellido: "Ramírez",
@@ -72,6 +79,7 @@ export const listaMedicos: Medicos[] = [
     especialidad: null,
   },
   {
+    uid: "knfen",
     matricula: "98765",
     nombre: "Fernando",
     apellido: "Torres",
@@ -82,6 +90,7 @@ export const listaMedicos: Medicos[] = [
     especialidad: null,
   },
   {
+    uid: "d3inb",
     matricula: "19876",
     nombre: "Sofía",
     apellido: "Giménez",
@@ -92,6 +101,7 @@ export const listaMedicos: Medicos[] = [
     especialidad: null,
   },
   {
+    uid: "qweug",
     matricula: "10987",
     nombre: "Diego",
     apellido: "Silva",
