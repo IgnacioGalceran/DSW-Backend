@@ -5,3 +5,7 @@ export type RegisterPaciente = {
   tipoDni: string;
   dni: string;
 };
+
+export type Login = {
+  uid: string;
+};

@@ -9,12 +9,12 @@ export async function login(
   next: NextFunction
 ): Promise<void> {
   try {
-    const medicos = await service.login(req.body);
+    const token = await service.login(req.body);
 
     res.status(200).json({
       message: "Logeado correctamente.",
       error: false,
-      data: medicos,
+      data: token,
     });
   } catch (error: any) {
     next(error);
