@@ -1,6 +1,7 @@
 import express from "express";
 import { router as PacientesRouter } from "./entities/pacientes/pacientes.routes.js";
 import { router as MedicosRouter } from "./entities/medicos/medicos.routes.js";
+import { router as AuthRouter } from "./auth/auth.routes.js";
 import { router as EspecialidadesRouter } from "./entities/especialidades/especialidades.routes.js";
 import { errorHandler } from "./shared/errorHandler.js";
 import { orm } from "./shared/orm.js";
@@ -28,6 +29,7 @@ app.use((req, res, next) => {
 app.use("/api/pacientes", PacientesRouter);
 app.use("/api/medicos", MedicosRouter);
 app.use("/api/especialidades", EspecialidadesRouter);
+app.use("/api/auth", AuthRouter);
 app.use("/api-endpoints", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(errorHandler);
 
