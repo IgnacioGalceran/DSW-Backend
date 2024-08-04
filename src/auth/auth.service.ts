@@ -5,9 +5,9 @@ import { Login, RegisterPaciente } from "./auth.types.js";
 import { Pacientes } from "../entities/pacientes/pacientes.entity.js";
 import { NotFound } from "../shared/errors.js";
 import { Medicos } from "../entities/medicos/medicos.entity.js";
+import jwt from "jsonwebtoken";
 
 const em = orm.em;
-const jwt = require("jsonwebtoken");
 
 export class AuthService {
   public async login(item: Login): Promise<any> {
