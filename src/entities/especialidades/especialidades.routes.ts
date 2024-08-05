@@ -7,11 +7,12 @@ import {
   remove,
 } from "./especialidades.controller.js";
 import sanitizeEspecialidadInput from "./especialidades.middleware.js";
+import verifyToken from "../../auth/auth.middleware.js";
 
 export const router = express.Router();
 
 router
-  .get("/", findAll)
+  .get("/", verifyToken, findAll)
   .get("/:id", findOne)
   .post("/", sanitizeEspecialidadInput, add)
   .put("/:id", sanitizeEspecialidadInput, update)

@@ -20,9 +20,11 @@ export async function verifyToken(
 
   try {
     const decodedToken = await firebaseApp.auth().verifyIdToken(token);
+    console.log(decodedToken);
     req.headers.firebaseUid = decodedToken.uid;
     next();
   } catch (error: any) {
+    console.log(error);
     return res.status(401).json({
       message: "Token inválido",
       data: undefined,
