@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { AuthService } from "./auth.service.js";
+import { firebaseApp } from "../../firebaseConfig.js";
 
 const service = new AuthService();
 

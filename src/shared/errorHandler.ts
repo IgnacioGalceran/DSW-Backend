@@ -1,7 +1,14 @@
 import { Request, Response, NextFunction } from "express";
 import { InvalidId, NotFound, Repeated } from "./errors.js";
 
-export function errorHandler(error: any, req: Request, res: Response) {
+export function errorHandler(
+  error: any,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  console.log("Error Handler:", res);
+
   if (
     error instanceof NotFound ||
     error instanceof InvalidId ||

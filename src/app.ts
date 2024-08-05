@@ -15,7 +15,7 @@ const app = express();
 
 const corsOptions = {
   origin: "http://localhost:3000",
-  optionsSuccessStatus: 200, // algunas versiones de IE 11 no devuelven el valor predeterminado 200
+  optionsSuccessStatus: 200,
 };
 
 app.use(cors(corsOptions));

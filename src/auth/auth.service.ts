@@ -5,7 +5,6 @@ import { Login, RegisterPaciente } from "./auth.types.js";
 import { Pacientes } from "../entities/pacientes/pacientes.entity.js";
 import { NotFound } from "../shared/errors.js";
 import { Medicos } from "../entities/medicos/medicos.entity.js";
-import jwt from "jsonwebtoken";
 
 const em = orm.em;
 
@@ -14,19 +13,11 @@ export class AuthService {
     const paciente = await em.findOne(Pacientes, { uid: item.uid });
     const medico = await em.findOne(Medicos, { uid: item.uid });
 
-    if (!paciente && !medico) {
-      throw new NotFound(item.uid);
-    }
+    if (paciente) return paciente;
 
-    const token = jwt.sign(
-      {
-        uid: item.uid,
-      },
-      "Secret123",
-      { expiresIn: "30d" }
-    );
+    if (medico) return medico;
 
-    return token;
+    throw new NotFound(item.uid);
   }
 
   public async registerPaciente(item: RegisterPaciente): Promise<any> {
