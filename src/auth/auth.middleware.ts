@@ -24,12 +24,7 @@ export async function verifyToken(
     req.headers.firebaseUid = decodedToken.uid;
     next();
   } catch (error: any) {
-    console.log(error);
-    return res.status(401).json({
-      message: "Token inválido",
-      data: undefined,
-      error: true,
-    });
+    next(error);
   }
 }
 

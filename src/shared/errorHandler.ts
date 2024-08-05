@@ -7,8 +7,6 @@ export function errorHandler(
   res: Response,
   next: NextFunction
 ) {
-  console.log("Error Handler:", res);
-
   if (
     error instanceof NotFound ||
     error instanceof InvalidId ||
