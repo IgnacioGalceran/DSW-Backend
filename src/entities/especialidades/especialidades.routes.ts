@@ -13,8 +13,8 @@ export const router = express.Router();
 
 router
   .get("/", verifyToken, findAll)
-  .get("/:id", findOne)
-  .post("/", sanitizeEspecialidadInput, add)
-  .put("/:id", sanitizeEspecialidadInput, update)
-  .patch("/:id", sanitizeEspecialidadInput, update)
-  .delete("/:id", remove);
+  .get("/:id", verifyToken, findOne)
+  .post("/", verifyToken, sanitizeEspecialidadInput, add)
+  .put("/:id", verifyToken, sanitizeEspecialidadInput, update)
+  .patch("/:id", verifyToken, sanitizeEspecialidadInput, update)
+  .delete("/:id", verifyToken, remove);

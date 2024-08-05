@@ -7,13 +7,14 @@ import {
   remove,
 } from "./pacientes.controller.js";
 import sanitizePacientesInput from "./pacientes.middleware.js";
+import verifyToken from "../../auth/auth.middleware.js";
 
 export const router = express.Router();
 
 router
-  .get("/", findAll)
-  .get("/:id", findOne)
-  .post("/", sanitizePacientesInput, add)
-  .put("/:id", sanitizePacientesInput, update)
-  .patch("/:id", sanitizePacientesInput, update)
-  .delete("/:id", remove);
+  .get("/", verifyToken, findAll)
+  .get("/:id", verifyToken, findOne)
+  .post("/", verifyToken, sanitizePacientesInput, add)
+  .put("/:id", verifyToken, sanitizePacientesInput, update)
+  .patch("/:id", verifyToken, sanitizePacientesInput, update)
+  .delete("/:id", verifyToken, remove);
