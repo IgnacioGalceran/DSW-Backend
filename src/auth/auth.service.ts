@@ -9,7 +9,8 @@ import { Medicos } from "../entities/medicos/medicos.entity.js";
 const em = orm.em;
 
 export class AuthService {
-  public async login(item: Login): Promise<any> {
+  public async getUserData(item: Login): Promise<any> {
+    console.log(item.uid);
     const paciente = await em.findOne(Pacientes, { uid: item.uid });
     const medico = await em.findOne(Medicos, { uid: item.uid });
 

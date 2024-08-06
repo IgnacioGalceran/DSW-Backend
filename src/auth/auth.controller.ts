@@ -4,13 +4,14 @@ import { firebaseApp } from "../../firebaseConfig.js";
 
 const service = new AuthService();
 
-export async function login(
+export async function getUserData(
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> {
   try {
-    const token = await service.login(req.body);
+    console.log("getuserData");
+    const token = await service.getUserData({ uid: req.params.id });
 
     res.status(200).json({
       message: "Logeado correctamente.",
