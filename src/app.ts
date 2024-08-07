@@ -9,7 +9,7 @@ import { RequestContext } from "@mikro-orm/mongodb";
 import swaggerSpec from "./swagger/swagger.config.js";
 import swaggerUi from "swagger-ui-express";
 import cors from "cors";
-import { seeder } from "./data/seeder.js";
+import { seeder } from "./seed/seeder.js";
 
 const app = express();
 

@@ -9,6 +9,7 @@ import {
   Collection,
 } from "@mikro-orm/core";
 import { BaseEntity } from "../../shared/baseEntity.entity.js";
+import { Roles } from "../../security/roles/roles.entity.js";
 
 @Entity()
 export class Pacientes extends BaseEntity {
@@ -26,4 +27,7 @@ export class Pacientes extends BaseEntity {
 
   @Property({ nullable: false })
   apellido!: string;
+
+  @ManyToOne(() => Roles, { nullable: true })
+  rol?: Roles | null;
 }

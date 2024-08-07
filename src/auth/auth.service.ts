@@ -1,16 +1,15 @@
 import { orm } from "../shared/orm.js";
-import { EntityManager, EntityRepository } from "@mikro-orm/core";
 import { Service } from "../shared/service.js";
 import { Login, RegisterPaciente } from "./auth.types.js";
 import { Pacientes } from "../entities/pacientes/pacientes.entity.js";
-import { NotFound } from "../shared/errors.js";
+import { Roles } from "../security/roles/roles.entity.js";
 import { Medicos } from "../entities/medicos/medicos.entity.js";
+import { NotFound } from "../shared/errors.js";
 
 const em = orm.em;
 
 export class AuthService {
   public async getUserData(item: Login): Promise<any> {
-    console.log(item.uid);
     const paciente = await em.findOne(Pacientes, { uid: item.uid });
     const medico = await em.findOne(Medicos, { uid: item.uid });
 
@@ -22,11 +21,30 @@ export class AuthService {
   }
 
   public async registerPaciente(item: RegisterPaciente): Promise<any> {
+    const rolPaciente = await em.findOne(Roles, {
+      nombre: "Paciente",
+    });
+
     const paciente = new Pacientes();
     Object.assign(paciente, item);
+    paciente.rol = rolPaciente;
+
     await em.persistAndFlush(paciente);
+
     return paciente;
   }
 
-  public async registerMedico(item: any): Promise<any> {}
+  public async registerMedico(item: any): Promise<any> {
+    const rolMedico = await em.findOne(Roles, {
+      nombre: "Medico",
+    });
+
+    const medico = new Medicos();
+    Object.assign(medico, item);
+    medico.rol = rolMedico;
+
+    await em.persistAndFlush(medico);
+
+    return medico;
+  }
 }

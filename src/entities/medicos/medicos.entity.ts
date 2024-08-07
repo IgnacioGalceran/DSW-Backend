@@ -8,6 +8,7 @@ import {
 } from "@mikro-orm/core";
 import { Especialidades } from "../especialidades/especialidades.entity.js";
 import { BaseEntity } from "../../shared/baseEntity.entity.js";
+import { Roles } from "../../security/roles/roles.entity.js";
 
 @Entity()
 export class Medicos extends BaseEntity {
@@ -37,4 +38,7 @@ export class Medicos extends BaseEntity {
 
   @ManyToOne(() => Especialidades, { nullable: true })
   especialidad?: Especialidades | null;
+
+  @ManyToOne(() => Roles, { nullable: true })
+  rol?: Roles | null;
 }
