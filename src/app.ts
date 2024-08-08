@@ -3,6 +3,7 @@ import { router as PacientesRouter } from "./entities/pacientes/pacientes.routes
 import { router as MedicosRouter } from "./entities/medicos/medicos.routes.js";
 import { router as AuthRouter } from "./auth/auth.routes.js";
 import { router as EspecialidadesRouter } from "./entities/especialidades/especialidades.routes.js";
+import { router as TurnosRouter } from "./entities/turnos/turnos.routes.js";
 import { errorHandler } from "./shared/errorHandler.js";
 import { orm } from "./shared/orm.js";
 import { RequestContext } from "@mikro-orm/mongodb";
@@ -29,6 +30,7 @@ app.use((req, res, next) => {
 app.use("/api/pacientes", PacientesRouter);
 app.use("/api/medicos", MedicosRouter);
 app.use("/api/especialidades", EspecialidadesRouter);
+app.use("/api/turnos", TurnosRouter);
 app.use("/api/auth", AuthRouter);
 app.use("/api-endpoints", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(errorHandler);

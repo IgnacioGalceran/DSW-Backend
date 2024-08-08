@@ -13,6 +13,9 @@ export class AuthService {
     const paciente = await em.findOne(Pacientes, { uid: item.uid });
     const medico = await em.findOne(Medicos, { uid: item.uid });
 
+    console.log(paciente);
+    console.log(medico);
+
     if (paciente) return paciente;
 
     if (medico) return medico;

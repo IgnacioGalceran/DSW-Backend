@@ -6,17 +6,16 @@ export default function sanitizeMedicosInput(
   next: NextFunction
 ) {
   req.body.sanitizedInput = {
+    uid: req.body.uid,
     nombre: req.body.nombre,
     apellido: req.body.apellido,
-    idRol: req.body.idRol,
+    rol: req.body.idRol,
     telefono: req.body.telefono,
-    direccion: req.body.direccion,
     especialidad: { id: req.body.especialidad },
     matricula: req.body.matricula,
     horaDesde: req.body.horaDesde,
     horaHasta: req.body.horaHasta,
     diasAtencion: req.body.diasAtencion,
-    idLocalidad: req.body.idLocalidad,
   };
 
   Object.keys(req.body.sanitizedInput).forEach((key) => {

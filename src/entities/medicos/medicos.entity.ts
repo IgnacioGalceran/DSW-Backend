@@ -9,11 +9,13 @@ import {
 import { Especialidades } from "../especialidades/especialidades.entity.js";
 import { BaseEntity } from "../../shared/baseEntity.entity.js";
 import { Roles } from "../../security/roles/roles.entity.js";
+import { ManyToMany, OneToMany } from "@mikro-orm/mongodb";
+import { Turnos } from "../turnos/turnos.entity.js";
 
 @Entity()
 export class Medicos extends BaseEntity {
-  @Property({ nullable: true })
-  uid?: string;
+  @Property({ nullable: false })
+  uid!: string;
 
   @Property({ nullable: false })
   matricula!: string;
@@ -41,4 +43,7 @@ export class Medicos extends BaseEntity {
 
   @ManyToOne(() => Roles, { nullable: true })
   rol?: Roles | null;
+
+  @OneToMany(() => Turnos, (turno) => turno.medico)
+  turnos? = new Collection<Turnos>(this);
 }
