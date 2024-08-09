@@ -15,6 +15,6 @@ export class Funciones extends BaseEntity {
   @Property({ nullable: false })
   nombre!: string;
 
-  @ManyToMany(() => Roles, (rol) => rol.funciones)
+  @ManyToMany(() => Roles, (rol) => rol.funciones, { cascade: [Cascade.ALL] })
   roles? = new Collection<Roles>(this);
 }

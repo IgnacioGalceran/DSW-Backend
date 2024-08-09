@@ -26,3 +26,12 @@ export class Repeated extends Error {
     this.statusCode = 400;
   }
 }
+
+export class InvalidJson extends Error {
+  statusCode: number;
+
+  constructor(propiedad: string) {
+    super(`La propiedad: ${propiedad} es obligatoria.`);
+    this.statusCode = 400;
+  }
+}

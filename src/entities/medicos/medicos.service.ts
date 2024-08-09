@@ -1,6 +1,5 @@
 import { orm } from "../../shared/orm.js";
 import { Medicos } from "./medicos.entity.js";
-import { EntityManager, EntityRepository } from "@mikro-orm/core";
 import { Service } from "../../shared/service.js";
 import { ObjectId } from "mongodb";
 import { PopulateHint } from "@mikro-orm/mongodb";

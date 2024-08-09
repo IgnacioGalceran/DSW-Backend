@@ -16,7 +16,7 @@ export class Roles extends BaseEntity {
   @Property({ nullable: false })
   nombre!: string;
 
-  @ManyToMany(() => Funciones, "roles", { owner: true })
+  @ManyToMany(() => Funciones, "roles", { owner: true, cascade: [Cascade.ALL] })
   funciones? = new Collection<Funciones>(this);
 
   @OneToMany(() => Medicos, (medico) => medico.rol)

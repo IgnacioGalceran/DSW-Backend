@@ -24,10 +24,6 @@ export class TurnosService implements Service<Turnos> {
       { populate: ["medico", "paciente", "medico.especialidad"] }
     );
 
-    console.log("Turno:", turno);
-    console.log("Paciente:", turno?.paciente);
-    console.log("Medico:", turno?.medico);
-
     if (!turno) throw new NotFound(item.id);
 
     return turno;

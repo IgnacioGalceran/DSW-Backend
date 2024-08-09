@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { InvalidId, NotFound, Repeated } from "./errors.js";
+import { InvalidId, InvalidJson, NotFound, Repeated } from "./errors.js";
 
 export function errorHandler(
   error: any,
@@ -10,7 +10,8 @@ export function errorHandler(
   if (
     error instanceof NotFound ||
     error instanceof InvalidId ||
-    error instanceof Repeated
+    error instanceof Repeated ||
+    error instanceof InvalidJson
   ) {
     return res.status(error.statusCode).json({
       message: error.message,

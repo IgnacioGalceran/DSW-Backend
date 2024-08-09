@@ -1,4 +1,6 @@
-import { Funciones } from "../../security/funciones/funciones.entity";
+import { Collection } from "@mikro-orm/mongodb";
+import { Funciones } from "../../security/funciones/funciones.entity.js";
+import { Roles } from "../../security/roles/roles.entity.js";
 
 export const listaFunciones: Funciones[] = [
   { nombre: "Leer Pacientes" },
@@ -7,7 +9,9 @@ export const listaFunciones: Funciones[] = [
   { nombre: "Borrar Pacientes" },
   { nombre: "Leer Especialidades" },
   { nombre: "Crear Especialidades" },
-  { nombre: "Modificar Especialidades" },
+  {
+    nombre: "Modificar Especialidades",
+  },
   { nombre: "Borrar Especialidades" },
   { nombre: "Leer Medicos" },
   { nombre: "Crear Medicos" },
