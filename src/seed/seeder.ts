@@ -73,36 +73,5 @@ export const seeder = async () => {
       }
       await emFork.flush();
     }
-
-    const rolesInsertados = await emFork.findAll(Roles);
-
-    if (
-      rolesInsertados &&
-      rolesInsertados.length > 0 &&
-      funcionesInsertadas.length > 0
-    ) {
-      funcionesInsertadas.forEach(async (funcion: Funciones) => {
-        if (
-          funcion.nombre.includes("Leer") ||
-          funcion.nombre.includes("Turnos")
-        ) {
-          await emFork.nativeUpdate(
-            Funciones,
-            { _id: funcion._id },
-            { roles: rolesInsertados }
-          );
-        } else {
-          await emFork.nativeUpdate(
-            Funciones,
-            { _id: funcion._id },
-            {
-              roles: rolesInsertados.filter((rol) =>
-                rol.nombre.includes("Administrador")
-              ),
-            }
-          );
-        }
-      });
-    }
   }
 };

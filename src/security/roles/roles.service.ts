@@ -65,6 +65,14 @@ export class RolesService implements Service<Roles> {
   }
 
   public async update(item: any): Promise<Roles | undefined> {
+    const rolAActualizar = await em.findOne(
+      Roles,
+      { _id: new ObjectId(item.id) },
+      { populate: ["funciones"] }
+    );
+
+    if (!rolAActualizar) throw new NotFound(item.id);
+
     let funciones: Funciones[] = [];
 
     if (item.funciones.length > 0) {
@@ -80,14 +88,6 @@ export class RolesService implements Service<Roles> {
         }
       );
     }
-
-    const rolAActualizar = await em.findOne(
-      Roles,
-      { _id: new ObjectId(item.id) },
-      { populate: ["funciones"] }
-    );
-
-    if (!rolAActualizar) throw new NotFound(item.id);
 
     item.funciones = funciones;
 

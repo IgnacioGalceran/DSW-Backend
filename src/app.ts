@@ -39,7 +39,7 @@ app.use("/api/auth", AuthRouter);
 app.use("/api-endpoints", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(errorHandler);
 
-//await seeder();
+await seeder();
 
 app.listen(4000, () => {
   console.log("Server running on port 4000");
