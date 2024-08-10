@@ -10,34 +10,23 @@ const em = orm.em;
 
 export class MedicoService implements Service<Medicos> {
   public async findAll(): Promise<Medicos[] | undefined> {
-    return await em.find(Medicos, {}, { populate: ["especialidad"] });
+    return await em.find(
+      Medicos,
+      {},
+      { populate: ["usuario", "especialidad"] }
+    );
   }
 
   public async findOne(item: { id: string }): Promise<Medicos | undefined> {
     const medico = await em.findOne(
       Medicos,
       { _id: new ObjectId(item.id) },
-      { populate: ["especialidad"] }
+      { populate: ["usuario", "especialidad"] }
     );
 
     if (!medico) throw new NotFound(item.id);
 
     return medico;
-  }
-
-  public async add(item: Medicos): Promise<Medicos | undefined> {
-    const especialidadEncontrada = await em.findOne(Especialidades, {
-      _id: new ObjectId(item?.especialidad?.id),
-    });
-
-    const medic = new Medicos();
-    const { especialidad, ...restItems } = item;
-    Object.assign(medic, restItems);
-    medic.especialidad = especialidadEncontrada || null;
-
-    await em.persistAndFlush(medic);
-
-    return medic;
   }
 
   public async update(item: Medicos): Promise<Medicos | undefined> {

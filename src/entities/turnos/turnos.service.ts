@@ -13,7 +13,15 @@ export class TurnosService implements Service<Turnos> {
     return await em.find(
       Turnos,
       {},
-      { populate: ["medico", "paciente", "medico.especialidad"] }
+      {
+        populate: [
+          "medico",
+          "paciente",
+          "paciente.usuario",
+          "medico.usuario",
+          "medico.especialidad",
+        ],
+      }
     );
   }
 
@@ -21,7 +29,15 @@ export class TurnosService implements Service<Turnos> {
     const turno = await em.findOne(
       Turnos,
       { _id: new ObjectId(item.id) },
-      { populate: ["medico", "paciente", "medico.especialidad"] }
+      {
+        populate: [
+          "medico",
+          "paciente",
+          "paciente.usuario",
+          "medico.usuario",
+          "medico.especialidad",
+        ],
+      }
     );
 
     if (!turno) throw new NotFound(item.id);

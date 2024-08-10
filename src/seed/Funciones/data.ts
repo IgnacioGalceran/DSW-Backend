@@ -21,4 +21,12 @@ export const listaFunciones: Funciones[] = [
   { nombre: "Crear Turnos" },
   { nombre: "Modificar Turnos" },
   { nombre: "Borrar Turnos" },
+  { nombre: "Leer Funciones" },
+  { nombre: "Crear Funciones" },
+  { nombre: "Modificar Funciones" },
+  { nombre: "Borrar Funciones" },
+  { nombre: "Leer Roles" },
+  { nombre: "Crear Roles" },
+  { nombre: "Modificar Roles" },
+  { nombre: "Borrar Roles" },
 ];

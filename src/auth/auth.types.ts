@@ -1,11 +1,21 @@
-export type RegisterPaciente = {
+import { ObjectId } from "mongodb";
+
+export interface RegisterAdministrador extends RegisterPaciente {}
+
+export interface RegisterPaciente {
   uid: string;
   nombre: string;
   apellido: string;
-  tipoDni: string;
   dni: string;
-};
+  tipoDni: string;
+  rol: ObjectId;
+}
 
-export type Login = {
-  uid: string;
-};
+export interface RegisterMedico extends RegisterPaciente {
+  matricula: string;
+  telefono: string;
+  horaDesde: string;
+  horaHasta: string;
+  diasAtencion: string[];
+  especialidad: ObjectId;
+}

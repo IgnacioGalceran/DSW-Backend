@@ -3,28 +3,33 @@ import { Pacientes } from "./pacientes.entity.js";
 import { Service } from "../../shared/service.js";
 import { ObjectId } from "mongodb";
 import { NotFound } from "../../shared/errors.js";
+import { Roles } from "../../security/roles/roles.entity.js";
 
 const em = orm.em;
 
 export class PacienteService implements Service<Pacientes> {
   public async findAll(): Promise<Pacientes[] | undefined> {
-    return await em.find(Pacientes, {});
+    return await em.find(
+      Pacientes,
+      {},
+      { populate: ["usuario", "usuario.rol", "usuario.rol.funciones"] }
+    );
   }
 
   public async findOne(item: { id: string }): Promise<Pacientes | undefined> {
-    const paciente = await em.findOne(Pacientes, {
-      _id: new ObjectId(item.id),
-    });
+    const paciente = await em.findOne(
+      Pacientes,
+      {
+        _id: new ObjectId(item.id),
+      },
+      {
+        populate: ["usuario", "usuario.rol", "usuario.rol.funciones"],
+      }
+    );
 
     if (!paciente) throw new NotFound(item.id);
 
     return paciente;
-  }
-
-  public async add(item: Pacientes): Promise<Pacientes | undefined> {
-    const pacienteCreado = em.create(Pacientes, item);
-    await em.flush();
-    return pacienteCreado;
   }
 
   public async update(item: Pacientes): Promise<Pacientes | undefined> {
@@ -34,7 +39,13 @@ export class PacienteService implements Service<Pacientes> {
 
     if (!pacienteAActualizar) throw new NotFound(item.id);
 
+    // if (item.rol?._id) {
+    //   const rol = await em.findOne(Roles, { _id: new ObjectId(item.rol._id) });
+    //   item.rol = rol;
+    // }
+
     const pacienteActualizado = em.assign(pacienteAActualizar, item);
+    console.log(pacienteActualizado);
     await em.flush();
 
     return pacienteActualizado;

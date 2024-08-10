@@ -1,5 +1,12 @@
 import { Request, Response, NextFunction } from "express";
-import { InvalidId, InvalidJson, NotFound, Repeated } from "./errors.js";
+import {
+  InvalidId,
+  InvalidJson,
+  NotFound,
+  Repeated,
+  UserNotFounded,
+  Unauthorized,
+} from "./errors.js";
 
 export function errorHandler(
   error: any,
@@ -11,7 +18,9 @@ export function errorHandler(
     error instanceof NotFound ||
     error instanceof InvalidId ||
     error instanceof Repeated ||
-    error instanceof InvalidJson
+    error instanceof InvalidJson ||
+    error instanceof Unauthorized ||
+    error instanceof UserNotFounded
   ) {
     return res.status(error.statusCode).json({
       message: error.message,

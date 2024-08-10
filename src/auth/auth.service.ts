@@ -1,53 +1,97 @@
 import { orm } from "../shared/orm.js";
 import { Service } from "../shared/service.js";
-import { Login, RegisterPaciente } from "./auth.types.js";
+import {
+  RegisterAdministrador,
+  RegisterMedico,
+  RegisterPaciente,
+} from "./auth.types.js";
 import { Pacientes } from "../entities/pacientes/pacientes.entity.js";
 import { Roles } from "../security/roles/roles.entity.js";
 import { Medicos } from "../entities/medicos/medicos.entity.js";
 import { NotFound } from "../shared/errors.js";
+import { Usuarios } from "./usuarios.entity.js";
+import { Especialidades } from "../entities/especialidades/especialidades.entity.js";
 
 const em = orm.em;
 
 export class AuthService {
-  public async getUserData(item: Login): Promise<any> {
-    const paciente = await em.findOne(Pacientes, { uid: item.uid });
-    const medico = await em.findOne(Medicos, { uid: item.uid });
+  public async getUserData(item: { uid: string }): Promise<any> {
+    const usuario = await em.findOne(Usuarios, { uid: item.uid });
 
-    console.log(paciente);
-    console.log(medico);
+    console.log(usuario);
 
-    if (paciente) return paciente;
+    if (!usuario) throw new NotFound(item.uid);
 
-    if (medico) return medico;
-
-    throw new NotFound(item.uid);
+    return usuario;
   }
 
   public async registerPaciente(item: RegisterPaciente): Promise<any> {
-    const rolPaciente = await em.findOne(Roles, {
+    const rol = await em.findOne(Roles, {
       nombre: "Paciente",
     });
 
+    const usuario = new Usuarios();
     const paciente = new Pacientes();
-    Object.assign(paciente, item);
-    paciente.rol = rolPaciente;
+    Object.assign(usuario, item);
+    usuario.rol = rol;
+    paciente.usuario = usuario;
 
-    await em.persistAndFlush(paciente);
+    em.persist(usuario);
+    em.persist(paciente);
+    await em.flush();
 
     return paciente;
   }
 
-  public async registerMedico(item: any): Promise<any> {
-    const rolMedico = await em.findOne(Roles, {
+  public async registerMedico(item: RegisterMedico): Promise<any> {
+    console.log(item);
+
+    const rol = await em.findOne(Roles, {
       nombre: "Medico",
     });
 
-    const medico = new Medicos();
-    Object.assign(medico, item);
-    medico.rol = rolMedico;
+    const especialidad = await em.findOne(Especialidades, {
+      _id: item.especialidad,
+    });
 
-    await em.persistAndFlush(medico);
+    const medico = new Medicos();
+    const usuario = new Usuarios();
+    usuario.uid = item.uid;
+    usuario.nombre = item.nombre;
+    usuario.apellido = item.apellido;
+    usuario.tipoDni = item.tipoDni;
+    usuario.dni = item.dni;
+    usuario.rol = rol;
+    medico.matricula = item.matricula;
+    medico.diasAtencion = item.diasAtencion;
+    medico.horaDesde = item.horaDesde;
+    medico.horaHasta = item.horaHasta;
+    medico.telefono = item.telefono;
+    medico.especialidad = especialidad;
+    medico.usuario = usuario;
+
+    em.persist(usuario);
+    em.persist(medico);
+    await em.flush();
 
     return medico;
+  }
+
+  public async registerAdministrador(
+    item: RegisterAdministrador
+  ): Promise<any> {
+    console.log("admin: ", item);
+    const rol = await em.findOne(Roles, {
+      nombre: "Administrador",
+    });
+
+    const usuario = new Usuarios();
+    Object.assign(usuario, item);
+    usuario.rol = rol;
+
+    em.persist(usuario);
+    await em.flush();
+
+    return usuario;
   }
 }

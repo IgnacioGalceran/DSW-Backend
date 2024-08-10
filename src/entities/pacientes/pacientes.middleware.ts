@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { ObjectId } from "mongodb";
 
 export default function sanitizePacientesInput(
   req: Request,
@@ -8,10 +9,7 @@ export default function sanitizePacientesInput(
   req.body.sanitizedInput = {
     nombre: req.body.nombre,
     apellido: req.body.apellido,
-    idRol: req.body.idRol,
-    telefono: req.body.telefono,
-    direccion: req.body.direccion,
-    idLocalidad: req.body.idLocalidad,
+    rol: req.body.rol,
     tipoDni: req.body.tipoDni,
     dni: req.body.dni,
   };

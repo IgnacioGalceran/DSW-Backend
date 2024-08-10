@@ -43,24 +43,6 @@ export async function findOne(
   }
 }
 
-export async function add(
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<void> {
-  try {
-    const medico = await service.add({ ...req.body.sanitizedInput });
-
-    res.status(200).json({
-      message: "Medico creado.",
-      error: false,
-      data: medico,
-    });
-  } catch (error: any) {
-    next(error);
-  }
-}
-
 export async function update(
   req: Request,
   res: Response,

@@ -7,9 +7,8 @@ import {
   Collection,
 } from "@mikro-orm/core";
 import { BaseEntity } from "../../shared/baseEntity.entity.js";
-import { Medicos } from "../../entities/medicos/medicos.entity.js";
-import { Pacientes } from "../../entities/pacientes/pacientes.entity.js";
 import { Funciones } from "../funciones/funciones.entity.js";
+import { Usuarios } from "../../auth/usuarios.entity.js";
 
 @Entity()
 export class Roles extends BaseEntity {
@@ -19,9 +18,6 @@ export class Roles extends BaseEntity {
   @ManyToMany(() => Funciones, "roles", { owner: true, cascade: [Cascade.ALL] })
   funciones? = new Collection<Funciones>(this);
 
-  @OneToMany(() => Medicos, (medico) => medico.rol)
-  medicos? = new Collection<Medicos>(this);
-
-  @OneToMany(() => Pacientes, (paciente) => paciente.rol)
-  pacientes? = new Collection<Pacientes>(this);
+  @OneToMany(() => Usuarios, (usuario) => usuario.rol)
+  usuarios? = new Collection<Usuarios>(this);
 }

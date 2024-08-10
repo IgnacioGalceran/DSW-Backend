@@ -28,12 +28,12 @@ export async function registerPaciente(
   next: NextFunction
 ): Promise<void> {
   try {
-    const medicos = await service.registerPaciente(req.body);
+    const paciente = await service.registerPaciente(req.body.sanitizedInput);
 
     res.status(200).json({
       message: "Registrado correctamente.",
       error: false,
-      data: medicos,
+      data: paciente,
     });
   } catch (error: any) {
     next(error);
@@ -46,7 +46,7 @@ export async function registerMedico(
   next: NextFunction
 ): Promise<void> {
   try {
-    const medicos = await service.registerPaciente(req.body);
+    const medicos = await service.registerMedico(req.body.sanitizedInput);
 
     res.status(200).json({
       message: "Registrado correctamente.",
@@ -54,6 +54,25 @@ export async function registerMedico(
       data: medicos,
     });
   } catch (error: any) {
+    next(error);
+  }
+}
+
+export async function registerAdministrador(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const admin = await service.registerAdministrador(req.body.sanitizedInput);
+
+    res.status(200).json({
+      message: "Registrado correctamente.",
+      error: false,
+      data: admin,
+    });
+  } catch (error: any) {
+    console.log(error);
     next(error);
   }
 }

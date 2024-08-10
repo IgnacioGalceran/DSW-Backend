@@ -35,3 +35,21 @@ export class InvalidJson extends Error {
     this.statusCode = 400;
   }
 }
+
+export class Unauthorized extends Error {
+  statusCode: number;
+
+  constructor(funcion: string) {
+    super(`El usuario no posee permisos para la función: ${funcion}.`);
+    this.statusCode = 401;
+  }
+}
+
+export class UserNotFounded extends Error {
+  statusCode: number;
+
+  constructor() {
+    super(`El usuario no fue encontrado en base de datos.`);
+    this.statusCode = 401;
+  }
+}
