@@ -16,9 +16,11 @@ const em = orm.em;
 
 export class AuthService {
   public async getUserData(item: { uid: string }): Promise<any> {
-    const usuario = await em.findOne(Usuarios, { uid: item.uid });
-
-    console.log(usuario);
+    const usuario = await em.findOne(
+      Usuarios,
+      { uid: item.uid },
+      { populate: ["rol", "rol.funciones"] }
+    );
 
     if (!usuario) throw new NotFound(item.uid);
 

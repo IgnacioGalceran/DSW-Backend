@@ -10,10 +10,10 @@ export const listaRoles: Roles[] = [
   },
   {
     _id: new ObjectId(),
-    nombre: "Medico",
+    nombre: "Moderador",
   },
   {
     _id: new ObjectId(),
-    nombre: "Paciente",
+    nombre: "Usuario",
   },
 ];

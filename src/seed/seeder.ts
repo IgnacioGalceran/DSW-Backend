@@ -40,18 +40,18 @@ export const seeder = async () => {
               nombre: "Administrador",
               funciones: funcionesInsertadas,
             };
-          case "Paciente":
+          case "Moderador":
             return {
-              nombre: "Paciente",
+              nombre: "Moderador",
               funciones: funcionesInsertadas.filter(
                 (funcion: Funciones) =>
                   funcion.nombre.includes("Leer") ||
                   funcion.nombre.includes("Turnos")
               ),
             };
-          case "Medico":
+          case "Usuario":
             return {
-              nombre: "Medico",
+              nombre: "Usuario",
               funciones: funcionesInsertadas.filter(
                 (funcion: Funciones) =>
                   funcion.nombre.includes("Leer") ||

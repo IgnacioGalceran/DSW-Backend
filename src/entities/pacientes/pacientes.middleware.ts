@@ -7,16 +7,18 @@ export default function sanitizePacientesInput(
   next: NextFunction
 ) {
   req.body.sanitizedInput = {
-    nombre: req.body.nombre,
-    apellido: req.body.apellido,
-    rol: req.body.rol,
-    tipoDni: req.body.tipoDni,
-    dni: req.body.dni,
+    usuario: {
+      nombre: req.body.nombre,
+      apellido: req.body.apellido,
+      tipoDni: req.body.tipoDni,
+      dni: req.body.dni,
+      rol: { id: req.body.rol },
+    },
   };
 
-  Object.keys(req.body.sanitizedInput).forEach((key) => {
-    if (req.body.sanitizedInput[key] === undefined) {
-      delete req.body.sanitizedInput[key];
+  Object.keys(req.body.sanitizedInput.usuario).forEach((key) => {
+    if (req.body.sanitizedInput.usuario[key] === undefined) {
+      delete req.body.sanitizedInput.usuario[key];
     }
   });
 
