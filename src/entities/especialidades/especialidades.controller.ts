@@ -29,8 +29,6 @@ export async function findOne(
   next: NextFunction
 ): Promise<void> {
   try {
-    if (!ObjectId.isValid(req.params.id)) throw new InvalidId();
-
     const especialidad = await service.findOne({ id: req.params.id });
 
     res.status(200).json({
@@ -67,8 +65,6 @@ export async function update(
   next: NextFunction
 ): Promise<void> {
   try {
-    if (!ObjectId.isValid(req.params.id)) throw new InvalidId();
-
     const especialidadActualizar = await service.update({
       id: req.params.id,
       ...req.body.sanitizedInput,
@@ -90,8 +86,6 @@ export async function remove(
   next: NextFunction
 ): Promise<void> {
   try {
-    if (!ObjectId.isValid(req.params.id)) throw new InvalidId();
-
     const especialidadABorrar = await service.remove({ id: req.params.id });
 
     res.status(200).json({

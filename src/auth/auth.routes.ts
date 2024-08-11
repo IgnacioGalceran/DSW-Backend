@@ -10,12 +10,23 @@ import {
   sanitizeMedicosInput,
   sanitizePacientesInput,
 } from "./auth.middleware.js";
+import { validateRegister } from "./auth.validations.js";
 
 export const router = express.Router();
 
 router
   .post("/getUserData/:id", getUserData)
-  .post("/registerPaciente", sanitizePacientesInput, registerPaciente)
-  .post("/registerMedico", sanitizeMedicosInput, registerMedico)
+  .post(
+    "/registerPaciente",
+    validateRegister,
+    sanitizePacientesInput,
+    registerPaciente
+  )
+  .post(
+    "/registerMedico",
+    validateRegister,
+    sanitizeMedicosInput,
+    registerMedico
+  )
   .post("/registerAdministrador", sanitizePacientesInput, registerAdministrador)
   .post("/verifyToken", verifyToken);

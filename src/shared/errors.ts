@@ -34,6 +34,12 @@ export class InvalidJson extends AppError {
   }
 }
 
+export class InvalidFields extends AppError {
+  constructor(message: string) {
+    super(message, 400);
+  }
+}
+
 export class Unauthorized extends AppError {
   constructor(funcion: string) {
     super(`El usuario no posee permisos para la función: ${funcion}.`, 403);
