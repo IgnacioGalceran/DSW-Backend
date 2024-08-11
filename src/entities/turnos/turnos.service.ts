@@ -1,6 +1,6 @@
 import { orm } from "../../shared/orm.js";
 import { Service } from "../../shared/service.js";
-import { NotFound } from "../../shared/errors.js";
+import { NotFound, UserNotFounded } from "../../shared/errors.js";
 import { Turnos } from "./turnos.entity.js";
 import { ObjectId } from "mongodb";
 import { Pacientes } from "../pacientes/pacientes.entity.js";
@@ -53,10 +53,12 @@ export class TurnosService implements Service<Turnos> {
       _id: new ObjectId(item?.medico?.id),
     });
 
+    if (!paciente || !medico) throw new UserNotFounded();
+
     const turno = new Turnos();
     Object.assign(turno, item);
-    turno.paciente = paciente || null;
-    turno.medico = medico || null;
+    turno.paciente = paciente;
+    turno.medico = medico;
 
     await em.persistAndFlush(turno);
 

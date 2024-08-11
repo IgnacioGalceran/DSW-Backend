@@ -20,6 +20,7 @@ export class MedicoService implements Service<Medicos> {
           "especialidad",
           "usuario.rol",
           "usuario.rol.funciones",
+          "turnos",
         ],
       }
     );
@@ -35,6 +36,7 @@ export class MedicoService implements Service<Medicos> {
           "especialidad",
           "usuario.rol",
           "usuario.rol.funciones",
+          "turnos",
         ],
       }
     );
@@ -115,7 +117,6 @@ export class MedicoService implements Service<Medicos> {
       item.usuario.rol = medicoAActualizar.usuario.rol;
     }
 
-    console.log(item);
     const usuarioAActualizar = medicoAActualizar.usuario;
     em.assign(usuarioAActualizar, item.usuario);
     em.assign(medicoAActualizar, item);

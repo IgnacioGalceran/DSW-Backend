@@ -11,29 +11,39 @@ const definition = {
       name: "Pacientes",
       description: "Endpoints relacionados con los pacientes",
     },
-    // {
-    //   name: "Médicos",
-    //   description: "Endpoints relacionados con los médicos",
-    // },
-    // {
-    //   name: "Especialidades",
-    //   description: "Endpoints relacionados con las especialidades",
-    // },
+    {
+      name: "Médicos",
+      description: "Endpoints relacionados con los médicos",
+    },
+    {
+      name: "Especialidades",
+      description: "Endpoints relacionados con las especialidades",
+    },
   ],
   securityDefinitions: {
     BearerAuth: {
       type: "apiKey",
       name: "Authorization",
       in: "header",
-      description: "Por favor, introduzca el token Bearer",
+      description:
+        "Por favor, introduzca el token Bearer con el formato: Bearer <token>",
     },
   },
+  security: [
+    {
+      BearerAuth: [],
+    },
+  ],
   produces: ["application/json"],
 };
 
 const options = {
   definition,
-  apis: ["dist/swagger/pacientes.js","dist/swagger/medicos.js","dist/swagger/especialidades.js"]
+  apis: [
+    "dist/src/swagger/pacientes.js",
+    "dist/src/swagger/medicos.js",
+    "dist/src/swagger/especialidades.js",
+  ],
 };
 
 const swaggerSpec = swaggerJSDoc(options);

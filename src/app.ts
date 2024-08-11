@@ -6,13 +6,13 @@ import { router as EspecialidadesRouter } from "./entities/especialidades/especi
 import { router as TurnosRouter } from "./entities/turnos/turnos.routes.js";
 import { router as RolesRouter } from "./security/roles/roles.routes.js";
 import { router as FuncionesRouter } from "./security/funciones/funciones.routes.js";
+import { seeder } from "./seed/seeder.js";
 import { errorHandler } from "./shared/errorHandler.js";
 import { orm } from "./shared/orm.js";
 import { RequestContext } from "@mikro-orm/mongodb";
 import swaggerSpec from "./swagger/swagger.config.js";
 import swaggerUi from "swagger-ui-express";
 import cors from "cors";
-import { seeder } from "./seed/seeder.js";
 
 const app = express();
 

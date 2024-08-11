@@ -5,7 +5,7 @@
  *     summary: Obtiene información sobre los especialidades
  *     description: Este endpoint devuelve una lista de información sobre los especialidades.
  *     tags:
- *       - especialidades
+ *       - Especialidades
  *     responses:
  *       200:
  *         description: especialidades encontrados
@@ -20,7 +20,7 @@
  *     summary: Obtiene información sobre un especialidad específico
  *     description: Este endpoint devuelve información sobre un especialidad específico basado en el ID proporcionado.
  *     tags:
- *       - especialidades
+ *       - Especialidades
  *     parameters:
  *       - name: id
  *         in: path
@@ -43,7 +43,7 @@
  *     summary: Crea un nuevo especialidad
  *     description: Este endpoint crea un nuevo especialidad basado en los datos proporcionados.
  *     tags:
- *       - especialidades
+ *       - Especialidades
  *     parameters:
  *       - in: body
  *         name: especialidad
@@ -68,7 +68,7 @@
  *     summary: Actualiza un especialidad
  *     description: Este endpoint actualiza a un especialidad basado en los datos proporcionados.
  *     tags:
- *       - especialidades
+ *       - Especialidades
  *     parameters:
  *       - name: id
  *         in: path
@@ -100,7 +100,7 @@
  *     summary: Actualiza parcialmente un especialidad
  *     description: Este endpoint actualiza algunos campos de la entidad especialidad basado en los datos proporcionados.
  *     tags:
- *       - especialidades
+ *       - Especialidades
  *     parameters:
  *       - name: id
  *         in: path
@@ -132,7 +132,7 @@
  *     summary: Borra un especialidad específico
  *     description: Este endpoint borra información sobre un especialidad específico basado en el ID proporcionado.
  *     tags:
- *       - especialidades
+ *       - Especialidades
  *     parameters:
  *       - name: id
  *         in: path

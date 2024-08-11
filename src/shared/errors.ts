@@ -1,55 +1,59 @@
-export class NotFound extends Error {
+export class AppError extends Error {
   statusCode: number;
 
+  constructor(message: string, statusCode: number) {
+    super(message);
+    this.statusCode = statusCode;
+  }
+}
+
+export class NotFound extends AppError {
   constructor(id: string | undefined) {
-    super(`El recurso con id: '${id}' no fue encontrado.`);
-    this.statusCode = 404;
+    super(`El recurso con id: '${id}' no fue encontrado.`, 404);
   }
 }
 
-export class InvalidId extends Error {
-  statusCode: number;
-
+export class InvalidId extends AppError {
   constructor() {
-    super(`El id proporcionado es inválido.`);
-    this.statusCode = 400;
+    super(`El id proporcionado es inválido.`, 400);
   }
 }
 
-export class Repeated extends Error {
-  statusCode: number;
-
+export class Repeated extends AppError {
   constructor(recurso: string, valor: string) {
     super(
-      `El ${recurso}: '${valor}' ya se encuentra ingresado en la base de datos.`
+      `El ${recurso}: '${valor}' ya se encuentra ingresado en la base de datos.`,
+      400
     );
-    this.statusCode = 400;
   }
 }
 
-export class InvalidJson extends Error {
-  statusCode: number;
-
+export class InvalidJson extends AppError {
   constructor(propiedad: string) {
-    super(`La propiedad: ${propiedad} es obligatoria.`);
-    this.statusCode = 400;
+    super(`La propiedad: ${propiedad} es obligatoria.`, 400);
   }
 }
 
-export class Unauthorized extends Error {
-  statusCode: number;
-
+export class Unauthorized extends AppError {
   constructor(funcion: string) {
-    super(`El usuario no posee permisos para la función: ${funcion}.`);
-    this.statusCode = 401;
+    super(`El usuario no posee permisos para la función: ${funcion}.`, 403);
   }
 }
 
-export class UserNotFounded extends Error {
-  statusCode: number;
-
+export class InvalidToken extends AppError {
   constructor() {
-    super(`El usuario no fue encontrado en base de datos.`);
-    this.statusCode = 401;
+    super(`El token es obligatorio.`, 401);
+  }
+}
+
+export class ExpiredToken extends AppError {
+  constructor() {
+    super(`El token del usuario expiró.`, 498);
+  }
+}
+
+export class UserNotFounded extends AppError {
+  constructor() {
+    super(`El usuario no fue encontrado en base de datos.`, 401);
   }
 }

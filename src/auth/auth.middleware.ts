@@ -1,22 +1,23 @@
 import { NextFunction, Request, Response } from "express";
 import { firebaseApp } from "../../firebaseConfig.js";
 import { ObjectId } from "mongodb";
+import { ExpiredToken, InvalidToken } from "../shared/errors.js";
 
 export async function verifyToken(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
-  const token = (req.headers.authorization || req.headers.Authorization)
-    ?.toString()
-    .replace(/^Bearer\s/, "");
+  console.log(req.headers);
+  const token =
+    (req.headers.authorization || req.headers.Authorization)
+      ?.toString()
+      .replace(/^Bearer\s/, "") || "";
 
-  if (!token) {
-    return res.status(400).json({
-      message: "Proporcione un Token",
-      data: undefined,
-      error: true,
-    });
+  console.log(token);
+
+  if (token === "") {
+    return next(new InvalidToken());
   }
 
   try {
@@ -25,7 +26,11 @@ export async function verifyToken(
     req.headers.firebaseUid = decodedToken.uid;
     next();
   } catch (error: any) {
-    next(error);
+    if (error.errorInfo.code === "auth/id-token-expired") {
+      next(new ExpiredToken());
+    } else {
+      next(error);
+    }
   }
 }
 
