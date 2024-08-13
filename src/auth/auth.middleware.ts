@@ -8,7 +8,6 @@ export async function verifyToken(
   res: Response,
   next: NextFunction
 ) {
-  console.log(req.headers);
   const token =
     (req.headers.authorization || req.headers.Authorization)
       ?.toString()

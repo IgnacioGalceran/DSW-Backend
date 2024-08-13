@@ -7,31 +7,13 @@ import { validateInput } from "./turnos.validations.js";
 
 export const router = express.Router();
 
+router.use(verifyToken);
+router.use(checkPermissions);
+
 router
-  .get("/", verifyToken, checkPermissions, findAll)
-  .get("/:id", verifyToken, checkPermissions, validateInput, findOne)
-  .post(
-    "/",
-    verifyToken,
-    checkPermissions,
-    validateInput,
-    sanitizeTurnoInput,
-    add
-  )
-  .put(
-    "/:id",
-    verifyToken,
-    checkPermissions,
-    validateInput,
-    sanitizeTurnoInput,
-    update
-  )
-  .patch(
-    "/:id",
-    verifyToken,
-    checkPermissions,
-    validateInput,
-    sanitizeTurnoInput,
-    update
-  )
-  .delete("/:id", verifyToken, checkPermissions, validateInput, remove);
+  .get("/", findAll)
+  .get("/:id", validateInput, findOne)
+  .post("/", validateInput, sanitizeTurnoInput, add)
+  .put("/:id", validateInput, sanitizeTurnoInput, update)
+  .patch("/:id", validateInput, sanitizeTurnoInput, update)
+  .delete("/:id", validateInput, remove);

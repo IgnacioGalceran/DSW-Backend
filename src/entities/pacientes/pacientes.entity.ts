@@ -2,9 +2,8 @@ import {
   PrimaryKey,
   Entity,
   Property,
-  ManyToMany,
   Cascade,
-  ManyToOne,
+  OneToOne,
   OneToMany,
   Rel,
   Collection,
@@ -16,7 +15,7 @@ import { Usuarios } from "../../auth/usuarios.entity.js";
 
 @Entity()
 export class Pacientes extends BaseEntity {
-  @ManyToOne(() => Usuarios, { nullable: false, cascade: [Cascade.ALL] })
+  @OneToOne(() => Usuarios, { nullable: false, cascade: [Cascade.ALL] })
   usuario!: Usuarios;
 
   @OneToMany(() => Turnos, (turno) => turno.paciente)

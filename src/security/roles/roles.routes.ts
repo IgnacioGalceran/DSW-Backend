@@ -6,10 +6,13 @@ import checkPermissions from "../../shared/checkPermissions.js";
 
 export const router = express.Router();
 
+router.use(verifyToken);
+router.use(checkPermissions);
+
 router
-  .get("/", verifyToken, checkPermissions, findAll)
-  .get("/:id", verifyToken, checkPermissions, findOne)
-  .post("/", verifyToken, checkPermissions, sanitizeRolInput, add)
-  .put("/:id", verifyToken, checkPermissions, sanitizeRolInput, update)
-  .patch("/:id", verifyToken, checkPermissions, sanitizeRolInput, update)
-  .delete("/:id", verifyToken, checkPermissions, remove);
+  .get("/", findAll)
+  .get("/:id", findOne)
+  .post("/", sanitizeRolInput, add)
+  .put("/:id", sanitizeRolInput, update)
+  .patch("/:id", sanitizeRolInput, update)
+  .delete("/:id", remove);

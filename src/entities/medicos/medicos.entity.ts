@@ -19,7 +19,7 @@ export class Medicos extends BaseEntity {
   @Property({ nullable: false })
   matricula!: string;
 
-  @ManyToOne(() => Usuarios, { nullable: false, cascade: [Cascade.ALL] })
+  @OneToOne(() => Usuarios, { nullable: false, cascade: [Cascade.ALL] })
   usuario!: Usuarios;
 
   @Property({ nullable: false })

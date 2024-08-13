@@ -7,23 +7,12 @@ import { validateInput } from "./medicos.validation.js";
 
 export const router = express.Router();
 
+router.use(verifyToken);
+router.use(checkPermissions);
+
 router
-  .get("/", verifyToken, checkPermissions, findAll)
-  .get("/:id", verifyToken, checkPermissions, validateInput, findOne)
-  .put(
-    "/:id",
-    verifyToken,
-    checkPermissions,
-    validateInput,
-    sanitizeMedicosInput,
-    update
-  )
-  .patch(
-    "/:id",
-    verifyToken,
-    checkPermissions,
-    validateInput,
-    sanitizeMedicosInput,
-    update
-  )
-  .delete("/:id", verifyToken, checkPermissions, validateInput, remove);
+  .get("/", findAll)
+  .get("/:id", validateInput, findOne)
+  .put("/:id", validateInput, sanitizeMedicosInput, update)
+  .patch("/:id", validateInput, sanitizeMedicosInput, update)
+  .delete("/:id", validateInput, remove);

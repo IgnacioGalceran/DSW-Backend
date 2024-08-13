@@ -7,23 +7,12 @@ import { validateInput } from "./pacientes.validations.js";
 
 export const router = express.Router();
 
+router.use(verifyToken);
+router.use(checkPermissions);
+
 router
-  .get("/", verifyToken, checkPermissions, findAll)
-  .get("/:id", verifyToken, checkPermissions, validateInput, findOne)
-  .put(
-    "/:id",
-    verifyToken,
-    checkPermissions,
-    validateInput,
-    sanitizePacientesInput,
-    update
-  )
-  .patch(
-    "/:id",
-    verifyToken,
-    checkPermissions,
-    validateInput,
-    sanitizePacientesInput,
-    update
-  )
-  .delete("/:id", verifyToken, checkPermissions, validateInput, remove);
+  .get("/", findAll)
+  .get("/:id", validateInput, findOne)
+  .put("/:id", validateInput, sanitizePacientesInput, update)
+  .patch("/:id", validateInput, sanitizePacientesInput, update)
+  .delete("/:id", validateInput, remove);
