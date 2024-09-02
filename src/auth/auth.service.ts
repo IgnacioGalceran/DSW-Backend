@@ -30,7 +30,7 @@ export class AuthService {
 
   public async registerPaciente(item: RegisterPaciente): Promise<any> {
     const rol = await em.findOne(Roles, {
-      nombre: "Paciente",
+      nombre: "Usuario",
     });
 
     const usuario = new Usuarios();
