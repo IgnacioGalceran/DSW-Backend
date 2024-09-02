@@ -21,7 +21,6 @@ const medicoUpdate = Joi.object({
       custom:
         "El id de la especialidad debe ser un ObjectId válido (24 caracteres hexadecimales).",
     }),
-  telefono: Joi.string().min(8).max(10),
   dni: Joi.string().min(8).max(10),
   tipoDni: Joi.string().min(2).max(30),
   rol: Joi.string()

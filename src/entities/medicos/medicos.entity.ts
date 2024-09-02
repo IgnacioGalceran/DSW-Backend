@@ -22,17 +22,17 @@ export class Medicos extends BaseEntity {
   @OneToOne(() => Usuarios, { nullable: false, cascade: [Cascade.ALL] })
   usuario!: Usuarios;
 
-  @Property({ nullable: false })
-  telefono!: string;
+  @Property({ nullable: true })
+  telefono?: string;
 
-  @Property({ nullable: false })
-  horaDesde!: string;
+  @Property({ nullable: true })
+  horaDesde?: string;
 
-  @Property({ nullable: false })
-  horaHasta!: string;
+  @Property({ nullable: true })
+  horaHasta?: string;
 
-  @Property({ nullable: false })
-  diasAtencion!: string[];
+  @Property({ nullable: true })
+  diasAtencion?: string[];
 
   @ManyToOne(() => Especialidades, { nullable: true })
   especialidad?: Especialidades | null;

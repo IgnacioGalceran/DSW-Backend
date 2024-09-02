@@ -14,7 +14,6 @@ export default function sanitizeMedicosInput(
       tipoDni: req.body.tipoDni,
       rol: { id: req.body.rol },
     },
-    telefono: req.body.telefono,
     especialidad: { id: req.body.especialidad },
     matricula: req.body.matricula,
     horaDesde: req.body.horaDesde,

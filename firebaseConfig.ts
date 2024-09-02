@@ -20,3 +20,5 @@ export const firebaseApp = admin.initializeApp({
     universe_domain: process.env.universe_domain,
   } as CustomServiceAccount),
 });
+
+export default admin;

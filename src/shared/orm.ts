@@ -7,7 +7,7 @@ export const orm = await MikroORM.init({
   dbName: "turnos-medico",
   clientUrl: "mongodb://localhost:27017",
   highlighter: new MongoHighlighter(),
-  debug: true,
+  debug: false,
   schemaGenerator: {
     //never in production
     disableForeignKeys: true,

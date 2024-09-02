@@ -11,6 +11,7 @@ import { Medicos } from "../entities/medicos/medicos.entity.js";
 import { NotFound } from "../shared/errors.js";
 import { Usuarios } from "./usuarios.entity.js";
 import { Especialidades } from "../entities/especialidades/especialidades.entity.js";
+import admin from "../../firebaseConfig.js";
 
 const em = orm.em;
 
@@ -46,31 +47,24 @@ export class AuthService {
   }
 
   public async registerMedico(item: RegisterMedico): Promise<any> {
-    console.log(item);
+    const medicoNuevo = await admin.auth().createUser({
+      email: item.email,
+      password: item.password,
+    });
 
     const rol = await em.findOne(Roles, {
-      nombre: "Medico",
+      nombre: "Medicos",
     });
 
-    const especialidad = await em.findOne(Especialidades, {
-      _id: item.especialidad,
-    });
-
-    const medico = new Medicos();
     const usuario = new Usuarios();
-    usuario.uid = item.uid;
-    usuario.nombre = item.nombre;
-    usuario.apellido = item.apellido;
-    usuario.tipoDni = item.tipoDni;
-    usuario.dni = item.dni;
-    usuario.rol = rol;
+    const medico = new Medicos();
+
+    item.usuario.uid = medicoNuevo.uid;
+    console.log(item);
+    Object.assign(usuario, item.usuario);
     medico.matricula = item.matricula;
-    medico.diasAtencion = item.diasAtencion;
-    medico.horaDesde = item.horaDesde;
-    medico.horaHasta = item.horaHasta;
-    medico.telefono = item.telefono;
-    medico.especialidad = especialidad;
     medico.usuario = usuario;
+    usuario.rol = rol;
 
     em.persist(usuario);
     em.persist(medico);

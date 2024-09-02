@@ -39,25 +39,30 @@ export function sanitizeMedicosInput(
   next: NextFunction
 ) {
   req.body.sanitizedInput = {
-    uid: req.body.uid,
-    nombre: req.body.nombre,
-    apellido: req.body.apellido,
-    dni: req.body.dni,
-    tipoDni: req.body.tipoDni,
+    usuario: {
+      uid: req.body.usuario.uid,
+      nombre: req.body.usuario.nombre,
+      apellido: req.body.usuario.apellido,
+      dni: req.body.usuario.dni,
+      tipoDni: req.body.usuario.tipoDni,
+    },
+    email: req.body.email,
+    password: req.body.password,
+    repeatPassword: req.body.repeatPassword,
     matricula: req.body.matricula,
-    telefono: req.body.telefono,
     horaDesde: req.body.horaDesde,
     horaHasta: req.body.horaHasta,
     diasAtencion: req.body.diasAtencion,
-    especialidad: new ObjectId(req.body.especialidad),
+    especialidad: req.body.especialidad,
   };
 
   Object.keys(req.body.sanitizedInput).forEach((key) => {
-    console.log(req.body.sanitizedInput[key]);
     if (req.body.sanitizedInput[key] === undefined) {
       delete req.body.sanitizedInput[key];
     }
   });
+
+  console.log(req.body.sanitizedInput);
 
   next();
 }

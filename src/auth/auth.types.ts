@@ -1,21 +1,25 @@
 import { ObjectId } from "mongodb";
 
-export interface RegisterAdministrador extends RegisterPaciente {}
+export interface RegisterAdministrador extends Usuarios {}
 
-export interface RegisterPaciente {
-  uid: string;
+export interface RegisterPaciente extends Usuarios {}
+
+export interface Usuarios {
+  uid?: string;
   nombre: string;
   apellido: string;
   dni: string;
   tipoDni: string;
-  rol: ObjectId;
+  rol?: ObjectId;
 }
 
-export interface RegisterMedico extends RegisterPaciente {
+export interface RegisterMedico {
+  email: string;
+  password: string;
+  usuario: Usuarios;
   matricula: string;
-  telefono: string;
-  horaDesde: string;
-  horaHasta: string;
-  diasAtencion: string[];
-  especialidad: ObjectId;
+  horaDesde?: string;
+  horaHasta?: string;
+  diasAtencion?: string[];
+  especialidad?: ObjectId;
 }
