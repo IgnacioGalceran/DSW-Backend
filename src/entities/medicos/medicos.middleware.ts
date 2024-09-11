@@ -7,13 +7,15 @@ export default function sanitizeMedicosInput(
 ) {
   req.body.sanitizedInput = {
     usuario: {
-      uid: req.body.uid,
-      nombre: req.body.nombre,
-      apellido: req.body.apellido,
-      dni: req.body.dni,
-      tipoDni: req.body.tipoDni,
-      rol: { id: req.body.rol },
+      uid: req.body.usuario.uid,
+      nombre: req.body.usuario.nombre,
+      apellido: req.body.usuario.apellido,
+      dni: req.body.usuario.dni,
+      tipoDni: req.body.usuario.tipoDni,
+      rol: { id: req.body.usuario.rol },
     },
+    email: req.body.email,
+    password: req.body.password,
     especialidad: { id: req.body.especialidad },
     matricula: req.body.matricula,
     horaDesde: req.body.horaDesde,

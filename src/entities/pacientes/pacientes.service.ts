@@ -4,6 +4,7 @@ import { Service } from "../../shared/service.js";
 import { ObjectId } from "mongodb";
 import { NotFound } from "../../shared/errors.js";
 import { Roles } from "../../security/roles/roles.entity.js";
+import { Usuarios } from "../../auth/usuarios.entity.js";
 
 const em = orm.em;
 
@@ -30,6 +31,25 @@ export class PacienteService implements Service<Pacientes> {
     );
 
     if (!paciente) throw new NotFound(item.id);
+
+    return paciente;
+  }
+
+  public async add(item: Pacientes): Promise<any> {
+    console.log(item);
+    const rol = await em.findOne(Roles, {
+      nombre: "Usuario",
+    });
+
+    const usuario = new Usuarios();
+    const paciente = new Pacientes();
+    Object.assign(usuario, item);
+    usuario.rol = rol;
+    paciente.usuario = usuario;
+
+    em.persist(usuario);
+    em.persist(paciente);
+    await em.flush();
 
     return paciente;
   }

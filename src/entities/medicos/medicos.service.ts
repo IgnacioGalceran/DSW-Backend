@@ -6,6 +6,9 @@ import { PopulateHint } from "@mikro-orm/mongodb";
 import { Especialidades } from "../especialidades/especialidades.entity.js";
 import { NotFound } from "../../shared/errors.js";
 import { Roles } from "../../security/roles/roles.entity.js";
+import { RegisterMedico } from "../../auth/auth.types.js";
+import admin from "../../../firebaseConfig.js";
+import { Usuarios } from "../../auth/usuarios.entity.js";
 
 const em = orm.em;
 
@@ -44,6 +47,40 @@ export class MedicoService implements Service<Medicos> {
     if (!medico) throw new NotFound(item.id);
 
     return medico;
+  }
+  public async add(item: Medicos & { email?: string; password?: string }): Promise<any> {
+    try {
+      const medicoNuevo = await admin.auth().createUser({
+        email: item.email,
+        password: item.password,
+      });
+  
+      console.log(medicoNuevo)
+  
+      const rol = await em.findOne(Roles, {
+        nombre: "Medico",
+      });
+      console.log(rol)
+  
+      const usuario = new Usuarios();
+      const medico = new Medicos();
+  
+      item.usuario.uid = medicoNuevo.uid;
+      console.log(item);
+      Object.assign(usuario, item.usuario);
+      medico.matricula = item.matricula;
+      medico.usuario = usuario;
+      usuario.rol = rol;
+  
+      em.persist(usuario);
+      em.persist(medico);
+      await em.flush();
+
+      return medico;
+    } catch (error: any) {
+      console.log(error)
+    }
+    // console.log(item)
   }
 
   public async update(item: Medicos): Promise<Medicos | undefined> {

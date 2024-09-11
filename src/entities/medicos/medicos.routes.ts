@@ -1,5 +1,5 @@
 import express from "express";
-import { findAll, findOne, update, remove } from "./medicos.controller.js";
+import { findAll, findOne, update, remove, add } from "./medicos.controller.js";
 import sanitizeMedicosInput from "./medicos.middleware.js";
 import { verifyToken } from "../../auth/auth.middleware.js";
 import checkPermissions from "../../shared/checkPermissions.js";
@@ -14,5 +14,6 @@ router
   .get("/", findAll)
   .get("/:id", validateInput, findOne)
   .put("/:id", validateInput, sanitizeMedicosInput, update)
+  .post("/", validateInput, sanitizeMedicosInput, add)
   .patch("/:id", validateInput, sanitizeMedicosInput, update)
   .delete("/:id", validateInput, remove);

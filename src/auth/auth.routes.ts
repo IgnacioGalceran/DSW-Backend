@@ -1,7 +1,5 @@
 import express from "express";
 import {
-  registerPaciente,
-  registerMedico,
   getUserData,
   registerAdministrador,
 } from "./auth.controller.js";
@@ -16,17 +14,5 @@ export const router = express.Router();
 
 router
   .post("/getUserData/:id", getUserData)
-  .post(
-    "/registerPaciente",
-    validateRegister,
-    sanitizePacientesInput,
-    registerPaciente
-  )
-  .post(
-    "/registerMedico",
-    validateRegister,
-    sanitizeMedicosInput,
-    registerMedico
-  )
   .post("/registerAdministrador", sanitizePacientesInput, registerAdministrador)
   .post("/verifyToken", verifyToken);

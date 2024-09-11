@@ -10,7 +10,7 @@ export const listaRoles: Roles[] = [
   },
   {
     _id: new ObjectId(),
-    nombre: "Moderador",
+    nombre: "Medico",
   },
   {
     _id: new ObjectId(),
