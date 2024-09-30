@@ -7,14 +7,6 @@ const isValidObjectId = (value: string) => {
   return ObjectId.isValid(value);
 };
 
-const registerPaciente = Joi.object({
-  uid: Joi.string().min(2).max(50).required(),
-  nombre: Joi.string().min(2).max(30).required(),
-  apellido: Joi.string().min(2).max(30).required(),
-  dni: Joi.string().min(8).max(10).required(),
-  tipoDni: Joi.string().min(2).max(30).required(),
-});
-
 export const validateRegister = (
   req: Request,
   res: Response,

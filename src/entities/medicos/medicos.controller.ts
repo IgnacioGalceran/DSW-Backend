@@ -48,7 +48,7 @@ export async function add(
 ): Promise<void> {
   try {
     const medicos = await service.add(req.body.sanitizedInput);
-
+    
     res.status(200).json({
       message: "Registrado correctamente.",
       error: false,

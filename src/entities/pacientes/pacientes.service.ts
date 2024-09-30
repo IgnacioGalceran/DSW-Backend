@@ -5,6 +5,7 @@ import { ObjectId } from "mongodb";
 import { NotFound } from "../../shared/errors.js";
 import { Roles } from "../../security/roles/roles.entity.js";
 import { Usuarios } from "../../auth/usuarios.entity.js";
+import admin from "../../../firebaseConfig.js";
 
 const em = orm.em;
 
@@ -35,23 +36,39 @@ export class PacienteService implements Service<Pacientes> {
     return paciente;
   }
 
-  public async add(item: Pacientes): Promise<any> {
-    console.log(item);
-    const rol = await em.findOne(Roles, {
-      nombre: "Usuario",
-    });
+  public async add(
+    item: Pacientes & { email?: string; password?: string }
+  ): Promise<any> {
+    try {
+      const pacienteNuevo = await admin.auth().createUser({
+        email: item.email,
+        password: item.password,
+      });
 
-    const usuario = new Usuarios();
-    const paciente = new Pacientes();
-    Object.assign(usuario, item);
-    usuario.rol = rol;
-    paciente.usuario = usuario;
+      console.log(pacienteNuevo);
 
-    em.persist(usuario);
-    em.persist(paciente);
-    await em.flush();
+      const rol = await em.findOne(Roles, {
+        nombre: "Usuario",
+      });
+      console.log(rol);
 
-    return paciente;
+      const usuario = new Usuarios();
+      const paciente = new Pacientes();
+
+      item.usuario.uid = pacienteNuevo.uid;
+      console.log(item);
+      Object.assign(usuario, item.usuario);
+      paciente.usuario = usuario;
+      usuario.rol = rol;
+
+      em.persist(usuario);
+      em.persist(paciente);
+      await em.flush();
+
+      return paciente;
+    } catch (error: any) {
+      console.log(error);
+    }
   }
 
   public async update(item: Pacientes): Promise<Pacientes | undefined> {
