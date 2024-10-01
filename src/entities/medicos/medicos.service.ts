@@ -48,37 +48,40 @@ export class MedicoService implements Service<Medicos> {
 
     return medico;
   }
-  public async add(item: Medicos & { email?: string; password?: string }): Promise<any> {
+
+  public async add(
+    item: Medicos & { email?: string; password?: string }
+  ): Promise<any> {
     try {
       const medicoNuevo = await admin.auth().createUser({
         email: item.email,
         password: item.password,
       });
-  
-      console.log(medicoNuevo)
-  
+
+      console.log(medicoNuevo);
+
       const rol = await em.findOne(Roles, {
         nombre: "Medico",
       });
-      console.log(rol)
-  
+      console.log(rol);
+
       const usuario = new Usuarios();
       const medico = new Medicos();
-  
+
       item.usuario.uid = medicoNuevo.uid;
       console.log(item);
       Object.assign(usuario, item.usuario);
       medico.matricula = item.matricula;
       medico.usuario = usuario;
       usuario.rol = rol;
-  
+
       em.persist(usuario);
       em.persist(medico);
       await em.flush();
 
       return medico;
     } catch (error: any) {
-      console.log(error)
+      console.log(error);
     }
     // console.log(item)
   }
@@ -170,5 +173,20 @@ export class MedicoService implements Service<Medicos> {
     await em.removeAndFlush(medicosABorrar);
 
     return medicosABorrar;
+  }
+
+  public async findMedicoByEspecialidad(item: {
+    id: string;
+  }): Promise<Medicos[] | undefined> {
+    const especialidad = await em.findOne(
+      Especialidades,
+      { _id: new ObjectId(item.id) },
+      {}
+    );
+    if (!especialidad) throw new NotFound(item.id);
+
+    const medico = await em.find(Medicos, { especialidad: especialidad }, {});
+
+    return medico;
   }
 }

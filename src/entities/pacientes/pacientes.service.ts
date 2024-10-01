@@ -48,7 +48,7 @@ export class PacienteService implements Service<Pacientes> {
       console.log(pacienteNuevo);
 
       const rol = await em.findOne(Roles, {
-        nombre: "Usuario",
+        nombre: "Paciente",
       });
       console.log(rol);
 

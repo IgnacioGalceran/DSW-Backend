@@ -48,7 +48,7 @@ export async function add(
 ): Promise<void> {
   try {
     const medicos = await service.add(req.body.sanitizedInput);
-    
+
     res.status(200).json({
       message: "Registrado correctamente.",
       error: false,
@@ -92,6 +92,26 @@ export async function remove(
       message: "Medico borrado.",
       error: false,
       data: medicoABorrar,
+    });
+  } catch (error: any) {
+    next(error);
+  }
+}
+
+export async function findMedicoByEspecialidad(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const medicos = await service.findMedicoByEspecialidad({
+      id: req.params.id,
+    });
+
+    res.status(200).json({
+      message: "Medicos con especialidades encontrados.",
+      error: false,
+      data: medicos,
     });
   } catch (error: any) {
     next(error);
