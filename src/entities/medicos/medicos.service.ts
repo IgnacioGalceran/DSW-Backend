@@ -87,6 +87,7 @@ export class MedicoService implements Service<Medicos> {
   }
 
   public async update(item: Medicos): Promise<Medicos | undefined> {
+    console.log("service medicos");
     const medicoAActualizar = await em.findOne(
       Medicos,
       {
@@ -94,6 +95,7 @@ export class MedicoService implements Service<Medicos> {
       },
       { populate: ["usuario"] }
     );
+    console.log(medicoAActualizar);
 
     if (!medicoAActualizar) throw new NotFound(item.id);
 
@@ -118,6 +120,7 @@ export class MedicoService implements Service<Medicos> {
       const especialidad = await em.findOne(Especialidades, {
         _id: new ObjectId(item.especialidad.id),
       });
+      console.log(especialidad);
 
       if (especialidad) {
         item.especialidad = especialidad;
@@ -185,7 +188,13 @@ export class MedicoService implements Service<Medicos> {
     );
     if (!especialidad) throw new NotFound(item.id);
 
-    const medico = await em.find(Medicos, { especialidad: especialidad }, {});
+    const medico = await em.find(
+      Medicos,
+      { especialidad: especialidad },
+      {
+        populate: ["usuario"],
+      }
+    );
 
     return medico;
   }
