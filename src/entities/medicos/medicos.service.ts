@@ -95,7 +95,6 @@ export class MedicoService implements Service<Medicos> {
       },
       { populate: ["usuario"] }
     );
-    console.log(medicoAActualizar);
 
     if (!medicoAActualizar) throw new NotFound(item.id);
 
