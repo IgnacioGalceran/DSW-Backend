@@ -7,8 +7,9 @@ const isValidObjectId = (value: string) => {
   return ObjectId.isValid(value);
 };
 
-const especialidades = Joi.object({
+const turnos = Joi.object({
   fecha: Joi.date().required(),
+  rango: Joi.string().required(),
   medico: Joi.string()
     .custom((value, helpers) => {
       if (!isValidObjectId(value)) {
@@ -38,6 +39,7 @@ export const validateInput = (
   res: Response,
   next: NextFunction
 ) => {
+  console.log("id:", req.params.id);
   if (req.params.id) {
     if (!isValidObjectId(req.params.id)) {
       next(new InvalidId());
@@ -45,7 +47,7 @@ export const validateInput = (
   }
 
   if (Object.keys(req.body).length) {
-    const { error } = especialidades.validate(req.body);
+    const { error } = turnos.validate(req.body);
 
     if (error) {
       next(new InvalidFields(error.details[0].message));

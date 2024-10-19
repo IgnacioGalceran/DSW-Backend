@@ -19,9 +19,12 @@ export class Turnos extends BaseEntity {
   @Property({ nullable: false })
   fecha!: Date;
 
-  @ManyToOne(() => Pacientes, { nullable: true })
+  @Property({ nullable: false })
+  rango!: string;
+
+  @ManyToOne(() => Pacientes, { nullable: false })
   paciente?: Pacientes | null;
 
-  @ManyToOne(() => Medicos, { nullable: true })
+  @ManyToOne(() => Medicos, { nullable: false })
   medico?: Medicos | null;
 }

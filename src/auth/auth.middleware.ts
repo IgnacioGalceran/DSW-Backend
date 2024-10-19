@@ -13,15 +13,12 @@ export async function verifyToken(
       ?.toString()
       .replace(/^Bearer\s/, "") || "";
 
-  console.log(token);
-
   if (token === "") {
     return next(new InvalidToken());
   }
 
   try {
     const decodedToken = await firebaseApp.auth().verifyIdToken(token);
-    console.log(decodedToken);
     req.headers.firebaseUid = decodedToken.uid;
     next();
   } catch (error: any) {

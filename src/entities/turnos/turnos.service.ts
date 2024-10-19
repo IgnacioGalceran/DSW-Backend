@@ -45,18 +45,37 @@ export class TurnosService implements Service<Turnos> {
     return turno;
   }
 
+  public async findTurnosOcupadosByMedicoByDates(
+    item: any
+  ): Promise<Turnos[] | undefined> {
+    console.log(item);
+    const startDate = new Date(item.startDate).toISOString();
+    const endDate = new Date(item.endDate).toISOString();
+    const turnos = await em.find(Turnos, {
+      fecha: {
+        $gte: startDate,
+        $lte: endDate,
+      },
+      medico: new ObjectId(item.medico),
+    });
+
+    return turnos;
+  }
+
   public async add(item: Turnos): Promise<Turnos | undefined> {
     const paciente = await em.findOne(Pacientes, {
-      _id: new ObjectId(item?.paciente?.id),
+      usuario: new ObjectId(item?.paciente?.id),
     });
     const medico = await em.findOne(Medicos, {
       _id: new ObjectId(item?.medico?.id),
     });
 
+    console.log(item, paciente, medico);
     if (!paciente || !medico) throw new UserNotFounded();
 
     const turno = new Turnos();
-    Object.assign(turno, item);
+    turno.fecha = item.fecha;
+    turno.rango = item.rango;
     turno.paciente = paciente;
     turno.medico = medico;
 

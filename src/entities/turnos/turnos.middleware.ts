@@ -9,6 +9,7 @@ export default function sanitizeTurnoInput(
     fecha: req.body.fecha,
     medico: { id: req.body.medico },
     paciente: { id: req.body.paciente },
+    rango: req.body.rango,
   };
 
   Object.keys(req.body.sanitizedInput).forEach((key) => {
