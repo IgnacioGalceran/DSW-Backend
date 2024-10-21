@@ -5,6 +5,7 @@ import {
   findOne,
   update,
   remove,
+  findTurnosByPaciente,
   findTurnosOcupadosByMedicoByDates,
 } from "./turnos.controller.js";
 import sanitizeTurnoInput from "./turnos.middleware.js";
@@ -20,6 +21,7 @@ router.use(checkPermissions);
 router
   .get("/", findAll)
   .get("/:id", validateInput, findOne)
+  .get("/findTurnosByPaciente/:id", findTurnosByPaciente)
   .get(
     "/findTurnosOcupadosByMedicoByDates/:id",
     findTurnosOcupadosByMedicoByDates

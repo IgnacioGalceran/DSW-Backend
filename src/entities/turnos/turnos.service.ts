@@ -62,6 +62,22 @@ export class TurnosService implements Service<Turnos> {
     return turnos;
   }
 
+  public async findTurnosByPaciente(item: any): Promise<Turnos[] | undefined> {
+    const paciente = await em.findOne(Pacientes, {
+      usuario: new ObjectId(item.paciente),
+    });
+
+    if (!paciente) throw new NotFound(item.paciente);
+
+    const turnos = await em.find(Turnos, {
+      paciente: paciente,
+    });
+
+    console.log(turnos);
+
+    return turnos;
+  }
+
   public async add(item: Turnos): Promise<Turnos | undefined> {
     const paciente = await em.findOne(Pacientes, {
       usuario: new ObjectId(item?.paciente?.id),

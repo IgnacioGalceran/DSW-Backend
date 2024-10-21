@@ -43,6 +43,26 @@ export async function findOne(
   }
 }
 
+export async function findTurnosByPaciente(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const turnos = await service.findTurnosByPaciente({
+      paciente: req.params.id,
+    });
+
+    res.status(200).json({
+      message: "Turnos encontrados.",
+      error: false,
+      data: turnos,
+    });
+  } catch (error: any) {
+    next(error);
+  }
+}
+
 export async function findTurnosOcupadosByMedicoByDates(
   req: Request,
   res: Response,
@@ -50,11 +70,10 @@ export async function findTurnosOcupadosByMedicoByDates(
 ): Promise<void> {
   try {
     const { startDate, endDate } = req.query;
-    const id = req.params.id;
     const turnosDisponibles = await service.findTurnosOcupadosByMedicoByDates({
       startDate,
       endDate,
-      medico: id,
+      medico: req.params.id,
     });
 
     res.status(200).json({
