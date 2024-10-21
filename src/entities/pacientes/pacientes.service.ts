@@ -37,7 +37,7 @@ export class PacienteService implements Service<Pacientes> {
   }
 
   public async add(
-    item: Pacientes & { email?: string; password?: string }
+    item: Pacientes & { email: string; password: string }
   ): Promise<any> {
     try {
       const pacienteNuevo = await admin.auth().createUser({
@@ -60,6 +60,7 @@ export class PacienteService implements Service<Pacientes> {
       Object.assign(usuario, item.usuario);
       paciente.usuario = usuario;
       usuario.rol = rol;
+      usuario.email = item.email;
 
       em.persist(usuario);
       em.persist(paciente);

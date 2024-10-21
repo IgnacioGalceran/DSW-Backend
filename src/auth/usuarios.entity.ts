@@ -15,6 +15,9 @@ export class Usuarios extends BaseEntity {
   apellido!: string;
 
   @Property({ nullable: false })
+  email!: string;
+
+  @Property({ nullable: false })
   dni!: string;
 
   @Property({ nullable: false })

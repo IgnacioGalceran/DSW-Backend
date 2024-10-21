@@ -50,7 +50,7 @@ export class MedicoService implements Service<Medicos> {
   }
 
   public async add(
-    item: Medicos & { email?: string; password?: string }
+    item: Medicos & { email: string; password: string }
   ): Promise<any> {
     try {
       const medicoNuevo = await admin.auth().createUser({
@@ -63,7 +63,6 @@ export class MedicoService implements Service<Medicos> {
       const rol = await em.findOne(Roles, {
         nombre: "Medico",
       });
-      console.log(rol);
 
       const usuario = new Usuarios();
       const medico = new Medicos();
@@ -74,6 +73,7 @@ export class MedicoService implements Service<Medicos> {
       medico.matricula = item.matricula;
       medico.usuario = usuario;
       usuario.rol = rol;
+      usuario.email = item.email;
 
       em.persist(usuario);
       em.persist(medico);
