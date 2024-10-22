@@ -138,7 +138,7 @@ export async function remove(
     const turnoABorrar = await service.remove({ id: req.params.id });
 
     res.status(200).json({
-      message: "Turo borrado.",
+      message: "Turno borrado.",
       error: false,
       data: turnoABorrar,
     });

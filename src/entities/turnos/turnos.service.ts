@@ -69,9 +69,13 @@ export class TurnosService implements Service<Turnos> {
 
     if (!paciente) throw new NotFound(item.paciente);
 
-    const turnos = await em.find(Turnos, {
-      paciente: paciente,
-    });
+    const turnos = await em.find(
+      Turnos,
+      {
+        paciente: paciente,
+      },
+      { populate: ["medico.usuario", "medico.especialidad"] }
+    );
 
     console.log(turnos);
 
@@ -112,6 +116,7 @@ export class TurnosService implements Service<Turnos> {
   }
 
   public async remove(item: { id: string }): Promise<Turnos | undefined> {
+    console.log(item.id);
     const turnoABorrar = await em.findOne(Turnos, {
       _id: new ObjectId(item.id),
     });
