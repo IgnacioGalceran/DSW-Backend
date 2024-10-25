@@ -37,15 +37,10 @@ export class PacienteService implements Service<Pacientes> {
   }
 
   public async add(
-    item: Pacientes & { email: string; password: string }
+    item: Pacientes & { password: string }
   ): Promise<any> {
+    console.log(item)
     try {
-      const pacienteNuevo = await admin.auth().createUser({
-        email: item.email,
-        password: item.password,
-      });
-
-      console.log(pacienteNuevo);
 
       const rol = await em.findOne(Roles, {
         nombre: "Paciente",
@@ -55,18 +50,17 @@ export class PacienteService implements Service<Pacientes> {
       const usuario = new Usuarios();
       const paciente = new Pacientes();
 
-      item.usuario.uid = pacienteNuevo.uid;
       console.log(item);
       Object.assign(usuario, item.usuario);
       paciente.usuario = usuario;
       usuario.rol = rol;
-      usuario.email = item.email;
+      usuario.email = item.usuario.email;
 
       em.persist(usuario);
       em.persist(paciente);
       await em.flush();
 
-      return paciente;
+      return item;
     } catch (error: any) {
       console.log(error);
     }

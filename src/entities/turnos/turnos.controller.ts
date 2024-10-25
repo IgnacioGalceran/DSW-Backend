@@ -63,6 +63,27 @@ export async function findTurnosByPaciente(
   }
 }
 
+export async function findTurnosByMedico(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const turnos = await service.findTurnosByMedico({
+      medico: req.params.id,
+    });
+
+    res.status(200).json({
+      message: "Turnos encontrados.",
+      error: false,
+      data: turnos,
+    });
+  } catch (error: any) {
+    next(error);
+  }
+}
+
+
 export async function findTurnosOcupadosByMedicoByDates(
   req: Request,
   res: Response,

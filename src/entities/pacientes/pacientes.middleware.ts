@@ -13,9 +13,9 @@ export default function sanitizePacientesInput(
       apellido: req.body.usuario.apellido,
       dni: req.body.usuario.dni,
       tipoDni: req.body.usuario.tipoDni,
+      email: req.body.usuario.email,
       // rol: { id: req.body.usuario.rol },
     },
-    email: req.body.email,
     password: req.body.password,
     repeatPassword: req.body.repeatPassword,
   };

@@ -58,7 +58,9 @@ export class MedicoService implements Service<Medicos> {
         password: item.password,
       });
 
-      console.log(medicoNuevo);
+      const especialidad = await em.findOne(Especialidades, {
+        _id: new ObjectId(item.especialidad?.id)
+      })
 
       const rol = await em.findOne(Roles, {
         nombre: "Medico",
@@ -71,6 +73,10 @@ export class MedicoService implements Service<Medicos> {
       console.log(item);
       Object.assign(usuario, item.usuario);
       medico.matricula = item.matricula;
+      medico.especialidad = especialidad;
+      medico.diasAtencion = item.diasAtencion;
+      medico.horaDesde = item.horaDesde;
+      medico.horaHasta = item.horaHasta;
       medico.usuario = usuario;
       usuario.rol = rol;
       usuario.email = item.email;

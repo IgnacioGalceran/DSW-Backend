@@ -25,4 +25,7 @@ export class Usuarios extends BaseEntity {
 
   @ManyToOne(() => Roles, { nullable: true })
   rol?: Roles | null;
+
+  @Property({nullable: true})
+  verificado?: boolean = false;
 }

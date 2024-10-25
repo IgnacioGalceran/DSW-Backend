@@ -38,4 +38,20 @@ export class AuthService {
 
     return usuario;
   }
+
+  public async verifyUser(item: { uid: string }): Promise<any> {
+    console.log(item.uid);
+    const usuario = await em.findOne(Usuarios, {
+      uid: item.uid,
+    });
+
+    if (!usuario) throw new NotFound(item.uid);
+
+    if (usuario.verificado) return;
+
+    usuario.verificado = true;
+    await em.flush();
+
+    return usuario;
+  }
 }

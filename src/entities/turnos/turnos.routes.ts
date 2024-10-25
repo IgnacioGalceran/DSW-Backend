@@ -7,6 +7,7 @@ import {
   remove,
   findTurnosByPaciente,
   findTurnosOcupadosByMedicoByDates,
+  findTurnosByMedico,
 } from "./turnos.controller.js";
 import sanitizeTurnoInput from "./turnos.middleware.js";
 import { verifyToken } from "../../auth/auth.middleware.js";
@@ -22,6 +23,7 @@ router
   .get("/", findAll)
   .get("/:id", validateInput, findOne)
   .get("/findTurnosByPaciente/:id", findTurnosByPaciente)
+  .get("/findTurnosByMedico/:id", findTurnosByMedico)
   .get(
     "/findTurnosOcupadosByMedicoByDates/:id",
     findTurnosOcupadosByMedicoByDates
