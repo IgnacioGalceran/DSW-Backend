@@ -9,7 +9,8 @@ const isValidObjectId = (value: string) => {
 
 const turnos = Joi.object({
   fecha: Joi.date().required(),
-  rango: Joi.string().required(),
+  inicio: Joi.string().required(),
+  fin: Joi.string().required(),
   medico: Joi.string()
     .custom((value, helpers) => {
       if (!isValidObjectId(value)) {

@@ -1,6 +1,6 @@
 import { orm } from "../../shared/orm.js";
 import { Service } from "../../shared/service.js";
-import { NotFound, UserNotFounded } from "../../shared/errors.js";
+import { NotFound, Repeated, UserNotFounded } from "../../shared/errors.js";
 import { Turnos } from "./turnos.entity.js";
 import { ObjectId } from "mongodb";
 import { Pacientes } from "../pacientes/pacientes.entity.js";
@@ -48,16 +48,21 @@ export class TurnosService implements Service<Turnos> {
   public async findTurnosOcupadosByMedicoByDates(
     item: any
   ): Promise<Turnos[] | undefined> {
-    console.log(item);
-    const startDate = new Date(item.startDate).toISOString();
-    const endDate = new Date(item.endDate).toISOString();
+    const startDate = new Date(item.startDate);
+    startDate.setHours(0, 0, 0, 0);
+
+    const endDate = new Date(item.endDate);
+    endDate.setHours(23, 59, 59, 999);
+
     const turnos = await em.find(Turnos, {
       fecha: {
-        $gte: startDate,
-        $lte: endDate,
+        $gte: startDate.toISOString(),
+        $lte: endDate.toISOString(),
       },
       medico: new ObjectId(item.medico),
     });
+
+    console.log(turnos);
 
     return turnos;
   }
@@ -113,9 +118,33 @@ export class TurnosService implements Service<Turnos> {
     console.log(item, paciente, medico);
     if (!paciente || !medico) throw new UserNotFounded();
 
+    const inicio = item.inicio.trim();
+    const fin = item.fin.trim();
+
+    const existingTurno = await em.findOne(Turnos, {
+      medico: medico,
+      fecha: {
+        $eq: item.fecha,
+      },
+      inicio: {
+        $lt: fin,
+      },
+      fin: {
+        $gt: inicio,
+      },
+    });
+
+    if (existingTurno) {
+      throw new Repeated(
+        "turno",
+        `${item.fecha} y hora ${item.inicio} - ${item.fin}`
+      );
+    }
+
     const turno = new Turnos();
     turno.fecha = item.fecha;
-    turno.rango = item.rango;
+    turno.inicio = inicio;
+    turno.fin = fin;
     turno.paciente = paciente;
     turno.medico = medico;
 
