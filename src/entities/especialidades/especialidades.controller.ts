@@ -41,6 +41,24 @@ export async function findOne(
   }
 }
 
+export async function findEspecialidadesWithMedicos(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const especialidad = await service.findEspecialidadesWithMedicos();
+
+    res.status(200).json({
+      message: "Especialidades encontradas.",
+      error: false,
+      data: especialidad,
+    });
+  } catch (error: any) {
+    next(error);
+  }
+}
+
 export async function add(
   req: Request,
   res: Response,

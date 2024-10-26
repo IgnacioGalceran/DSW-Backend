@@ -5,6 +5,7 @@ import {
   findOne,
   update,
   remove,
+  findEspecialidadesWithMedicos,
 } from "./especialidades.controller.js";
 import sanitizeEspecialidadInput from "./especialidades.middleware.js";
 import { verifyToken } from "../../auth/auth.middleware.js";
@@ -18,6 +19,7 @@ router.use(checkPermissions);
 
 router
   .get("/", findAll)
+  .get("/findEspecialidadesWithMedicos", findEspecialidadesWithMedicos)
   .get("/:id", validateInput, findOne)
   .post("/", validateInput, sanitizeEspecialidadInput, add)
   .put("/:id", validateInput, sanitizeEspecialidadInput, update)

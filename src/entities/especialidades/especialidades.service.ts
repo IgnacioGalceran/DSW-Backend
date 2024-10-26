@@ -27,6 +27,22 @@ export class EspecialidadesService implements Service<Especialidades> {
     return especialidad;
   }
 
+  public async findEspecialidadesWithMedicos(): Promise<Especialidades[]> {
+    const especialidades = await em.find(
+      Especialidades,
+      {},
+      { populate: ["medicos"] }
+    );
+
+    const especialidadesConMedicos = especialidades.filter((especialidad) => {
+      if (especialidad.medicos) {
+        return especialidad.medicos?.count() > 0;
+      }
+    });
+
+    return especialidadesConMedicos;
+  }
+
   public async add(item: Especialidades): Promise<Especialidades | undefined> {
     const especialidadCreado = em.create(Especialidades, item);
     await em.flush();
