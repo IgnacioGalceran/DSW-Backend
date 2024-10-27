@@ -53,6 +53,7 @@ export class MedicoService implements Service<Medicos> {
     item: Medicos & { email: string; password: string }
   ): Promise<any> {
     try {
+      console.log(item);
       const medicoNuevo = await admin.auth().createUser({
         email: item.email,
         password: item.password,

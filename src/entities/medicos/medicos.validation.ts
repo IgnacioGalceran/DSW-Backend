@@ -31,18 +31,30 @@ export const medicoAdd = Joi.object({
     "string.min": "La longitud mínima es de 24 caracteres",
     "string.max": "La longitud máxima es de 24 caracteres",
   }),
+  password: Joi.string().min(8).max(30).required().messages({
+    "string.min": "La longitud mínima es de 2 caracteres",
+    "string.max": "La longitud máxima es de 30 caracteres",
+    "string.empty": "Este campo no puede estar vacío",
+    "any.required": "Este campo es requerido *",
+  }),
+  repeatPassword: Joi.string().min(8).max(30).required().messages({
+    "string.min": "La longitud mínima es de 2 caracteres",
+    "string.max": "La longitud máxima es de 30 caracteres",
+    "string.empty": "Este campo no puede estar vacío",
+    "any.required": "Este campo es requerido *",
+  }),
+  email: Joi.string()
+    .email({ tlds: { allow: false } })
+    .min(6)
+    .max(50)
+    .required()
+    .messages({
+      "string.min": "La longitud mínima es de 6 caracteres",
+      "string.max": "La longitud máxima es de 50 caracteres",
+      "string.empty": "Este campo no puede estar vacío",
+      "any.required": "Este campo es requerido *",
+    }),
   usuario: Joi.object({
-    email: Joi.string()
-      .email({ tlds: { allow: false } })
-      .min(6)
-      .max(50)
-      .required()
-      .messages({
-        "string.min": "La longitud mínima es de 6 caracteres",
-        "string.max": "La longitud máxima es de 50 caracteres",
-        "string.empty": "Este campo no puede estar vacío",
-        "any.required": "Este campo es requerido *",
-      }),
     uid: Joi.string().min(0).max(50).allow(null),
     nombre: Joi.string().min(2).max(30).required().messages({
       "string.min": "La longitud mínima es de 2 caracteres",

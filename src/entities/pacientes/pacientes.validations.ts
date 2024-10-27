@@ -45,18 +45,6 @@ const pacienteAdd = Joi.object({
         "any.required": "Este email es requerido *",
       }),
   }),
-  password: Joi.string().min(8).max(20).required().messages({
-    "string.min": "La longitud mínima es de 8 caracteres",
-    "string.max": "La longitud máxima es de 20 caracteres",
-    "string.empty": "Este campo no puede estar vacío",
-    "any.required": "Este pass es requerido *",
-  }),
-  repeatPassword: Joi.string().min(8).max(20).required().messages({
-    "string.min": "La longitud mínima es de 8 caracteres",
-    "string.max": "La longitud máxima es de 20 caracteres",
-    "string.empty": "Este campo no puede estar vacío",
-    "any.required": "Este repeatpass es requerido *",
-  }),
 });
 
 const pacienteUpdate = Joi.object({

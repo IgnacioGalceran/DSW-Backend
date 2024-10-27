@@ -52,6 +52,7 @@ export class PacienteService implements Service<Pacientes> {
       paciente.usuario = usuario;
       usuario.rol = rol;
       usuario.email = item.usuario.email;
+      usuario.verificado = true;
 
       em.persist(usuario);
       em.persist(paciente);
