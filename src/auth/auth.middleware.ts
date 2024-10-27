@@ -35,6 +35,7 @@ export function sanitizeMedicosInput(
   res: Response,
   next: NextFunction
 ) {
+  console.log(req.body.sanitizedInput);
   req.body.sanitizedInput = {
     usuario: {
       uid: req.body.usuario.uid,

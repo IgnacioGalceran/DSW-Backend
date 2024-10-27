@@ -6,6 +6,7 @@ export default function sanitizePacientesInput(
   res: Response,
   next: NextFunction
 ) {
+  console.log("user:", req.body.email);
   req.body.sanitizedInput = {
     usuario: {
       uid: req.body.usuario.uid,
@@ -13,7 +14,7 @@ export default function sanitizePacientesInput(
       apellido: req.body.usuario.apellido,
       dni: req.body.usuario.dni,
       tipoDni: req.body.usuario.tipoDni,
-      email: req.body.usuario.email,
+      email: req.body.email,
       // rol: { id: req.body.usuario.rol },
     },
     password: req.body.password,
@@ -31,6 +32,6 @@ export default function sanitizePacientesInput(
     }
   });
 
-  console.log(req.body.sanitizedInput);
+  console.log("userSanitizado:", req.body.sanitizedInput);
   next();
 }

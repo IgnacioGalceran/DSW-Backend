@@ -34,16 +34,16 @@ const pacienteAdd = Joi.object({
       "any.required": "Este dni es requerido *",
     }),
     email: Joi.string()
-    .email({ tlds: { allow: false } })
-    .min(6)
-    .max(50)
-    .required()
-    .messages({
-      "string.min": "La longitud mínima es de 6 caracteres",
-      "string.max": "La longitud máxima es de 50 caracteres",
-      "string.empty": "Este campo no puede estar vacío",
-      "any.required": "Este email es requerido *",
-    }),
+      .email({ tlds: { allow: false } })
+      .min(6)
+      .max(50)
+      .required()
+      .messages({
+        "string.min": "La longitud mínima es de 6 caracteres",
+        "string.max": "La longitud máxima es de 50 caracteres",
+        "string.empty": "Este campo no puede estar vacío",
+        "any.required": "Este email es requerido *",
+      }),
   }),
   password: Joi.string().min(8).max(20).required().messages({
     "string.min": "La longitud mínima es de 8 caracteres",
@@ -82,9 +82,6 @@ export const validateInput = (
   res: Response,
   next: NextFunction
 ) => {
-  console.log("ultimo");
-  console.log(req.body.sanitizedInput);
-
   if (req.params.id) {
     if (!isValidObjectId(req.params.id)) {
       next(new InvalidId());
@@ -95,7 +92,6 @@ export const validateInput = (
   if (Object.keys(req.body.sanitizedInput).length) {
     if (req.method === "POST") {
       const { error } = pacienteAdd.validate(req.body.sanitizedInput);
-      console.log(error);
       errorJoi = error;
     } else if (req.method === "PUT") {
       const { error } = pacienteUpdate.validate(req.body.sanitizedInput);

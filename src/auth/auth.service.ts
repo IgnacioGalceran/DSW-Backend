@@ -25,6 +25,7 @@ export class AuthService {
     item: RegisterAdministrador
   ): Promise<any> {
     console.log("admin: ", item);
+
     const rol = await em.findOne(Roles, {
       nombre: "Administrador",
     });
@@ -40,7 +41,7 @@ export class AuthService {
   }
 
   public async verifyUser(item: { uid: string }): Promise<any> {
-    console.log(item.uid);
+    // console.log(item.uid);
     const usuario = await em.findOne(Usuarios, {
       uid: item.uid,
     });

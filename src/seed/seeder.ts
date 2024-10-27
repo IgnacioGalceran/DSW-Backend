@@ -25,6 +25,8 @@ export const seeder = async () => {
       Especialidades,
       listaEspecialidades
     );
+
+    console.log({ especialidadesInsertadas });
   }
 
   if (rolesCount === 0 && funcionesCount === 0) {
