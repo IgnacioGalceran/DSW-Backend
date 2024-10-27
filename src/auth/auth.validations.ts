@@ -12,19 +12,7 @@ export const validateRegister = (
   res: Response,
   next: NextFunction
 ) => {
-  // let register: string = req.url.split("/")[1];
   let errorJoi!: Joi.ValidationError | undefined;
-
-  // switch (register) {
-  //   case "registerPaciente": {
-  //     const { error } = registerPaciente.validate(req.body);
-  //     errorJoi = error;
-  //     break;
-  //   }
-  //   default:
-  //     break;
-  // }
-
   if (errorJoi) {
     next(new InvalidFields(errorJoi.details[0].message));
   }

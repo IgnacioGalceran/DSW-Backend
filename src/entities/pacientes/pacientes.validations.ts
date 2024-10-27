@@ -82,9 +82,6 @@ export const validateInput = (
   res: Response,
   next: NextFunction
 ) => {
-  console.log("ultimo");
-  console.log(req.body.sanitizedInput);
-
   if (req.params.id) {
     if (!isValidObjectId(req.params.id)) {
       next(new InvalidId());
@@ -95,7 +92,6 @@ export const validateInput = (
   if (Object.keys(req.body.sanitizedInput).length) {
     if (req.method === "POST") {
       const { error } = pacienteAdd.validate(req.body.sanitizedInput);
-      console.log(error);
       errorJoi = error;
     } else if (req.method === "PUT") {
       const { error } = pacienteUpdate.validate(req.body.sanitizedInput);
