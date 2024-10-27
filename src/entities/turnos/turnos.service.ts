@@ -74,10 +74,15 @@ export class TurnosService implements Service<Turnos> {
 
     if (!paciente) throw new NotFound(item.paciente);
 
+    const now = new Date();
+
     const turnos = await em.find(
       Turnos,
       {
         paciente: paciente,
+        fecha: {
+          $gte: now.toISOString(),
+        },
       },
       { populate: ["medico.usuario", "medico.especialidad"] }
     );

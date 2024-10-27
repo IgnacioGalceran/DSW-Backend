@@ -1,6 +1,8 @@
 import { ObjectId } from "mongodb";
 
-export interface RegisterAdministrador extends Usuarios {}
+export interface RegisterAdministrador extends Usuarios {
+  usuario: Usuarios;
+}
 
 export interface RegisterPaciente extends Usuarios {}
 

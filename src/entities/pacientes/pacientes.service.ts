@@ -36,12 +36,9 @@ export class PacienteService implements Service<Pacientes> {
     return paciente;
   }
 
-  public async add(
-    item: Pacientes & { password: string }
-  ): Promise<any> {
-    console.log(item)
+  public async add(item: Pacientes): Promise<any> {
+    console.log(item);
     try {
-
       const rol = await em.findOne(Roles, {
         nombre: "Paciente",
       });

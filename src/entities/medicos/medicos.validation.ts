@@ -8,29 +8,6 @@ const isValidObjectId = (value: string) => {
 };
 
 export const medicoAdd = Joi.object({
-  email: Joi.string()
-    .email({ tlds: { allow: false } })
-    .min(6)
-    .max(50)
-    .required()
-    .messages({
-      "string.min": "La longitud mínima es de 6 caracteres",
-      "string.max": "La longitud máxima es de 50 caracteres",
-      "string.empty": "Este campo no puede estar vacío",
-      "any.required": "Este campo es requerido *",
-    }),
-  password: Joi.string().min(8).max(20).required().messages({
-    "string.min": "La longitud mínima es de 8 caracteres",
-    "string.max": "La longitud máxima es de 20 caracteres",
-    "string.empty": "Este campo no puede estar vacío",
-    "any.required": "Este campo es requerido *",
-  }),
-  repeatPassword: Joi.string().min(8).max(20).required().messages({
-    "string.min": "La longitud mínima es de 8 caracteres",
-    "string.max": "La longitud máxima es de 20 caracteres",
-    "string.empty": "Este campo no puede estar vacío",
-    "any.required": "Este campo es requerido *",
-  }),
   matricula: Joi.string().min(2).max(50).required().messages({
     "string.min": "La longitud mínima es de 3 caracteres",
     "string.max": "La longitud máxima es de 10 caracteres",
@@ -55,6 +32,17 @@ export const medicoAdd = Joi.object({
     "string.max": "La longitud máxima es de 24 caracteres",
   }),
   usuario: Joi.object({
+    email: Joi.string()
+      .email({ tlds: { allow: false } })
+      .min(6)
+      .max(50)
+      .required()
+      .messages({
+        "string.min": "La longitud mínima es de 6 caracteres",
+        "string.max": "La longitud máxima es de 50 caracteres",
+        "string.empty": "Este campo no puede estar vacío",
+        "any.required": "Este campo es requerido *",
+      }),
     uid: Joi.string().min(0).max(50).allow(null),
     nombre: Joi.string().min(2).max(30).required().messages({
       "string.min": "La longitud mínima es de 2 caracteres",
@@ -156,6 +144,8 @@ export const validateInput = (
       errorJoi = error;
     }
   }
+
+  console.log(errorJoi);
 
   if (errorJoi) {
     next(new InvalidFields(errorJoi.details[0].message));

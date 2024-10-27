@@ -59,8 +59,8 @@ export class MedicoService implements Service<Medicos> {
       });
 
       const especialidad = await em.findOne(Especialidades, {
-        _id: new ObjectId(item.especialidad?.id)
-      })
+        _id: new ObjectId(item.especialidad?.id),
+      });
 
       const rol = await em.findOne(Roles, {
         nombre: "Medico",
@@ -80,6 +80,7 @@ export class MedicoService implements Service<Medicos> {
       medico.usuario = usuario;
       usuario.rol = rol;
       usuario.email = item.email;
+      usuario.verificado = true;
 
       em.persist(usuario);
       em.persist(medico);
@@ -89,7 +90,6 @@ export class MedicoService implements Service<Medicos> {
     } catch (error: any) {
       console.log(error);
     }
-    // console.log(item)
   }
 
   public async update(item: Medicos): Promise<Medicos | undefined> {
@@ -197,7 +197,7 @@ export class MedicoService implements Service<Medicos> {
       Medicos,
       { especialidad: especialidad },
       {
-        populate: ["usuario"],
+        populate: ["usuario", "especialidad"],
       }
     );
 

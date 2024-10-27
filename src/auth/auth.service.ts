@@ -30,8 +30,9 @@ export class AuthService {
     });
 
     const usuario = new Usuarios();
-    Object.assign(usuario, item);
+    Object.assign(usuario, item.usuario);
     usuario.rol = rol;
+    usuario.verificado = true;
 
     em.persist(usuario);
     await em.flush();

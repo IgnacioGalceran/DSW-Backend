@@ -55,6 +55,7 @@ export async function add(
       data: medicos,
     });
   } catch (error: any) {
+    console.log(error);
     next(error);
   }
 }
