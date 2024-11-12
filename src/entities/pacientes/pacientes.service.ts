@@ -20,20 +20,42 @@ export class PacienteService implements Service<Pacientes> {
     );
   }
 
-  public async findOne(item: { id: string }): Promise<Pacientes | undefined> {
-    const paciente = await em.findOne(
-      Pacientes,
-      {
-        _id: new ObjectId(item.id),
-      },
-      {
-        populate: ["usuario", "usuario.rol", "usuario.rol.funciones", "turnos"],
-      }
-    );
+  public async findOne(item: { id: string }): Promise<any> {
+    try {
+      // console.log("id paciente in Services", item.id);
 
-    if (!paciente) throw new NotFound(item.id);
+      // const dataUser = await em.findOne(Usuarios, {
+      //   _id: new ObjectId(item.id),
+      // });
 
-    return paciente;
+      // const pacienteData = await em.findOne(Pacientes, {
+      //   usuario: dataUser,
+      // });
+
+      const paciente = await em.findOne(
+        Pacientes,
+        {
+          usuario: new ObjectId(item.id),
+        },
+        {
+          populate: [
+            "usuario",
+            "usuario.rol",
+            "usuario.rol.funciones",
+            "turnos",
+          ],
+        }
+      );
+      // console.log("paciente: ", paciente);
+
+      if (!paciente) return undefined;
+      // / new NotFound(item.id);
+
+      return paciente;
+    } catch (error) {
+      console.error("Error en el servicio findOne:", error);
+      throw error;
+    }
   }
 
   public async add(item: Pacientes): Promise<any> {
@@ -65,13 +87,17 @@ export class PacienteService implements Service<Pacientes> {
   }
 
   public async update(item: Pacientes): Promise<Pacientes | undefined> {
-    const pacienteAActualizar = await em.findOne(
-      Pacientes,
-      {
-        _id: new ObjectId(item.id),
-      },
-      { populate: ["usuario"] }
-    );
+    console.log("ITEM update: ", item);
+    const usuarioActualizar = await em.findOne(Usuarios, {
+      _id: new ObjectId(item.id),
+    });
+    console.log("paciente a actualizar:", usuarioActualizar);
+
+    if (!usuarioActualizar) throw new NotFound(item.id);
+
+    const pacienteAActualizar = await em.findOne(Pacientes, {
+      usuario: usuarioActualizar,
+    });
 
     if (!pacienteAActualizar) throw new NotFound(item.id);
 

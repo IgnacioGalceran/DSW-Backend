@@ -30,6 +30,17 @@ export async function findOne(
 ): Promise<void> {
   try {
     const paciente = await service.findOne({ id: req.params.id });
+    console.log("Paciente en controller", paciente);
+    console.log(paciente?.usuario);
+
+    if (!paciente) {
+      res.status(404).json({
+        message: "Paciente no encontrado.",
+        error: true,
+        data: null,
+      });
+      return;
+    }
 
     res.status(200).json({
       message: "Paciente encontrado.",
@@ -38,6 +49,7 @@ export async function findOne(
     });
   } catch (error: any) {
     next(error);
+    console.error("error capturado en Controller findOne", error);
   }
 }
 
@@ -65,6 +77,7 @@ export async function update(
   next: NextFunction
 ): Promise<void> {
   try {
+    console.log("PACIENTE A ACTUALIZAR: ");
     const pacienteAActualizar = await service.update({
       id: req.params.id,
       ...req.body.sanitizedInput,

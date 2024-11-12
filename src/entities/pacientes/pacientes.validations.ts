@@ -48,21 +48,31 @@ const pacienteAdd = Joi.object({
 });
 
 const pacienteUpdate = Joi.object({
-  nombre: Joi.string().min(2).max(30),
-  apellido: Joi.string().min(2).max(30),
-  dni: Joi.string().min(8).max(10),
-  tipoDni: Joi.string().min(2).max(30),
-  rol: Joi.string()
-    .custom((value, helpers) => {
-      if (!isValidObjectId(value)) {
-        return helpers.error("custom");
-      }
-      return value;
-    })
-    .messages({
-      custom:
-        "El id del rol debe ser un ObjectId válido (24 caracteres hexadecimales).",
+  usuario: Joi.object({
+    nombre: Joi.string().min(2).max(30).required().messages({
+      "string.min": "La longitud mínima es de 2 caracteres",
+      "string.max": "La longitud máxima es de 30 caracteres",
+      "string.empty": "Este campo no puede estar vacío",
+      "any.required": "Este nombre es requerido *",
     }),
+    apellido: Joi.string().min(2).max(30).required().messages({
+      "string.min": "La longitud mínima es de 2 caracteres",
+      "string.max": "La longitud máxima es de 30 caracteres",
+      "string.empty": "Este campo no puede estar vacío",
+      "any.required": "Este apellido es requerido *",
+    }),
+    tipoDni: Joi.string().required().required().messages({
+      "string.empty": "Este campo no puede estar vacío",
+      "any.required": "Este tipoDNI es requerido *",
+    }),
+    dni: Joi.number().min(1000000).max(60000000).required().messages({
+      "any.empty": "Este campo no puede estar vacío",
+      "any.valid": "Debe ser un número",
+      "number.min": "La longitud mínima es de 7 números",
+      "number.max": "La longitud máxima es de 8 números",
+      "any.required": "Este dni es requerido *",
+    }),
+  }),
 });
 
 export const validateInput = (
@@ -70,12 +80,16 @@ export const validateInput = (
   res: Response,
   next: NextFunction
 ) => {
+  console.log(req.body.sanitizedInput);
+  if (req.method === "GET") {
+    return next();
+  }
+
   if (req.params.id) {
     if (!isValidObjectId(req.params.id)) {
       next(new InvalidId());
     }
   }
-
   let errorJoi!: Joi.ValidationError | undefined;
   if (Object.keys(req.body.sanitizedInput).length) {
     if (req.method === "POST") {
@@ -90,6 +104,5 @@ export const validateInput = (
   if (errorJoi) {
     next(new InvalidFields(errorJoi.details[0].message));
   }
-
   next();
 };

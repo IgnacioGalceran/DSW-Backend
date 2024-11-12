@@ -10,7 +10,6 @@ export async function getUserData(
   next: NextFunction
 ): Promise<void> {
   try {
-    console.log("token", req.params);
     const token = await service.getUserData({ uid: req.params.id });
 
     res.status(200).json({

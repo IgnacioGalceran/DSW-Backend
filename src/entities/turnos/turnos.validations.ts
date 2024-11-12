@@ -40,7 +40,7 @@ export const validateInput = (
   res: Response,
   next: NextFunction
 ) => {
-  console.log("id:", req.params.id);
+  // console.log("id:", req.params.id);
   if (req.params.id) {
     if (!isValidObjectId(req.params.id)) {
       next(new InvalidId());
