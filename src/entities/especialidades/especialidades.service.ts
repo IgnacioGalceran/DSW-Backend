@@ -56,12 +56,14 @@ export class EspecialidadesService implements Service<Especialidades> {
       _id: new ObjectId(item.id),
     });
 
+    console.log(especialidadAActualizar);
+
     if (!especialidadAActualizar) throw new NotFound(item.id);
 
     const especialidadActualizada = em.assign(especialidadAActualizar, item);
     await em.flush();
 
-    return especialidadActualizada;
+    return;
   }
 
   public async remove(item: {

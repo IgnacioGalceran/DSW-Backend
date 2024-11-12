@@ -15,17 +15,18 @@ export const router = express.Router();
 
 // router.use(verifyToken);
 // router.use(checkPermissions);
-
+// verifyToken,
+//   checkPermissions,
 router
   .get("/", findAll)
-  .get("/:id", validateInput, verifyToken, checkPermissions, findOne)
+  .get("/:id", validateInput, findOne)
   .post("/", sanitizePacientesInput, validateInput, add)
   .put(
     "/:id",
-    validateInput,
-    verifyToken,
-    checkPermissions,
     sanitizePacientesInput,
+    validateInput,
+    // checkPermissions,
+    verifyToken,
     update
   )
   .patch(
