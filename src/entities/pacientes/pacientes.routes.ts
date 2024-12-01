@@ -3,6 +3,7 @@ import {
   findAll,
   findOne,
   update,
+  updateProfile,
   remove,
   add,
 } from "./pacientes.controller.js";
@@ -28,6 +29,14 @@ router
     // checkPermissions,
     verifyToken,
     update
+  )
+  .put(
+    "/udtprofile/:id",
+    sanitizePacientesInput,
+    // validateInput,
+    // checkPermissions,
+    verifyToken,
+    updateProfile
   )
   .patch(
     "/:id",

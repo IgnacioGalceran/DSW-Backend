@@ -17,7 +17,7 @@ export async function verifyToken(
     return next(new InvalidToken());
   }
 
-  console.log(token);
+  console.log("token:", token);
 
   try {
     const decodedToken = await firebaseApp.auth().verifyIdToken(token);
