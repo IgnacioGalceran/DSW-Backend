@@ -3,6 +3,7 @@ import { ObrasSociales } from "./obrasocial.entity.js";
 import { Service } from "../../shared/service.js";
 import { ObjectId } from "mongodb";
 import { error } from "console";
+import { NotFound } from "../../shared/errors.js";
 
 const em = orm.em;
 
@@ -28,7 +29,24 @@ export class ObrasocialService implements Service<ObrasSociales> {
     return obrasSocialCreada;
   }
 
-  public async update(item: ObrasSociales): Promise<any> {}
+  public async update(item: ObrasSociales): Promise<any> {
+    console.log("service obrasocial");
+
+    const obrasocialAActualizar = await em.findOne(
+      ObrasSociales,
+      {
+        _id: new ObjectId(item.id),
+      },
+      { populate: ["medicos"] }
+    );
+
+    if (!obrasocialAActualizar) throw new NotFound(item.id);
+
+    // if(item.medicos.)
+
+    // Actualizar médicos
+    console.log("obra social:", obrasocialAActualizar);
+  }
 
   public async remove(item: { id: string }): Promise<any> {}
 }

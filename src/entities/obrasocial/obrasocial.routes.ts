@@ -6,21 +6,15 @@ import {
   remove,
   update,
 } from "./obrasocial.controller.js";
+import { validateInput } from "./obrasocial.validations.js";
+import sanitizeObraSocialInput from "./obrasocial.middleware.js";
 export const router = express.Router();
 
 router
   .get("/", findAll)
   .get("/:id", findOne)
-  .post(
-    "/",
-    // validateInput, sanitizeEspecialidadInput,
-    add
-  )
-  .put(
-    "/:id",
-    // validateInput, sanitizeEspecialidadInput,
-    update
-  )
+  .post("/", validateInput, sanitizeObraSocialInput, add)
+  .put("/:id", validateInput, sanitizeObraSocialInput, update)
   .patch(
     "/:id",
     //  validateInput, sanitizeEspecialidadInput,
