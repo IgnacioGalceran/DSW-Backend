@@ -22,16 +22,6 @@ export class PacienteService implements Service<Pacientes> {
 
   public async findOne(item: { id: string }): Promise<any> {
     try {
-      // console.log("id paciente in Services", item.id);
-
-      // const dataUser = await em.findOne(Usuarios, {
-      //   _id: new ObjectId(item.id),
-      // });
-
-      // const pacienteData = await em.findOne(Pacientes, {
-      //   usuario: dataUser,
-      // });
-
       const paciente = await em.findOne(
         Pacientes,
         {
@@ -74,7 +64,6 @@ export class PacienteService implements Service<Pacientes> {
       paciente.usuario = usuario;
       usuario.rol = rol;
       usuario.email = item.usuario.email;
-      usuario.verificado = true;
 
       em.persist(usuario);
       em.persist(paciente);
@@ -132,6 +121,27 @@ export class PacienteService implements Service<Pacientes> {
 
     const usuarioAActualizar = pacienteAActualizar.usuario;
     em.assign(usuarioAActualizar, item.usuario);
+    await em.flush();
+
+    return item;
+  }
+
+  public async verificar(item: { id: string }): Promise<any | undefined> {
+    console.log(item);
+    const usuario = await await em.findOne(
+      Usuarios,
+      {
+        _id: new ObjectId(item.id),
+      },
+      {}
+    );
+
+    if (!usuario) throw new NotFound(item.id);
+
+    usuario.verificado = !usuario.verificado;
+
+    console.log(usuario);
+
     await em.flush();
 
     return item;

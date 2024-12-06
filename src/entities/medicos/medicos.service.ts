@@ -30,9 +30,18 @@ export class MedicoService implements Service<Medicos> {
   }
 
   public async findOne(item: { id: string }): Promise<Medicos | undefined> {
+    console.log(item.id);
+    const usuario = await em.findOne(
+      Usuarios,
+      { _id: new ObjectId(item.id) },
+      {}
+    );
+
+    console.log(usuario);
+
     const medico = await em.findOne(
       Medicos,
-      { _id: new ObjectId(item.id) },
+      { usuario: usuario },
       {
         populate: [
           "usuario",
@@ -43,6 +52,9 @@ export class MedicoService implements Service<Medicos> {
         ],
       }
     );
+
+    console.log(usuario);
+    console.log(medico);
 
     if (!medico) throw new NotFound(item.id);
 
@@ -94,11 +106,102 @@ export class MedicoService implements Service<Medicos> {
   }
 
   public async update(item: Medicos): Promise<Medicos | undefined> {
-    console.log("service medicos");
+    console.log("service medicos", item);
     const medicoAActualizar = await em.findOne(
       Medicos,
       {
         _id: new ObjectId(item.id),
+      },
+      { populate: ["usuario"] }
+    );
+
+    if (!medicoAActualizar) throw new NotFound(item.id);
+
+    item.diasAtencion = item.diasAtencion
+      ? item.diasAtencion
+      : medicoAActualizar.diasAtencion;
+    item.horaDesde = item.horaDesde
+      ? item.horaDesde
+      : medicoAActualizar.horaDesde;
+    item.horaHasta = item.horaHasta
+      ? item.horaHasta
+      : medicoAActualizar.horaHasta;
+    item.diasAtencion = item.diasAtencion
+      ? item.diasAtencion
+      : medicoAActualizar.diasAtencion;
+    item.telefono = item.telefono ? item.telefono : medicoAActualizar.telefono;
+    item.matricula = item.matricula
+      ? item.matricula
+      : medicoAActualizar.matricula;
+
+    if (item.especialidad?.id) {
+      const especialidad = await em.findOne(Especialidades, {
+        _id: new ObjectId(item.especialidad.id),
+      });
+      console.log(especialidad);
+
+      if (especialidad) {
+        item.especialidad = especialidad;
+      } else {
+        item.especialidad = medicoAActualizar.especialidad;
+      }
+    } else {
+      item.especialidad = medicoAActualizar.especialidad;
+    }
+
+    item.usuario._id = medicoAActualizar.usuario._id;
+    item.usuario.uid = medicoAActualizar.usuario.uid;
+    item.usuario.nombre = item.usuario.nombre
+      ? item.usuario.nombre
+      : medicoAActualizar.usuario.nombre;
+    item.usuario.apellido = item.usuario.apellido
+      ? item.usuario.apellido
+      : medicoAActualizar.usuario.apellido;
+    item.usuario.tipoDni = item.usuario.tipoDni
+      ? item.usuario.tipoDni
+      : medicoAActualizar.usuario.tipoDni;
+    item.usuario.dni = item.usuario.dni
+      ? item.usuario.dni
+      : medicoAActualizar.usuario.dni;
+
+    if (item.usuario.rol?.id) {
+      const rol = await em.findOne(Roles, {
+        _id: new ObjectId(item.usuario.rol.id),
+      });
+
+      if (rol) {
+        item.usuario.rol = rol;
+      } else {
+        item.usuario.rol = medicoAActualizar.usuario.rol;
+      }
+    } else {
+      item.usuario.rol = medicoAActualizar.usuario.rol;
+    }
+
+    const usuarioAActualizar = medicoAActualizar.usuario;
+    em.assign(usuarioAActualizar, item.usuario);
+    em.assign(medicoAActualizar, item);
+    console.log(medicoAActualizar);
+    await em.flush();
+
+    return item;
+  }
+
+  public async updateProfile(item: any): Promise<Medicos | undefined> {
+    const usuario = await em.findOne(
+      Usuarios,
+      {
+        uid: item.uid,
+      },
+      {}
+    );
+
+    if (!usuario) throw new NotFound(item.uid);
+
+    const medicoAActualizar = await em.findOne(
+      Medicos,
+      {
+        usuario: usuario,
       },
       { populate: ["usuario"] }
     );

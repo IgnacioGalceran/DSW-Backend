@@ -93,6 +93,28 @@ export async function update(
   }
 }
 
+export async function verificar(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    console.log(req.params.id);
+    const pacienteAVerificar = await service.verificar({
+      id: req.params.id,
+      ...req.body.sanitizedInput,
+    });
+
+    res.status(200).json({
+      message: "Paciente actualizado",
+      error: false,
+      data: pacienteAVerificar,
+    });
+  } catch (error: any) {
+    next(error);
+  }
+}
+
 export async function remove(
   req: Request,
   res: Response,

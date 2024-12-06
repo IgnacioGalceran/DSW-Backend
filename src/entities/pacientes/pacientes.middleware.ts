@@ -18,8 +18,6 @@ export default function sanitizePacientesInput(
       email: req.body?.usuario.email,
       // rol: { id: req.body.usuario.rol },
     },
-    password: req.body.password,
-    repeatPassword: req.body.repeatPassword,
   };
   Object.keys(req.body.sanitizedInput.usuario).forEach((key) => {
     if (req.body.sanitizedInput.usuario[key] === undefined) {

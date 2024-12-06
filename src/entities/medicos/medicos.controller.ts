@@ -81,6 +81,27 @@ export async function update(
   }
 }
 
+export async function updateProfile(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const medicoActualizar = await service.updateProfile({
+      uid: req.params.uid,
+      ...req.body.sanitizedInput,
+    });
+
+    res.status(200).json({
+      message: "Medico actualizado.",
+      error: false,
+      data: medicoActualizar,
+    });
+  } catch (error: any) {
+    next(error);
+  }
+}
+
 export async function remove(
   req: Request,
   res: Response,

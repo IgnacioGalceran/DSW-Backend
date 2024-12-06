@@ -5,6 +5,7 @@ import {
   update,
   remove,
   add,
+  verificar,
 } from "./pacientes.controller.js";
 import sanitizePacientesInput from "./pacientes.middleware.js";
 import { verifyToken } from "../../auth/auth.middleware.js";
@@ -13,27 +14,30 @@ import { validateInput } from "./pacientes.validations.js";
 
 export const router = express.Router();
 
-// router.use(verifyToken);
-// router.use(checkPermissions);
-// verifyToken,
-//   checkPermissions,
 router
-  .get("/", findAll)
-  .get("/:id", validateInput, findOne)
-  .post("/", sanitizePacientesInput, validateInput, add)
+  .get("/", verifyToken, findAll)
+  .get("/:id", verifyToken, validateInput, findOne)
+  .post("/", verifyToken, sanitizePacientesInput, validateInput, add)
   .put(
     "/:id",
+    verifyToken,
     sanitizePacientesInput,
     validateInput,
     // checkPermissions,
-    verifyToken,
     update
+  )
+  .put(
+    "/verificar/:id",
+    verifyToken,
+    checkPermissions,
+    sanitizePacientesInput,
+    verificar
   )
   .patch(
     "/:id",
-    validateInput,
     verifyToken,
     checkPermissions,
+    validateInput,
     sanitizePacientesInput,
     update
   )
