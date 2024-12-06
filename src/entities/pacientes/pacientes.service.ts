@@ -90,39 +90,30 @@ export class PacienteService implements Service<Pacientes> {
 
     if (!pacienteAActualizar) throw new NotFound(item.id);
 
-    item.usuario._id = pacienteAActualizar.usuario._id;
-    item.usuario.uid = pacienteAActualizar.usuario.uid;
-    item.usuario.nombre = item.usuario.nombre
-      ? item.usuario.nombre
-      : pacienteAActualizar.usuario.nombre;
-    item.usuario.apellido = item.usuario.apellido
-      ? item.usuario.apellido
-      : pacienteAActualizar.usuario.apellido;
-    item.usuario.tipoDni = item.usuario.tipoDni
-      ? item.usuario.tipoDni
-      : pacienteAActualizar.usuario.tipoDni;
-    item.usuario.dni = item.usuario.dni
-      ? item.usuario.dni
-      : pacienteAActualizar.usuario.dni;
+    const usuarioAActualizar = pacienteAActualizar.usuario;
+    em.assign(usuarioAActualizar, item.usuario);
+    await em.flush();
+    console.log("user actualizado", item);
+    return item;
+  }
 
-    if (item.usuario.rol?.id) {
-      const rol = await em.findOne(Roles, {
-        _id: new ObjectId(item.usuario.rol.id),
-      });
+  public async updateProfile(item: Pacientes): Promise<Pacientes | undefined> {
+    const usuarioActualizar = await em.findOne(Usuarios, {
+      uid: item.id,
+    });
+    console.log("paciente a actualizar:", usuarioActualizar);
 
-      if (rol) {
-        item.usuario.rol = rol;
-      } else {
-        item.usuario.rol = pacienteAActualizar.usuario.rol;
-      }
-    } else {
-      item.usuario.rol = pacienteAActualizar.usuario.rol;
-    }
+    if (!usuarioActualizar) throw new NotFound(item.id);
+    const pacienteAActualizar = await em.findOne(Pacientes, {
+      usuario: usuarioActualizar,
+    });
+
+    if (!pacienteAActualizar) throw new NotFound(item.id);
 
     const usuarioAActualizar = pacienteAActualizar.usuario;
     em.assign(usuarioAActualizar, item.usuario);
     await em.flush();
-
+    console.log("user actualizado", item);
     return item;
   }
 

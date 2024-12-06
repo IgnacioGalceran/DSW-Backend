@@ -7,7 +7,6 @@ export async function verifyToken(
   res: Response,
   next: NextFunction
 ) {
-  console.log("verifytoken");
   const token =
     (req.headers.authorization || req.headers.Authorization)
       ?.toString()
@@ -16,8 +15,6 @@ export async function verifyToken(
   if (token === "") {
     return next(new InvalidToken());
   }
-
-  console.log(token);
 
   try {
     const decodedToken = await firebaseApp.auth().verifyIdToken(token);
@@ -39,7 +36,6 @@ export function sanitizeAdministradorInput(
   res: Response,
   next: NextFunction
 ) {
-  console.log(req.body.sanitizedInput);
   req.body.sanitizedInput = {
     usuario: {
       uid: req.body.usuario.uid,
@@ -56,8 +52,6 @@ export function sanitizeAdministradorInput(
       delete req.body.sanitizedInput[key];
     }
   });
-
-  console.log(req.body.sanitizedInput);
 
   next();
 }

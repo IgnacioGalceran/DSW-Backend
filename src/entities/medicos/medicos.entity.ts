@@ -2,17 +2,17 @@ import {
   Entity,
   Property,
   OneToOne,
-  Rel,
   ManyToOne,
   OneToMany,
   Collection,
+  ManyToMany,
+  Cascade,
 } from "@mikro-orm/core";
 import { Especialidades } from "../especialidades/especialidades.entity.js";
 import { BaseEntity } from "../../shared/baseEntity.entity.js";
-import { Roles } from "../../security/roles/roles.entity.js";
 import { Turnos } from "../turnos/turnos.entity.js";
 import { Usuarios } from "../../auth/usuarios.entity.js";
-import { Cascade } from "@mikro-orm/mongodb";
+import { ObrasSociales } from "../obrasocial/obrasocial.entity.js";
 
 @Entity()
 export class Medicos extends BaseEntity {
@@ -39,4 +39,9 @@ export class Medicos extends BaseEntity {
 
   @OneToMany(() => Turnos, (turno) => turno.medico)
   turnos? = new Collection<Turnos>(this);
+
+  @ManyToMany(() => ObrasSociales, (obrasocial) => obrasocial.medicos, {
+    owner: true,
+  })
+  obrasocial? = new Collection<ObrasSociales>(this);
 }

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { PacienteService } from "./pacientes.service.js";
-import { ObjectId } from "mongodb";
-import { InvalidId } from "../../shared/errors.js";
+// import { ObjectId } from "mongodb";
+import { Unauthorized } from "../../shared/errors.js";
 
 const service = new PacienteService();
 
@@ -77,7 +77,7 @@ export async function update(
   next: NextFunction
 ): Promise<void> {
   try {
-    console.log("PACIENTE A ACTUALIZAR: ");
+    // console.log("PACIENTE A ACTUALIZAR: ");
     const pacienteAActualizar = await service.update({
       id: req.params.id,
       ...req.body.sanitizedInput,
@@ -99,8 +99,32 @@ export async function verificar(
   next: NextFunction
 ): Promise<void> {
   try {
-    console.log(req.params.id);
+    if (req.headers.firebaseUid !== req.params.id)
+      throw new Unauthorized("actualizar perfil");
     const pacienteAVerificar = await service.verificar({
+      id: req.params.id,
+      ...req.body.sanitizedInput,
+    });
+
+    res.status(200).json({
+      message: "Paciente actualizado",
+      error: false,
+      data: pacienteAVerificar,
+    });
+  } catch (error: any) {
+    next(error);
+  }
+}
+
+export async function updateProfile(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    if (req.headers.firebaseUid !== req.params.id)
+      throw new Unauthorized("actualizar perfil");
+    const pacienteAVerificar = await service.updateProfile({
       id: req.params.id,
       ...req.body.sanitizedInput,
     });

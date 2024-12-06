@@ -3,6 +3,7 @@ import {
   findAll,
   findOne,
   update,
+  updateProfile,
   remove,
   add,
   verificar,
@@ -32,6 +33,14 @@ router
     checkPermissions,
     sanitizePacientesInput,
     verificar
+  )
+  .put(
+    "/udtprofile/:id",
+    sanitizePacientesInput,
+    // validateInput,
+    // checkPermissions,
+    verifyToken,
+    updateProfile
   )
   .patch(
     "/:id",

@@ -83,7 +83,7 @@ export const medicoAdd = Joi.object({
 });
 
 const medicoUpdate = Joi.object({
-  matricula: Joi.string().min(2).max(50).required().messages({
+  matricula: Joi.string().min(2).max(50).optional().messages({
     "string.min": "La longitud mínima es de 3 caracteres",
     "string.max": "La longitud máxima es de 10 caracteres",
     "string.empty": "Este campo no puede estar vacío",
@@ -94,13 +94,13 @@ const medicoUpdate = Joi.object({
     "string.max": "La longitud máxima es de 24 caracteres",
   }),
   diasAtencion: Joi.array().allow(""),
-  horaDesde: Joi.string().min(5).max(25).required().messages({
+  horaDesde: Joi.string().min(5).max(25).optional().messages({
     "string.min": "La longitud mínima es de 5 caracteres",
     "string.max": "La longitud máxima es de 5 caracteres",
     "string.empty": "Este campo no puede estar vacío",
     "any.required": "Este campo es requerido *",
   }),
-  horaHasta: Joi.string().min(5).max(25).required().messages({
+  horaHasta: Joi.string().min(5).max(25).optional().messages({
     "string.min": "La longitud mínima es de 5 caracteres",
     "string.max": "La longitud máxima es de 5 caracteres",
     "string.empty": "Este campo no puede estar vacío",
@@ -108,23 +108,23 @@ const medicoUpdate = Joi.object({
   }),
   usuario: Joi.object({
     uid: Joi.string().min(0).max(50).allow(null),
-    nombre: Joi.string().min(2).max(30).required().messages({
+    nombre: Joi.string().min(2).max(30).optional().messages({
       "string.min": "La longitud mínima es de 2 caracteres",
       "string.max": "La longitud máxima es de 30 caracteres",
       "string.empty": "Este campo no puede estar vacío",
       "any.required": "Este campo es requerido *",
     }),
-    apellido: Joi.string().min(2).max(30).required().messages({
+    apellido: Joi.string().min(2).max(30).optional().messages({
       "string.min": "La longitud mínima es de 2 caracteres",
       "string.max": "La longitud máxima es de 30 caracteres",
       "string.empty": "Este campo no puede estar vacío",
       "any.required": "Este campo es requerido *",
     }),
-    tipoDni: Joi.string().required().required().messages({
+    tipoDni: Joi.string().required().optional().messages({
       "string.empty": "Este campo no puede estar vacío",
       "any.required": "Este campo es requerido *",
     }),
-    dni: Joi.number().min(1000000).max(60000000).required().messages({
+    dni: Joi.number().min(1000000).max(60000000).optional().messages({
       "any.empty": "Este campo no puede estar vacío",
       "any.valid": "Debe ser un número",
       "number.min": "La longitud mínima es de 7 números",

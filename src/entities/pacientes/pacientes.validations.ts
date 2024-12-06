@@ -8,6 +8,18 @@ const isValidObjectId = (value: string) => {
 };
 
 const pacienteAdd = Joi.object({
+  password: Joi.string().min(8).max(30).required().messages({
+    "string.min": "La longitud mínima es de 2 caracteres",
+    "string.max": "La longitud máxima es de 30 caracteres",
+    "string.empty": "Este campo no puede estar vacío",
+    "any.required": "Este campo es requerido *",
+  }),
+  repeatPassword: Joi.string().min(8).max(30).required().messages({
+    "string.min": "La longitud mínima es de 2 caracteres",
+    "string.max": "La longitud máxima es de 30 caracteres",
+    "string.empty": "Este campo no puede estar vacío",
+    "any.required": "Este campo es requerido *",
+  }),
   usuario: Joi.object({
     uid: Joi.string().min(0).max(50).allow(null),
     nombre: Joi.string().min(2).max(30).required().messages({
@@ -80,7 +92,6 @@ export const validateInput = (
   res: Response,
   next: NextFunction
 ) => {
-  console.log(req.body.sanitizedInput);
   if (req.method === "GET") {
     return next();
   }
