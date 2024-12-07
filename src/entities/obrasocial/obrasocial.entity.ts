@@ -26,6 +26,8 @@ export class ObrasSociales extends BaseEntity {
   @Property()
   direccion!: string;
 
-  @ManyToMany(() => Medicos, (medico) => medico.obrasocial)
+  @ManyToMany(() => Medicos, (medico) => medico.obrasocial, {
+    cascade: [Cascade.ALL],
+  })
   medicos? = new Collection<Medicos>(this);
 }

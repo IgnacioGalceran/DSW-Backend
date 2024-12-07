@@ -29,4 +29,8 @@ export const listaFunciones: Funciones[] = [
   { nombre: "Crear Roles" },
   { nombre: "Actualizar Roles" },
   { nombre: "Borrar Roles" },
+  { nombre: "Leer obrasocial" },
+  { nombre: "Crear obrasocial" },
+  { nombre: "Actualizar obrasocial" },
+  { nombre: "Borrar obrasocial" },
 ];

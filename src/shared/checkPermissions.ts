@@ -1,9 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { orm } from "./orm.js";
-import { Pacientes } from "../entities/pacientes/pacientes.entity.js";
 import { Funciones } from "../security/funciones/funciones.entity.js";
-import { NotFound, Unauthorized, UserNotFounded } from "./errors.js";
-import { Medicos } from "../entities/medicos/medicos.entity.js";
+import { Unauthorized, UserNotFounded } from "./errors.js";
 import { Usuarios } from "../auth/usuarios.entity.js";
 
 export default async function checkPermissions(
@@ -13,6 +11,7 @@ export default async function checkPermissions(
 ) {
   const em = orm.em;
   let entidad: string = req.baseUrl.split("/")[2];
+  console.log(entidad);
   let metodo: string = req.method;
   let query = getMongoDBQuery(entidad, metodo);
   try {
@@ -58,6 +57,8 @@ function getMongoDBQuery(entidad: string, metodo: string): string {
       return getQuery("roles", metodo);
     case "funciones":
       return getQuery("funciones", metodo);
+    case "obrasocial":
+      return getQuery("obrasocial", metodo);
     default:
       return "";
   }

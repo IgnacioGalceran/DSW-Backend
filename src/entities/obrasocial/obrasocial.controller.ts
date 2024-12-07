@@ -10,7 +10,7 @@ export async function findAll(
 ): Promise<void> {
   try {
     const obrasSociales = await service.findAll();
-
+    console.log(obrasSociales);
     res.status(200).json({
       message: "Obra Sociales encontradas.",
       error: false,
@@ -28,7 +28,6 @@ export async function findOne(
 ): Promise<void> {
   try {
     const obrasocial = await service.findOne({ id: req.params.id });
-    console.log("Obra social en controller");
 
     res.status(200).json({
       message: "Obra Social encontrada.",
@@ -47,7 +46,9 @@ export async function add(
 ): Promise<void> {
   try {
     console.log("obra social", req.body);
-    const obraSocial = await service.add({ ...req.body });
+    const obraSocial = await service.add({
+      ...req.body.sanitizedInput,
+    });
 
     res.status(200).json({
       message: "Obra social creada.",
@@ -65,6 +66,7 @@ export async function update(
   next: NextFunction
 ): Promise<void> {
   try {
+    console.log(req.body.sanitizedInput);
     const obraSocialActualizar = await service.update({
       id: req.params.id,
       ...req.body.sanitizedInput,
@@ -89,7 +91,7 @@ export async function remove(
     const obraSocialActualizar = await service.remove({ id: req.params.id });
 
     res.status(200).json({
-      message: "Obra socuial borrada.",
+      message: "Obra social borrada.",
       error: false,
       data: obraSocialActualizar,
     });

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { MedicoService } from "./medicos.service.js";
 import { ObjectId } from "mongodb";
-import { InvalidId } from "../../shared/errors.js";
+import { InvalidId, Unauthorized } from "../../shared/errors.js";
 
 const service = new MedicoService();
 
@@ -87,6 +87,9 @@ export async function updateProfile(
   next: NextFunction
 ): Promise<void> {
   try {
+    if (req.headers.firebaseUid !== req.params.uid)
+      throw new Unauthorized("Actualizar otro perfil");
+
     const medicoActualizar = await service.updateProfile({
       uid: req.params.uid,
       ...req.body.sanitizedInput,
