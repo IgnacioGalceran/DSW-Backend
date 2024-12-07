@@ -9,11 +9,12 @@ export default async function checkPermissions(
   res: Response,
   next: NextFunction
 ) {
-  const em = orm.em;
+  const em = orm.em.fork();
   let entidad: string = req.baseUrl.split("/")[2];
-  console.log(entidad);
   let metodo: string = req.method;
   let query = getMongoDBQuery(entidad, metodo);
+  console.log(req.baseUrl);
+  console.log("entra");
   try {
     const usuario = await em.findOne(
       Usuarios,
@@ -44,27 +45,6 @@ export default async function checkPermissions(
 }
 
 function getMongoDBQuery(entidad: string, metodo: string): string {
-  switch (entidad) {
-    case "especialidades":
-      return getQuery("especialidades", metodo);
-    case "medicos":
-      return getQuery("medicos", metodo);
-    case "pacientes":
-      return getQuery("pacientes", metodo);
-    case "turnos":
-      return getQuery("turnos", metodo);
-    case "roles":
-      return getQuery("roles", metodo);
-    case "funciones":
-      return getQuery("funciones", metodo);
-    case "obrasocial":
-      return getQuery("obrasocial", metodo);
-    default:
-      return "";
-  }
-}
-
-function getQuery(entidad: string, metodo: string): string {
   switch (metodo) {
     case "GET":
       return `Leer ${entidad}`;
