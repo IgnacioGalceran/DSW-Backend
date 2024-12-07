@@ -21,10 +21,7 @@ export class InvalidId extends AppError {
 
 export class Repeated extends AppError {
   constructor(recurso: string, valor: string) {
-    super(
-      `El ${recurso}: '${valor}' ya se encuentra ingresado en la base de datos.`,
-      400
-    );
+    super(`El '${recurso}: '${valor}' ya se encuentra solicitado.`, 400);
   }
 }
 

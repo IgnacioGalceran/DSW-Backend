@@ -126,7 +126,7 @@ export class TurnosService implements Service<Turnos> {
     const inicio = item.inicio.trim();
     const fin = item.fin.trim();
 
-    const existingTurno = await em.findOne(Turnos, {
+    const existingTurnoMedico = await em.findOne(Turnos, {
       medico: medico,
       fecha: {
         $eq: item.fecha,
@@ -139,10 +139,25 @@ export class TurnosService implements Service<Turnos> {
       },
     });
 
-    if (existingTurno) {
+    const existingTurnoPaciente = await em.findOne(Turnos, {
+      paciente: paciente,
+      fecha: {
+        $eq: item.fecha,
+      },
+      inicio: {
+        $lt: fin,
+      },
+      fin: {
+        $gt: inicio,
+      },
+    });
+
+    if (existingTurnoMedico || existingTurnoPaciente) {
       throw new Repeated(
         "turno",
-        `${item.fecha} y hora ${item.inicio} - ${item.fin}`
+        `${item.fecha.toString().slice(0, 10)} y hora ${item.inicio} - ${
+          item.fin
+        }`
       );
     }
 

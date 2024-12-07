@@ -18,7 +18,7 @@ export const router = express.Router();
 router
   .get("/", verifyToken, findAll)
   .get("/:id", verifyToken, validateInput, findOne)
-  .post("/", verifyToken, sanitizePacientesInput, validateInput, add)
+  .post("/", sanitizePacientesInput, validateInput, add)
   .put(
     "/:id",
     verifyToken,
