@@ -6,6 +6,8 @@ import { Funciones } from "../security/funciones/funciones.entity.js";
 import { Roles } from "../security/roles/roles.entity.js";
 import { listaFunciones } from "./Funciones/data.js";
 import { listaRoles } from "./Roles/data.js";
+import { ObrasSociales } from "../entities/obrasocial/obrasocial.entity.js";
+import { listaObrasSociales } from "./ObrasSociales/data.js";
 
 interface RoleWithFunciones {
   nombre: string;
@@ -19,6 +21,16 @@ export const seeder = async () => {
   const especialidadesCount = await em.count(Especialidades);
   const funcionesCount = await em.count(Funciones);
   const rolesCount = await em.count(Roles);
+  const obrasSocialesCount = await em.count(ObrasSociales);
+
+  if (obrasSocialesCount === 0) {
+    const obrasSocialesInsertadas = await emFork.insertMany(
+      ObrasSociales,
+      listaObrasSociales
+    );
+
+    console.log({ obrasSocialesInsertadas });
+  }
 
   if (especialidadesCount === 0) {
     const especialidadesInsertadas = await emFork.insertMany(
@@ -48,7 +60,8 @@ export const seeder = async () => {
               funciones: funcionesInsertadas.filter(
                 (funcion: Funciones) =>
                   funcion.nombre.includes("Leer") ||
-                  funcion.nombre.includes("Turnos")
+                  funcion.nombre.includes("Turnos") ||
+                  funcion.nombre === "Leer obrasocial"
               ),
             };
           case "Paciente":
@@ -57,7 +70,8 @@ export const seeder = async () => {
               funciones: funcionesInsertadas.filter(
                 (funcion: Funciones) =>
                   funcion.nombre.includes("Leer") ||
-                  funcion.nombre.includes("Turnos")
+                  funcion.nombre.includes("Turnos") ||
+                  funcion.nombre === "Leer obrasocial"
               ),
             };
           default:

@@ -8,20 +8,41 @@ import {
 } from "./obrasocial.controller.js";
 import { validateInput } from "./obrasocial.validations.js";
 import sanitizeObraSocialInput from "./obrasocial.middleware.js";
+import { verifyToken } from "../../auth/auth.middleware.js";
+import checkPermissions from "../../shared/checkPermissions.js";
 export const router = express.Router();
 
 router
-  .get("/", findAll)
-  .get("/:id", findOne)
-  .post("/", validateInput, sanitizeObraSocialInput, add)
-  .put("/:id", validateInput, sanitizeObraSocialInput, update)
+  .get("/", verifyToken, checkPermissions, findAll)
+  .get("/:id", verifyToken, checkPermissions, findOne)
+  .post(
+    "/",
+    verifyToken,
+    checkPermissions,
+    sanitizeObraSocialInput,
+    validateInput,
+    add
+  )
+  .put(
+    "/:id",
+    verifyToken,
+    checkPermissions,
+    sanitizeObraSocialInput,
+    validateInput,
+    update
+  )
   .patch(
     "/:id",
-    //  validateInput, sanitizeEspecialidadInput,
+    verifyToken,
+    checkPermissions,
+    sanitizeObraSocialInput,
+    validateInput,
     update
   )
   .delete(
     "/:id",
+    verifyToken,
+    checkPermissions,
     //  validateInput,
     remove
   );

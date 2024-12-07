@@ -31,6 +31,13 @@ export const medicoAdd = Joi.object({
     "string.min": "La longitud mínima es de 24 caracteres",
     "string.max": "La longitud máxima es de 24 caracteres",
   }),
+  obrasocial: Joi.array()
+    .messages({
+      "string.min": "La longitud mínima es de 24 caracteres",
+      "string.max": "La longitud máxima es de 24 caracteres",
+    })
+    .allow(null)
+    .default([]),
   password: Joi.string().min(8).max(30).required().messages({
     "string.min": "La longitud mínima es de 2 caracteres",
     "string.max": "La longitud máxima es de 30 caracteres",
@@ -93,6 +100,13 @@ const medicoUpdate = Joi.object({
     "string.min": "La longitud mínima es de 24 caracteres",
     "string.max": "La longitud máxima es de 24 caracteres",
   }),
+  obrasocial: Joi.array()
+    .messages({
+      "string.min": "La longitud mínima es de 24 caracteres",
+      "string.max": "La longitud máxima es de 24 caracteres",
+    })
+    .allow(null)
+    .default([]),
   diasAtencion: Joi.array().allow(""),
   horaDesde: Joi.string().min(5).max(25).optional().messages({
     "string.min": "La longitud mínima es de 5 caracteres",
@@ -135,8 +149,9 @@ const medicoUpdate = Joi.object({
 });
 
 const medicoUpdateProfile = Joi.object({
-  especialidad: Joi.any().messages({
-    "string.empty": "Este campo no puede estar vacío",
+  especialidad: Joi.string().min(24).max(24).messages({
+    "string.min": "La longitud mínima es de 24 caracteres",
+    "string.max": "La longitud máxima es de 24 caracteres",
   }),
   horaDesde: Joi.string().min(5).max(5).required().messages({
     "string.min": "La longitud mínima es de 5 caracteres",
@@ -160,6 +175,13 @@ const medicoUpdateProfile = Joi.object({
     "string.empty": "Este campo no puede estar vacío",
     "any.required": "Este campo es requerido *",
   }),
+  obrasocial: Joi.array()
+    .messages({
+      "string.min": "La longitud mínima es de 24 caracteres",
+      "string.max": "La longitud máxima es de 24 caracteres",
+    })
+    .allow(null)
+    .default([]),
   usuario: Joi.object({
     uid: Joi.string().min(0).max(50).allow(null),
     nombre: Joi.string().min(2).max(30).required().messages({
@@ -203,10 +225,11 @@ export const validateInput = (
 
   if (Object.keys(req.body).length) {
     if (req.method === "POST") {
-      const { error } = medicoAdd.validate(req.body);
+      const { error } = medicoAdd.validate(req.body.sanitizeMedicosInput);
       errorJoi = error;
     } else if (req.method === "PUT") {
-      const { error } = medicoUpdate.validate(req.body);
+      console.log(req.body.sanitizeMedicosInput);
+      const { error } = medicoUpdate.validate(req.body.sanitizeMedicosInput);
       errorJoi = error;
     }
   }

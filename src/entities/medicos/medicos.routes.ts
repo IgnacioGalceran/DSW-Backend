@@ -28,11 +28,11 @@ router
   )
   .put(
     "/udtProfile/:uid",
-    validateInputProfile,
     sanitizeMedicosInput,
+    validateInputProfile,
     updateProfile
   )
-  .put("/:id", checkPermissions, validateInput, sanitizeMedicosInput, update)
+  .put("/:id", checkPermissions, sanitizeMedicosInput, validateInput, update)
   .post("/", checkPermissions, validateInput, sanitizeMedicosInput, add)
   .patch("/:id", checkPermissions, validateInput, sanitizeMedicosInput, update)
   .delete("/:id", checkPermissions, validateInput, remove);

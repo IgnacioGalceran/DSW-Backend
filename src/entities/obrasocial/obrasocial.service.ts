@@ -24,14 +24,13 @@ export class ObrasocialService implements Service<ObrasSociales> {
   }
 
   public async add(item: ObrasSociales): Promise<any> {
+    console.log(item);
     const obrasSocialCreada = em.create(ObrasSociales, item);
     await em.flush();
     return obrasSocialCreada;
   }
 
   public async update(item: ObrasSociales): Promise<any> {
-    console.log("service obrasocial");
-
     const obrasocialAActualizar = await em.findOne(
       ObrasSociales,
       {
@@ -42,11 +41,23 @@ export class ObrasocialService implements Service<ObrasSociales> {
 
     if (!obrasocialAActualizar) throw new NotFound(item.id);
 
-    // if(item.medicos.)
+    Object.assign(obrasocialAActualizar, item);
 
-    // Actualizar médicos
-    console.log("obra social:", obrasocialAActualizar);
+    em.flush();
+
+    return obrasocialAActualizar;
   }
 
-  public async remove(item: { id: string }): Promise<any> {}
+  public async remove(item: { id: string }): Promise<any> {
+    const brasocialABorrar = em.getReference(
+      ObrasSociales,
+      new ObjectId(item.id)
+    );
+
+    if (!brasocialABorrar) throw new NotFound(item.id);
+
+    await em.removeAndFlush(brasocialABorrar);
+
+    return brasocialABorrar;
+  }
 }

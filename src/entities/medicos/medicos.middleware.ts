@@ -17,6 +17,7 @@ export default function sanitizeMedicosInput(
     password: req.body.password,
     repeatPassword: req.body.repeatPassword,
     especialidad: { id: req.body?.especialidad },
+    obrasocial: req.body?.obrasocial,
     matricula: req.body?.matricula,
     horaDesde: req.body?.horaDesde,
     horaHasta: req.body?.horaHasta,

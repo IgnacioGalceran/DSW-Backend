@@ -99,8 +99,6 @@ export async function verificar(
   next: NextFunction
 ): Promise<void> {
   try {
-    if (req.headers.firebaseUid !== req.params.id)
-      throw new Unauthorized("actualizar perfil");
     const pacienteAVerificar = await service.verificar({
       id: req.params.id,
       ...req.body.sanitizedInput,
@@ -123,7 +121,8 @@ export async function updateProfile(
 ): Promise<void> {
   try {
     if (req.headers.firebaseUid !== req.params.id)
-      throw new Unauthorized("actualizar perfil");
+      throw new Unauthorized("Actualizar otro perfil");
+
     const pacienteAVerificar = await service.updateProfile({
       id: req.params.id,
       ...req.body.sanitizedInput,
