@@ -2,20 +2,19 @@ import { orm } from "../../shared/orm.js";
 import { Medicos } from "./medicos.entity.js";
 import { Service } from "../../shared/service.js";
 import { ObjectId } from "mongodb";
-import { Collection } from "@mikro-orm/core";
-import { PopulateHint } from "@mikro-orm/mongodb";
 import { Especialidades } from "../especialidades/especialidades.entity.js";
 import { InvalidJson, NotFound } from "../../shared/errors.js";
 import { Roles } from "../../security/roles/roles.entity.js";
-import { RegisterMedico } from "../../auth/auth.types.js";
-import admin from "../../../firebaseConfig.js";
+import admin from "../../firebaseConfig.js";
 import { Usuarios } from "../../auth/usuarios.entity.js";
 import { ObrasSociales } from "../obrasocial/obrasocial.entity.js";
-
-const em = orm.em;
+import { EntityManager } from "@mikro-orm/core";
 
 export class MedicoService implements Service<Medicos> {
+  constructor(private readonly em: EntityManager) {}
+
   public async findAll(): Promise<Medicos[] | undefined> {
+    const em = this.em;
     return await em.find(
       Medicos,
       {},
@@ -32,7 +31,7 @@ export class MedicoService implements Service<Medicos> {
   }
 
   public async findOne(item: { id: string }): Promise<Medicos | undefined> {
-    console.log(item.id);
+    const em = this.em;
     const usuario = await em.findOne(
       Usuarios,
       { _id: new ObjectId(item.id) },
@@ -66,6 +65,7 @@ export class MedicoService implements Service<Medicos> {
   public async add(
     item: Medicos & { email: string; password: string }
   ): Promise<any> {
+    const em = this.em;
     console.log(item);
     if (!item.obrasocial || !item.obrasocial.length) {
       throw new InvalidJson("obrasocial");
@@ -143,6 +143,7 @@ export class MedicoService implements Service<Medicos> {
 
   public async update(item: Medicos): Promise<Medicos | undefined> {
     console.log("service medicos", item);
+    const em = this.em;
     const medicoAActualizar = await em.findOne(
       Medicos,
       {
@@ -247,6 +248,7 @@ export class MedicoService implements Service<Medicos> {
   }
 
   public async updateProfile(item: any): Promise<Medicos | undefined> {
+    const em = this.em;
     const usuario = await em.findOne(
       Usuarios,
       {
@@ -337,6 +339,7 @@ export class MedicoService implements Service<Medicos> {
   }
 
   public async remove(item: { id: string }): Promise<Medicos | undefined> {
+    const em = this.em;
     const medicosABorrar = em.getReference(Medicos, new ObjectId(item.id));
 
     if (!medicosABorrar) throw new NotFound(item.id);
@@ -349,6 +352,7 @@ export class MedicoService implements Service<Medicos> {
   public async findMedicoByEspecialidad(item: {
     id: string;
   }): Promise<Medicos[] | undefined> {
+    const em = this.em;
     const especialidad = await em.findOne(
       Especialidades,
       { _id: new ObjectId(item.id) },

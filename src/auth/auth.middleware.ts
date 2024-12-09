@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { firebaseApp } from "../../firebaseConfig.js";
+import { firebaseApp } from "../firebaseConfig.js";
 import { ExpiredToken, InvalidToken } from "../shared/errors.js";
 
 export async function verifyToken(

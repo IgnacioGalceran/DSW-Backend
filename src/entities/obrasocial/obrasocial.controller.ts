@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { ObrasocialService } from "./obrasocial.service.js";
-
-const service = new ObrasocialService();
+import { orm } from "../../shared/orm.js";
 
 export async function findAll(
   req: Request,
@@ -9,6 +8,8 @@ export async function findAll(
   next: NextFunction
 ): Promise<void> {
   try {
+    const em = orm.em.fork();
+    const service = new ObrasocialService(em);
     const obrasSociales = await service.findAll();
     console.log(obrasSociales);
     res.status(200).json({
@@ -27,6 +28,8 @@ export async function findOne(
   next: NextFunction
 ): Promise<void> {
   try {
+    const em = orm.em.fork();
+    const service = new ObrasocialService(em);
     const obrasocial = await service.findOne({ id: req.params.id });
 
     res.status(200).json({
@@ -45,6 +48,8 @@ export async function add(
   next: NextFunction
 ): Promise<void> {
   try {
+    const em = orm.em.fork();
+    const service = new ObrasocialService(em);
     console.log("obra social", req.body);
     const obraSocial = await service.add({
       ...req.body.sanitizedInput,
@@ -66,6 +71,8 @@ export async function update(
   next: NextFunction
 ): Promise<void> {
   try {
+    const em = orm.em.fork();
+    const service = new ObrasocialService(em);
     console.log(req.body.sanitizedInput);
     const obraSocialActualizar = await service.update({
       id: req.params.id,
@@ -88,6 +95,8 @@ export async function remove(
   next: NextFunction
 ): Promise<void> {
   try {
+    const em = orm.em.fork();
+    const service = new ObrasocialService(em);
     const obraSocialActualizar = await service.remove({ id: req.params.id });
 
     res.status(200).json({

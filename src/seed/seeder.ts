@@ -14,9 +14,8 @@ interface RoleWithFunciones {
   funciones: Funciones[];
 }
 
-const em: EntityManager = orm.em;
-
 export const seeder = async () => {
+  const em = orm.em.fork();
   const emFork = em.fork();
   const especialidadesCount = await em.count(Especialidades);
   const funcionesCount = await em.count(Funciones);

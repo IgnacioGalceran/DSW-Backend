@@ -3,16 +3,19 @@ import { ObrasSociales } from "./obrasocial.entity.js";
 import { Service } from "../../shared/service.js";
 import { ObjectId } from "mongodb";
 import { NotFound } from "../../shared/errors.js";
-
-const em = orm.em;
+import { EntityManager } from "@mikro-orm/core";
 
 export class ObrasocialService implements Service<ObrasSociales> {
+  constructor(private readonly em: EntityManager) {}
+
   public async findAll(): Promise<ObrasSociales[] | undefined> {
+    const em = this.em;
     return await em.find(ObrasSociales, {}, {});
   }
 
   public async findOne(item: { id: string }): Promise<any> {
     try {
+      const em = this.em;
       const obrasocial = await em.findOne(ObrasSociales, {
         _id: new ObjectId(item.id),
       });
@@ -24,12 +27,14 @@ export class ObrasocialService implements Service<ObrasSociales> {
 
   public async add(item: ObrasSociales): Promise<any> {
     console.log(item);
+    const em = this.em;
     const obrasSocialCreada = em.create(ObrasSociales, item);
     await em.flush();
     return obrasSocialCreada;
   }
 
   public async update(item: ObrasSociales): Promise<any> {
+    const em = this.em;
     const obrasocialAActualizar = await em.findOne(
       ObrasSociales,
       {
@@ -48,6 +53,7 @@ export class ObrasocialService implements Service<ObrasSociales> {
   }
 
   public async remove(item: { id: string }): Promise<any> {
+    const em = this.em;
     const brasocialABorrar = em.getReference(
       ObrasSociales,
       new ObjectId(item.id)

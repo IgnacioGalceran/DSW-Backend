@@ -3,17 +3,20 @@ import { Service } from "../../shared/service.js";
 import { ObjectId } from "mongodb";
 import { Especialidades } from "./especialidades.entity.js";
 import { NotFound } from "../../shared/errors.js";
-
-const em = orm.em;
+import { EntityManager } from "@mikro-orm/core";
 
 export class EspecialidadesService implements Service<Especialidades> {
+  constructor(private readonly em: EntityManager) {}
+
   public async findAll(): Promise<Especialidades[] | undefined> {
+    const em = this.em;
     return await em.find(Especialidades, {}, { populate: ["medicos"] });
   }
 
   public async findOne(item: {
     id: string;
   }): Promise<Especialidades | undefined> {
+    const em = this.em;
     const especialidad = await em.findOne(
       Especialidades,
       {
@@ -28,6 +31,7 @@ export class EspecialidadesService implements Service<Especialidades> {
   }
 
   public async findEspecialidadesWithMedicos(): Promise<Especialidades[]> {
+    const em = this.em;
     const especialidades = await em.find(
       Especialidades,
       {},
@@ -44,6 +48,7 @@ export class EspecialidadesService implements Service<Especialidades> {
   }
 
   public async add(item: Especialidades): Promise<Especialidades | undefined> {
+    const em = this.em;
     const especialidadCreado = em.create(Especialidades, item);
     await em.flush();
     return especialidadCreado;
@@ -52,6 +57,7 @@ export class EspecialidadesService implements Service<Especialidades> {
   public async update(
     item: Especialidades
   ): Promise<Especialidades | undefined> {
+    const em = this.em;
     const especialidadAActualizar = await em.findOne(Especialidades, {
       _id: new ObjectId(item.id),
     });
@@ -69,6 +75,7 @@ export class EspecialidadesService implements Service<Especialidades> {
   public async remove(item: {
     id: string;
   }): Promise<Especialidades | undefined> {
+    const em = this.em;
     const EspecialidadesABorrar = await em.findOne(Especialidades, {
       _id: new ObjectId(item.id),
     });

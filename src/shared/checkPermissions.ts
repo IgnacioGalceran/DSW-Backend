@@ -25,7 +25,7 @@ export default async function checkPermissions(
     );
 
     if (!usuario) {
-      throw new UserNotFounded();
+      throw new UserNotFounded("usuario");
     }
 
     const funciones = usuario?.rol?.funciones;

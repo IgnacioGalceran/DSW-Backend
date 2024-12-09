@@ -1,19 +1,21 @@
 import { orm } from "../../shared/orm.js";
 import { Roles } from "./roles.entity.js";
 import { Service } from "../../shared/service.js";
-import { Collection, ObjectId } from "mongodb";
-import { PopulateHint } from "@mikro-orm/mongodb";
+import { ObjectId } from "mongodb";
 import { Funciones } from "../funciones/funciones.entity.js";
 import { InvalidJson, NotFound } from "../../shared/errors.js";
-
-const em = orm.em;
+import { EntityManager } from "@mikro-orm/core";
 
 export class RolesService implements Service<Roles> {
+  constructor(private readonly em: EntityManager) {}
+
   public async findAll(): Promise<Roles[] | undefined> {
+    const em = this.em;
     return await em.find(Roles, {}, { populate: ["funciones"] });
   }
 
   public async findOne(item: { id: string }): Promise<Roles | undefined> {
+    const em = this.em;
     const rol = await em.findOne(
       Roles,
       { _id: new ObjectId(item.id) },
@@ -31,6 +33,7 @@ export class RolesService implements Service<Roles> {
     }
 
     try {
+      const em = this.em;
       let funciones: Funciones[] = [];
 
       if (item.funciones.length > 0) {
@@ -65,6 +68,7 @@ export class RolesService implements Service<Roles> {
   }
 
   public async update(item: any): Promise<Roles | undefined> {
+    const em = this.em;
     const rolAActualizar = await em.findOne(
       Roles,
       { _id: new ObjectId(item.id) },
@@ -98,6 +102,7 @@ export class RolesService implements Service<Roles> {
   }
 
   public async remove(item: { id: string }): Promise<Roles | undefined> {
+    const em = this.em;
     const rolesABorrar = em.getReference(Roles, new ObjectId(item.id));
 
     if (!rolesABorrar) throw new NotFound(item.id);
