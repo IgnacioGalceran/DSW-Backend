@@ -119,9 +119,9 @@ export class MedicoService implements Service<Medicos> {
       console.log(obrasSociales);
 
       if (obrasSociales.length === 0) {
-        medico.obrasocial?.add([]);
+        medico.obrasocial?.set([]);
       } else {
-        medico.obrasocial?.add(obrasSociales);
+        medico.obrasocial?.set(obrasSociales);
       }
 
       medico.usuario = usuario;
@@ -179,6 +179,30 @@ export class MedicoService implements Service<Medicos> {
       }
     } else {
       item.especialidad = medicoAActualizar.especialidad;
+    }
+
+    let obrasSociales: ObrasSociales[] = [];
+
+    if (item.obrasocial && item.obrasocial.length > 0) {
+      const obrasSocialesIds = item.obrasocial.map((os) => new ObjectId(os.id));
+
+      obrasSociales = await em.find(
+        ObrasSociales,
+        {
+          _id: { $in: obrasSocialesIds },
+        },
+        {
+          fields: ["_id", "nombre", "cuit", "telefono", "email", "direccion"],
+        }
+      );
+    }
+
+    console.log(obrasSociales);
+
+    if (obrasSociales.length === 0) {
+      medicoAActualizar.obrasocial?.set([]);
+    } else {
+      medicoAActualizar.obrasocial?.set(obrasSociales);
     }
 
     item.usuario._id = medicoAActualizar.usuario._id;
@@ -330,9 +354,10 @@ export class MedicoService implements Service<Medicos> {
       { _id: new ObjectId(item.id) },
       {}
     );
+
     if (!especialidad) throw new NotFound(item.id);
 
-    const medico = await em.find(
+    const medicos = await em.find(
       Medicos,
       { especialidad: especialidad },
       {
@@ -340,6 +365,6 @@ export class MedicoService implements Service<Medicos> {
       }
     );
 
-    return medico;
+    return medicos;
   }
 }

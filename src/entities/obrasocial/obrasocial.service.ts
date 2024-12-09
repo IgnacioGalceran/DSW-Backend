@@ -2,7 +2,6 @@ import { orm } from "../../shared/orm.js";
 import { ObrasSociales } from "./obrasocial.entity.js";
 import { Service } from "../../shared/service.js";
 import { ObjectId } from "mongodb";
-import { error } from "console";
 import { NotFound } from "../../shared/errors.js";
 
 const em = orm.em;

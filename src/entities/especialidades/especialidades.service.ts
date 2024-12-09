@@ -31,7 +31,7 @@ export class EspecialidadesService implements Service<Especialidades> {
     const especialidades = await em.find(
       Especialidades,
       {},
-      { populate: ["medicos"] }
+      { populate: ["medicos", "medicos.obrasocial"] }
     );
 
     const especialidadesConMedicos = especialidades.filter((especialidad) => {
