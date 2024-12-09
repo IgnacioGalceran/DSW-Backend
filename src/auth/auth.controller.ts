@@ -1,8 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { AuthService } from "./auth.service.js";
-import { NotFound } from "../shared/errors.js";
-
-const service = new AuthService();
+import { orm } from "../shared/orm.js";
 
 export async function getUserData(
   req: Request,
@@ -10,6 +8,8 @@ export async function getUserData(
   next: NextFunction
 ): Promise<void> {
   try {
+    const em = orm.em.fork();
+    const service = new AuthService(em);
     const token = await service.getUserData({ uid: req.params.id });
 
     res.status(200).json({
@@ -28,6 +28,8 @@ export async function registerAdministrador(
   next: NextFunction
 ): Promise<void> {
   try {
+    const em = orm.em.fork();
+    const service = new AuthService(em);
     const admin = await service.registerAdministrador(req.body.sanitizedInput);
 
     res.status(200).json({
@@ -47,6 +49,8 @@ export async function verifyUser(
   next: NextFunction
 ): Promise<void> {
   try {
+    const em = orm.em.fork();
+    const service = new AuthService(em);
     const usuario = await service.verifyUser({ uid: req.params.uid });
 
     res.status(200).json({

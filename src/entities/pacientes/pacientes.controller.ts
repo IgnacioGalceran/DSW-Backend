@@ -1,9 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { PacienteService } from "./pacientes.service.js";
-// import { ObjectId } from "mongodb";
 import { Unauthorized } from "../../shared/errors.js";
-
-const service = new PacienteService();
+import { orm } from "../../shared/orm.js";
 
 export async function findAll(
   req: Request,
@@ -11,6 +9,8 @@ export async function findAll(
   next: NextFunction
 ): Promise<void> {
   try {
+    const em = orm.em.fork();
+    const service = new PacienteService(em);
     const pacientes = await service.findAll();
 
     res.status(200).json({
@@ -29,6 +29,8 @@ export async function findOne(
   next: NextFunction
 ): Promise<void> {
   try {
+    const em = orm.em.fork();
+    const service = new PacienteService(em);
     const paciente = await service.findOne({ id: req.params.id });
     console.log("Paciente en controller", paciente);
     console.log(paciente?.usuario);
@@ -59,6 +61,8 @@ export async function add(
   next: NextFunction
 ): Promise<void> {
   try {
+    const em = orm.em.fork();
+    const service = new PacienteService(em);
     const paciente = await service.add(req.body.sanitizedInput);
 
     res.status(200).json({
@@ -77,7 +81,8 @@ export async function update(
   next: NextFunction
 ): Promise<void> {
   try {
-    // console.log("PACIENTE A ACTUALIZAR: ");
+    const em = orm.em.fork();
+    const service = new PacienteService(em);
     const pacienteAActualizar = await service.update({
       id: req.params.id,
       ...req.body.sanitizedInput,
@@ -99,6 +104,8 @@ export async function verificar(
   next: NextFunction
 ): Promise<void> {
   try {
+    const em = orm.em.fork();
+    const service = new PacienteService(em);
     const pacienteAVerificar = await service.verificar({
       id: req.params.id,
       ...req.body.sanitizedInput,
@@ -120,6 +127,9 @@ export async function updateProfile(
   next: NextFunction
 ): Promise<void> {
   try {
+    const em = orm.em.fork();
+    const service = new PacienteService(em);
+
     if (req.headers.firebaseUid !== req.params.id)
       throw new Unauthorized("Actualizar otro perfil");
 
@@ -144,6 +154,8 @@ export async function remove(
   next: NextFunction
 ): Promise<void> {
   try {
+    const em = orm.em.fork();
+    const service = new PacienteService(em);
     const pacienteABorrar = await service.remove({ id: req.params.id });
 
     res.status(200).json({

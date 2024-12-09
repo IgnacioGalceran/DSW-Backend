@@ -5,11 +5,13 @@ import { Turnos } from "./turnos.entity.js";
 import { ObjectId } from "mongodb";
 import { Pacientes } from "../pacientes/pacientes.entity.js";
 import { Medicos } from "../medicos/medicos.entity.js";
-
-const em = orm.em;
+import { EntityManager } from "@mikro-orm/core";
 
 export class TurnosService implements Service<Turnos> {
+  constructor(private readonly em: EntityManager) {}
+
   public async findAll(): Promise<Turnos[] | undefined> {
+    const em = this.em;
     return await em.find(
       Turnos,
       {},
@@ -26,6 +28,7 @@ export class TurnosService implements Service<Turnos> {
   }
 
   public async findOne(item: { id: string }): Promise<Turnos | undefined> {
+    const em = this.em;
     const turno = await em.findOne(
       Turnos,
       { _id: new ObjectId(item.id) },
@@ -48,6 +51,7 @@ export class TurnosService implements Service<Turnos> {
   public async findTurnosOcupadosByMedicoByDates(
     item: any
   ): Promise<Turnos[] | undefined> {
+    const em = this.em;
     const startDate = new Date(item.startDate);
     startDate.setHours(0, 0, 0, 0);
 
@@ -68,6 +72,8 @@ export class TurnosService implements Service<Turnos> {
   }
 
   public async findTurnosByPaciente(item: any): Promise<Turnos[] | undefined> {
+    const em = this.em;
+
     const paciente = await em.findOne(Pacientes, {
       usuario: new ObjectId(item.paciente),
     });
@@ -93,6 +99,8 @@ export class TurnosService implements Service<Turnos> {
   }
 
   public async findTurnosByMedico(item: any): Promise<Turnos[] | undefined> {
+    const em = this.em;
+
     const medico = await em.findOne(Medicos, {
       usuario: new ObjectId(item.medico),
     });
@@ -112,16 +120,9 @@ export class TurnosService implements Service<Turnos> {
     return turnos;
   }
 
-  public async add(item: Turnos): Promise<Turnos | undefined> {
-    await this.validateTurno(item);
-
-    const paciente = await em.findOne(Pacientes, {
-      usuario: new ObjectId(item?.paciente?.id),
-    });
-    const medico = await em.findOne(Medicos, {
-      _id: new ObjectId(item?.medico?.id),
-    });
-
+  public async add(item: any): Promise<Turnos | undefined> {
+    const em = this.em;
+    const { paciente, medico } = await this.validateTurno(item);
     const turno = new Turnos();
     turno.fecha = item.fecha;
     turno.inicio = item.inicio.trim();
@@ -135,6 +136,8 @@ export class TurnosService implements Service<Turnos> {
   }
 
   public async update(item: Turnos): Promise<Turnos | undefined> {
+    const em = this.em;
+
     const turnoAActualizar = await em.findOne(Turnos, new ObjectId(item.id));
 
     if (!turnoAActualizar) throw new NotFound(item.id);
@@ -153,6 +156,8 @@ export class TurnosService implements Service<Turnos> {
   }
 
   public async remove(item: { id: string }): Promise<Turnos | undefined> {
+    const em = this.em;
+
     console.log(item.id);
     const turnoABorrar = await em.findOne(Turnos, {
       _id: new ObjectId(item.id),
@@ -169,15 +174,20 @@ export class TurnosService implements Service<Turnos> {
   private async validateTurno(
     item: Turnos,
     excludeTurnoId?: string
-  ): Promise<void> {
+  ): Promise<{ paciente: Pacientes; medico: Medicos }> {
+    console.log("itemss:", item);
+    const em = this.em;
     const paciente = await em.findOne(Pacientes, {
       usuario: new ObjectId(item?.paciente?.id),
     });
+
+    if (!paciente) throw new UserNotFounded("paciente");
+
     const medico = await em.findOne(Medicos, {
       _id: new ObjectId(item?.medico?.id),
     });
 
-    if (!paciente || !medico) throw new UserNotFounded();
+    if (!medico) throw new UserNotFounded("medico");
 
     const inicio = item.inicio.trim();
     const fin = item.fin.trim();
@@ -218,5 +228,7 @@ export class TurnosService implements Service<Turnos> {
         }`
       );
     }
+
+    return { paciente, medico };
   }
 }

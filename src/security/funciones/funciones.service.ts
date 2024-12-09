@@ -1,16 +1,17 @@
 import { orm } from "../../shared/orm.js";
 import { Service } from "../../shared/service.js";
-import { Collection, ObjectId } from "mongodb";
-import { PopulateHint } from "@mikro-orm/mongodb";
+import { ObjectId } from "mongodb";
 import { Funciones } from "../funciones/funciones.entity.js";
-import { InvalidJson, NotFound } from "../../shared/errors.js";
+import { NotFound } from "../../shared/errors.js";
 import { Roles } from "../roles/roles.entity.js";
-
-const em = orm.em;
+import { EntityManager } from "@mikro-orm/core";
 
 export class FuncionesService implements Service<Funciones> {
+  constructor(private readonly em: EntityManager) {}
+
   public async findAll(): Promise<Funciones[] | undefined> {
     try {
+      const em = this.em;
       return await em.find(Funciones, {}, { populate: ["roles"] });
     } catch (error) {
       console.log(error);
@@ -19,6 +20,7 @@ export class FuncionesService implements Service<Funciones> {
 
   public async findOne(item: { id: string }): Promise<Funciones | undefined> {
     try {
+      const em = this.em;
       const rol = await em.findOne(
         Funciones,
         { _id: new ObjectId(item.id) },
@@ -34,6 +36,7 @@ export class FuncionesService implements Service<Funciones> {
   }
 
   public async add(item: any): Promise<Funciones | undefined> {
+    const em = this.em;
     let roles: Roles[] = [];
 
     if (item.roles.length > 0) {
@@ -65,6 +68,7 @@ export class FuncionesService implements Service<Funciones> {
   }
 
   public async update(item: any): Promise<Funciones | undefined> {
+    const em = this.em;
     const funcionAActualizar = await em.findOne(
       Funciones,
       { _id: new ObjectId(item.id) },
@@ -98,6 +102,7 @@ export class FuncionesService implements Service<Funciones> {
   }
 
   public async remove(item: { id: string }): Promise<Funciones | undefined> {
+    const em = this.em;
     const funcionABorrar = em.getReference(Funciones, new ObjectId(item.id));
 
     if (!funcionABorrar) throw new NotFound(item.id);

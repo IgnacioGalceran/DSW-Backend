@@ -2,8 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { RolesService } from "./roles.service.js";
 import { ObjectId } from "mongodb";
 import { InvalidId } from "../../shared/errors.js";
-
-const service = new RolesService();
+import { orm } from "../../shared/orm.js";
 
 export async function findAll(
   req: Request,
@@ -11,6 +10,8 @@ export async function findAll(
   next: NextFunction
 ): Promise<void> {
   try {
+    const em = orm.em.fork();
+    const service = new RolesService(em);
     const roles = await service.findAll();
 
     res.status(200).json({
@@ -31,6 +32,8 @@ export async function findOne(
   try {
     if (!ObjectId.isValid(req.params.id)) throw new InvalidId();
 
+    const em = orm.em.fork();
+    const service = new RolesService(em);
     const rol = await service.findOne({ id: req.params.id });
 
     res.status(200).json({
@@ -49,6 +52,8 @@ export async function add(
   next: NextFunction
 ): Promise<void> {
   try {
+    const em = orm.em.fork();
+    const service = new RolesService(em);
     const rol = await service.add({ ...req.body.sanitizedInput });
 
     res.status(200).json({
@@ -69,6 +74,8 @@ export async function update(
   try {
     if (!ObjectId.isValid(req.params.id)) throw new InvalidId();
 
+    const em = orm.em.fork();
+    const service = new RolesService(em);
     const rol = await service.update({
       id: req.params.id,
       ...req.body.sanitizedInput,
@@ -92,6 +99,8 @@ export async function remove(
   try {
     if (!ObjectId.isValid(req.params.id)) throw new InvalidId();
 
+    const em = orm.em.fork();
+    const service = new RolesService(em);
     const rol = await service.remove({ id: req.params.id });
 
     res.status(200).json({

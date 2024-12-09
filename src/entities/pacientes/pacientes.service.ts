@@ -5,12 +5,13 @@ import { ObjectId } from "mongodb";
 import { NotFound } from "../../shared/errors.js";
 import { Roles } from "../../security/roles/roles.entity.js";
 import { Usuarios } from "../../auth/usuarios.entity.js";
-import admin from "../../../firebaseConfig.js";
-
-const em = orm.em;
+import { EntityManager } from "@mikro-orm/core";
 
 export class PacienteService implements Service<Pacientes> {
+  constructor(private readonly em: EntityManager) {}
+
   public async findAll(): Promise<Pacientes[] | undefined> {
+    const em = this.em;
     return await em.find(
       Pacientes,
       {},
@@ -22,6 +23,7 @@ export class PacienteService implements Service<Pacientes> {
 
   public async findOne(item: { id: string }): Promise<any> {
     try {
+      const em = this.em;
       const paciente = await em.findOne(
         Pacientes,
         {
@@ -51,6 +53,7 @@ export class PacienteService implements Service<Pacientes> {
   public async add(item: Pacientes): Promise<any> {
     console.log(item);
     try {
+      const em = this.em;
       const rol = await em.findOne(Roles, {
         nombre: "Paciente",
       });
@@ -76,7 +79,7 @@ export class PacienteService implements Service<Pacientes> {
   }
 
   public async update(item: Pacientes): Promise<Pacientes | undefined> {
-    console.log("ITEM update: ", item);
+    const em = this.em;
     const usuarioActualizar = await em.findOne(Usuarios, {
       _id: new ObjectId(item.id),
     });
@@ -98,6 +101,7 @@ export class PacienteService implements Service<Pacientes> {
   }
 
   public async updateProfile(item: Pacientes): Promise<Pacientes | undefined> {
+    const em = this.em;
     const usuarioActualizar = await em.findOne(Usuarios, {
       uid: item.id,
     });
@@ -118,7 +122,7 @@ export class PacienteService implements Service<Pacientes> {
   }
 
   public async verificar(item: { id: string }): Promise<any | undefined> {
-    console.log(item);
+    const em = this.em;
     const usuario = await await em.findOne(
       Usuarios,
       {
@@ -139,6 +143,7 @@ export class PacienteService implements Service<Pacientes> {
   }
 
   public async remove(item: { id: string }): Promise<Pacientes | undefined> {
+    const em = this.em;
     const pacienteABorrar = em.getReference(Pacientes, new ObjectId(item.id));
 
     if (!pacienteABorrar) throw new NotFound(item.id);

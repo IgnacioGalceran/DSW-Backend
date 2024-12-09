@@ -56,7 +56,7 @@ export class ExpiredToken extends AppError {
 }
 
 export class UserNotFounded extends AppError {
-  constructor() {
-    super(`El usuario no fue encontrado en base de datos.`, 401);
+  constructor(value: string) {
+    super(`El ${value} no fue encontrado en base de datos.`, 401);
   }
 }

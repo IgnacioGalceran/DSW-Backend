@@ -2,8 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { TurnosService } from "./turnos.service.js";
 import { ObjectId } from "mongodb";
 import { InvalidId } from "../../shared/errors.js";
-
-const service = new TurnosService();
+import { orm } from "../../shared/orm.js";
 
 export async function findAll(
   req: Request,
@@ -11,6 +10,8 @@ export async function findAll(
   next: NextFunction
 ): Promise<void> {
   try {
+    const em = orm.em.fork();
+    const service = new TurnosService(em);
     const turnos = await service.findAll();
 
     res.status(200).json({
@@ -31,6 +32,8 @@ export async function findOne(
   try {
     if (!ObjectId.isValid(req.params.id)) throw new InvalidId();
 
+    const em = orm.em.fork();
+    const service = new TurnosService(em);
     const turno = await service.findOne({ id: req.params.id });
 
     res.status(200).json({
@@ -49,6 +52,8 @@ export async function findTurnosByPaciente(
   next: NextFunction
 ): Promise<void> {
   try {
+    const em = orm.em.fork();
+    const service = new TurnosService(em);
     const turnos = await service.findTurnosByPaciente({
       paciente: req.params.id,
     });
@@ -69,6 +74,8 @@ export async function findTurnosByMedico(
   next: NextFunction
 ): Promise<void> {
   try {
+    const em = orm.em.fork();
+    const service = new TurnosService(em);
     const turnos = await service.findTurnosByMedico({
       medico: req.params.id,
     });
@@ -83,13 +90,14 @@ export async function findTurnosByMedico(
   }
 }
 
-
 export async function findTurnosOcupadosByMedicoByDates(
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> {
   try {
+    const em = orm.em.fork();
+    const service = new TurnosService(em);
     const { startDate, endDate } = req.query;
     const turnosDisponibles = await service.findTurnosOcupadosByMedicoByDates({
       startDate,
@@ -113,6 +121,8 @@ export async function add(
   next: NextFunction
 ): Promise<void> {
   try {
+    const em = orm.em.fork();
+    const service = new TurnosService(em);
     const turno = await service.add({ ...req.body.sanitizedInput });
 
     res.status(200).json({
@@ -133,6 +143,8 @@ export async function update(
   try {
     if (!ObjectId.isValid(req.params.id)) throw new InvalidId();
 
+    const em = orm.em.fork();
+    const service = new TurnosService(em);
     const turnoAActualizar = await service.update({
       id: req.params.id,
       ...req.body.sanitizedInput,
@@ -156,6 +168,8 @@ export async function remove(
   try {
     if (!ObjectId.isValid(req.params.id)) throw new InvalidId();
 
+    const em = orm.em.fork();
+    const service = new TurnosService(em);
     const turnoABorrar = await service.remove({ id: req.params.id });
 
     res.status(200).json({

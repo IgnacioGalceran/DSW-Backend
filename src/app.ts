@@ -9,7 +9,7 @@ import { router as FuncionesRouter } from "./security/funciones/funciones.routes
 import { router as ObraSocialRouter } from "./entities/obrasocial/obrasocial.routes.js";
 import { seeder } from "./seed/seeder.js";
 import { errorHandler } from "./shared/errorHandler.js";
-import { orm } from "./shared/orm.js";
+import { initializeOrm, orm } from "./shared/orm.js";
 import { RequestContext } from "@mikro-orm/mongodb";
 import swaggerSpec from "./swagger/swagger.config.js";
 import swaggerUi from "swagger-ui-express";
@@ -17,35 +17,54 @@ import cors from "cors";
 
 const app = express();
 
-const corsOptions = {
-  origin: "http://localhost:3000",
-  optionsSuccessStatus: 200,
-};
+(async () => {
+  try {
+    // Inicializa MikroORM antes de usar cualquier ruta
+    await initializeOrm();
+    console.log("MikroORM inicializado correctamente");
 
-app.use(cors(corsOptions));
+    // Configuración de middlewares
+    const corsOptions = {
+      origin: "http://localhost:3000",
+      optionsSuccessStatus: 200,
+    };
 
-app.use(express.json());
+    app.use(cors(corsOptions));
+    app.use(express.json());
 
-app.use((req, res, next) => {
-  RequestContext.create(orm.em, next);
-});
+    // Middleware para crear un contexto para las rutas
+    app.use((req, res, next) => {
+      const em = orm.em.fork(); // Crea un nuevo EntityManager
+      RequestContext.create(em, next); // Crea un nuevo contexto
+    });
 
-app.use("/api/pacientes", PacientesRouter);
-app.use("/api/medicos", MedicosRouter);
-app.use("/api/especialidades", EspecialidadesRouter);
-app.use("/api/turnos", TurnosRouter);
-app.use("/api/roles", RolesRouter);
-app.use("/api/funciones", FuncionesRouter);
-app.use("/api/auth", AuthRouter);
-app.use("/api/obrasocial", ObraSocialRouter);
-app.use("/api-endpoints", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-app.use(errorHandler);
+    // Rutas
+    app.use("/api/pacientes", PacientesRouter);
+    app.use("/api/medicos", MedicosRouter);
+    app.use("/api/especialidades", EspecialidadesRouter);
+    app.use("/api/turnos", TurnosRouter);
+    app.use("/api/roles", RolesRouter);
+    app.use("/api/funciones", FuncionesRouter);
+    app.use("/api/auth", AuthRouter);
+    app.use("/api/obrasocial", ObraSocialRouter);
+    app.use("/api-endpoints", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-await seeder();
+    // Seeder
+    await seeder();
+    console.log("Seeder ejecutado correctamente");
 
-app.listen(4000, () => {
-  console.log("Server running on port 4000");
-  console.log(
-    "Documentación de API disponible en http://localhost:4000/api-endpoints."
-  );
-});
+    // Middleware de manejo de errores
+    app.use(errorHandler);
+
+    // Iniciar el servidor
+    app.listen(4000, () => {
+      console.log("Servidor corriendo en http://localhost:4000");
+      console.log(
+        "Documentación de API disponible en http://localhost:4000/api-endpoints."
+      );
+    });
+  } catch (error) {
+    console.error("Error inicializando la aplicación:", error);
+    process.exit(1); // Salir si ocurre un error crítico
+  }
+})();

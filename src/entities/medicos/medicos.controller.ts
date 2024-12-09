@@ -2,8 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { MedicoService } from "./medicos.service.js";
 import { ObjectId } from "mongodb";
 import { InvalidId, Unauthorized } from "../../shared/errors.js";
-
-const service = new MedicoService();
+import { orm } from "../../shared/orm.js";
 
 export async function findAll(
   req: Request,
@@ -11,6 +10,8 @@ export async function findAll(
   next: NextFunction
 ): Promise<void> {
   try {
+    const em = orm.em.fork();
+    const service = new MedicoService(em);
     const medicos = await service.findAll();
 
     res.status(200).json({
@@ -29,6 +30,8 @@ export async function findOne(
   next: NextFunction
 ): Promise<void> {
   try {
+    const em = orm.em.fork();
+    const service = new MedicoService(em);
     const medico = await service.findOne({ id: req.params.id });
 
     res.status(200).json({
@@ -47,6 +50,8 @@ export async function add(
   next: NextFunction
 ): Promise<void> {
   try {
+    const em = orm.em.fork();
+    const service = new MedicoService(em);
     const medicos = await service.add(req.body.sanitizedInput);
 
     res.status(200).json({
@@ -66,6 +71,8 @@ export async function update(
   next: NextFunction
 ): Promise<void> {
   try {
+    const em = orm.em.fork();
+    const service = new MedicoService(em);
     const medicoActualizar = await service.update({
       id: req.params.id,
       ...req.body.sanitizedInput,
@@ -87,6 +94,8 @@ export async function updateProfile(
   next: NextFunction
 ): Promise<void> {
   try {
+    const em = orm.em.fork();
+    const service = new MedicoService(em);
     if (req.headers.firebaseUid !== req.params.uid)
       throw new Unauthorized("Actualizar otro perfil");
 
@@ -111,6 +120,8 @@ export async function remove(
   next: NextFunction
 ): Promise<void> {
   try {
+    const em = orm.em.fork();
+    const service = new MedicoService(em);
     const medicoABorrar = await service.remove({ id: req.params.id });
 
     res.status(200).json({
@@ -129,6 +140,8 @@ export async function findMedicoByEspecialidad(
   next: NextFunction
 ): Promise<void> {
   try {
+    const em = orm.em.fork();
+    const service = new MedicoService(em);
     const medicos = await service.findMedicoByEspecialidad({
       id: req.params.id,
     });

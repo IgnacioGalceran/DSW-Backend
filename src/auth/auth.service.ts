@@ -5,11 +5,13 @@ import { Roles } from "../security/roles/roles.entity.js";
 
 import { NotFound } from "../shared/errors.js";
 import { Usuarios } from "./usuarios.entity.js";
-
-const em = orm.em;
+import { EntityManager } from "@mikro-orm/core";
 
 export class AuthService {
+  constructor(private readonly em: EntityManager) {}
+
   public async getUserData(item: { uid: string }): Promise<any> {
+    const em = this.em;
     const usuario = await em.findOne(
       Usuarios,
       { uid: item.uid },
@@ -25,7 +27,7 @@ export class AuthService {
     item: RegisterAdministrador
   ): Promise<any> {
     console.log("admin: ", item);
-
+    const em = this.em;
     const rol = await em.findOne(Roles, {
       nombre: "Administrador",
     });
@@ -42,7 +44,7 @@ export class AuthService {
   }
 
   public async verifyUser(item: { uid: string }): Promise<any> {
-    // console.log(item.uid);
+    const em = this.em;
     const usuario = await em.findOne(Usuarios, {
       uid: item.uid,
     });

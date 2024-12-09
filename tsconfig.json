@@ -1,19 +1,17 @@
 {
   "compilerOptions": {
-    "incremental": true,
-    "target": "es2020",
-    "module": "preserve",
-    "moduleResolution": "bundler",
-    "sourceMap": true,
-    "outDir": "./dist",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
+    "target": "es2022",           // Soporte para decoradores modernos y Top-Level Await
+    "module": "esnext",           // Usa módulos ES
+    "moduleResolution": "node",
+    "experimentalDecorators": true, // Activa los decoradores experimentales
+    "emitDecoratorMetadata": true, // Genera metadatos para los decoradores
     "strict": true,
-    "alwaysStrict": true,
+    "esModuleInterop": true,
     "skipLibCheck": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "allowJs": true,
+    "outDir": "./dist",
+    "rootDir": ""
   },
-  "include": ["src/**/*", "firebaseConfig.ts"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules"]
 }

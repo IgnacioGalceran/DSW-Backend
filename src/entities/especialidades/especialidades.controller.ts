@@ -1,9 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { EspecialidadesService } from "./especialidades.service.js";
-import { InvalidId } from "../../shared/errors.js";
-import { ObjectId } from "mongodb";
-
-const service = new EspecialidadesService();
+import { orm } from "../../shared/orm.js";
 
 export async function findAll(
   req: Request,
@@ -11,6 +8,8 @@ export async function findAll(
   next: NextFunction
 ): Promise<void> {
   try {
+    const em = orm.em.fork();
+    const service = new EspecialidadesService(em);
     const especialidades = await service.findAll();
 
     res.status(200).json({
@@ -29,6 +28,8 @@ export async function findOne(
   next: NextFunction
 ): Promise<void> {
   try {
+    const em = orm.em.fork();
+    const service = new EspecialidadesService(em);
     const especialidad = await service.findOne({ id: req.params.id });
 
     res.status(200).json({
@@ -47,6 +48,8 @@ export async function findEspecialidadesWithMedicos(
   next: NextFunction
 ): Promise<void> {
   try {
+    const em = orm.em.fork();
+    const service = new EspecialidadesService(em);
     const especialidad = await service.findEspecialidadesWithMedicos();
 
     res.status(200).json({
@@ -65,6 +68,8 @@ export async function add(
   next: NextFunction
 ): Promise<void> {
   try {
+    const em = orm.em.fork();
+    const service = new EspecialidadesService(em);
     const especialidad = await service.add({ ...req.body.sanitizedInput });
 
     res.status(200).json({
@@ -83,6 +88,8 @@ export async function update(
   next: NextFunction
 ): Promise<void> {
   try {
+    const em = orm.em.fork();
+    const service = new EspecialidadesService(em);
     const especialidadActualizar = await service.update({
       id: req.params.id,
       ...req.body.sanitizedInput,
@@ -104,6 +111,8 @@ export async function remove(
   next: NextFunction
 ): Promise<void> {
   try {
+    const em = orm.em.fork();
+    const service = new EspecialidadesService(em);
     const especialidadABorrar = await service.remove({ id: req.params.id });
 
     res.status(200).json({
