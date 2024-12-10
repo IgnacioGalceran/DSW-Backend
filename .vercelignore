@@ -1,5 +1,7 @@
-src/tests/
+tests/
 *.test.ts
+tests/setup.ts
+tests/turnos.test.ts
 jest.config.js
 babel.config.json
 node_modules/
