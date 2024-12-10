@@ -28,7 +28,7 @@ export async function initializeOrm() {
     dbName: "turnos-medicos",
     clientUrl: process.env.db_url,
     highlighter: new MongoHighlighter(),
-    debug: false,
+    debug: true,
     schemaGenerator: {
       disableForeignKeys: true,
       createForeignKeyConstraints: true,
