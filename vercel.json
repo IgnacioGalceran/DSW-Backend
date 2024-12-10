@@ -1,15 +1,23 @@
 {
-    "version": 2,
-     "rewrites": [{ "source": "/(.*)", "destination": "/" }],
-    "builds": [
-      {
-        "src": "src/app.ts",
-        "use": "@vercel/node",
-        "config": {
-          "includeFiles": ["src/**/*.ts"],
-          "excludeFiles": ["tests/**", "*.test.ts", "jest.config.js", "babel.config.json", "tests/*.test.ts", "tests", "tests/setup.ts", "tests/turnos.test.ts"]
-        }
+  "version": 2,
+  "builds": [
+    {
+      "src": "src/app.ts",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": ["node_modules/**", "src/**/*.ts"],
+        "excludeFiles": ["**/*.test.ts"]
       }
-    ]
-  }
-  
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/src/app.ts",
+      "methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+      "headers": {
+        "Access-Control-Allow-Origin": "*"
+      }
+    }
+  ]
+}
