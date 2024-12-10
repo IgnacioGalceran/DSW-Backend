@@ -66,5 +66,4 @@ initializeOrm()
     process.exit(1);
   });
 
-//exportamos app
 export default app;
