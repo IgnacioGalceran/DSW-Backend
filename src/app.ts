@@ -18,12 +18,19 @@ const app = express();
 const server = http.createServer(app);
 
 // Configuración de middlewares
-const corsOptions = {
-  origin: "http://localhost:3000",
-  optionsSuccessStatus: 200,
-};
+const allowedOrigins = [
+  "https://dsw-frontend-ten.vercel.app/",
+  "http://localhost:3000",
+];
 
-app.use(cors(corsOptions));
+app.use(
+  cors({
+    origin: allowedOrigins,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    optionsSuccessStatus: 200,
+  })
+);
 app.use(express.json());
 
 // Middleware para crear un contexto para las rutas
