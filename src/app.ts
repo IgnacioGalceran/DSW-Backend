@@ -13,6 +13,7 @@ import { initializeOrm, orm } from "./shared/orm.js";
 import { RequestContext } from "@mikro-orm/mongodb";
 import http from "http";
 import cors from "cors";
+import { NextFunction, Request, Response } from "express";
 
 const app = express();
 
@@ -37,7 +38,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 // Middleware para crear un contexto para las rutas
-app.use((req, res, next) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
   const em = orm.em.fork();
   RequestContext.create(em, next);
 });
@@ -52,12 +53,12 @@ app.use("/api/funciones", FuncionesRouter);
 app.use("/api/auth", AuthRouter);
 app.use("/api/obrasocial", ObraSocialRouter);
 
+// Middleware de manejo de errores
+app.use(errorHandler);
+
 // Seeder
 // await seeder();
 // console.log("Seeder ejecutado correctamente");
-
-// Middleware de manejo de errores
-app.use(errorHandler);
 
 const PORT = process.env.PORT || 4000;
 // Iniciar el servidor
