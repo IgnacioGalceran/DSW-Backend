@@ -11,32 +11,28 @@ import { Roles } from "../security/roles/roles.entity.js";
 import { Funciones } from "../security/funciones/funciones.entity.js";
 dotenv.config();
 
-let orm: MikroORM;
-
 console.log(process.env.MONGODB_URI);
 
-export async function initializeOrm() {
-  orm = await MikroORM.init({
-    entities: [
-      Usuarios,
-      Turnos,
-      Medicos,
-      Especialidades,
-      Pacientes,
-      ObrasSociales,
-      Roles,
-      Funciones,
-    ],
-    dbName: "turnos-medicos",
-    clientUrl: process.env.MONGODB_URI,
-    highlighter: new MongoHighlighter(),
-    debug: true,
-    schemaGenerator: {
-      disableForeignKeys: true,
-      createForeignKeyConstraints: true,
-      ignoreSchema: [],
-    },
-  });
-}
+const config: any = {
+  entities: [
+    Usuarios,
+    Turnos,
+    Medicos,
+    Especialidades,
+    Pacientes,
+    ObrasSociales,
+    Roles,
+    Funciones,
+  ],
+  dbName: "turnos-medicos",
+  clientUrl: process.env.MONGODB_URI,
+  highlighter: new MongoHighlighter(),
+  debug: true,
+  schemaGenerator: {
+    disableForeignKeys: true,
+    createForeignKeyConstraints: true,
+    ignoreSchema: [],
+  },
+};
 
-export { orm };
+export const orm = await MikroORM.init(config);

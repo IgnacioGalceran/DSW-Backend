@@ -8,7 +8,7 @@ import { router as RolesRouter } from "./security/roles/roles.routes.js";
 import { router as FuncionesRouter } from "./security/funciones/funciones.routes.js";
 import { router as ObraSocialRouter } from "./entities/obrasocial/obrasocial.routes.js";
 import { errorHandler } from "./shared/errorHandler.js";
-import { initializeOrm, orm } from "./shared/orm.js";
+import { orm } from "./shared/orm.js";
 import { RequestContext } from "@mikro-orm/mongodb";
 import http from "http";
 import cors from "cors";
@@ -28,15 +28,7 @@ app.use(express.json());
 
 // Middleware para crear un contexto para las rutas
 app.use((req: Request, res: Response, next: NextFunction) => {
-  if (!orm) {
-    return res.status(500).json({
-      message: "ORM no está inicializado.",
-      error: true,
-      data: null,
-    });
-  }
-  const em = orm.em.fork();
-  RequestContext.create(em, next);
+  RequestContext.create(orm.em, next);
 });
 
 // Rutas
@@ -52,18 +44,11 @@ app.use("/api/obrasocial", ObraSocialRouter);
 // Middleware de manejo de errores
 app.use(errorHandler);
 
-initializeOrm()
-  .then(() => {
-    console.log("MikroORM inicializado correctamente");
-    const PORT = process.env.PORT || 4000;
+console.log("MikroORM inicializado correctamente");
+const PORT = process.env.PORT || 4000;
 
-    server.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
-    });
-  })
-  .catch((err) => {
-    console.error("Error inicializando MikroORM", err);
-    process.exit(1);
-  });
+server.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
 
 export default app;
