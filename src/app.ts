@@ -19,13 +19,13 @@ const app = express();
 const server = http.createServer(app);
 
 // Inicializa MikroORM antes de usar cualquier ruta
-// initializeOrm()
-//   .then(() => {
-//     console.log("MikroORM inicializado correctamente");
-//   })
-//   .catch((err) => {
-//     console.error("Error inicializando MikroORM", err);
-//   });
+initializeOrm()
+  .then(() => {
+    console.log("MikroORM inicializado correctamente");
+  })
+  .catch((err) => {
+    console.error("Error inicializando MikroORM", err);
+  });
 
 // Configuración de middlewares
 const corsOptions = {
@@ -37,10 +37,10 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 // Middleware para crear un contexto para las rutas
-// app.use((req, res, next) => {
-//   const em = orm.em.fork();
-//   RequestContext.create(em, next);
-// });
+app.use((req, res, next) => {
+  const em = orm.em.fork();
+  RequestContext.create(em, next);
+});
 
 // Rutas
 app.use("/api/pacientes", PacientesRouter);
