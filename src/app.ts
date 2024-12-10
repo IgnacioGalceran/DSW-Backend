@@ -45,8 +45,8 @@ app.use("/api/auth", AuthRouter);
 app.use("/api/obrasocial", ObraSocialRouter);
 
 // Seeder
-await seeder();
-console.log("Seeder ejecutado correctamente");
+// await seeder();
+// console.log("Seeder ejecutado correctamente");
 
 // Middleware de manejo de errores
 app.use(errorHandler);
