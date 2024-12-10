@@ -7,7 +7,6 @@ import { router as TurnosRouter } from "./entities/turnos/turnos.routes.js";
 import { router as RolesRouter } from "./security/roles/roles.routes.js";
 import { router as FuncionesRouter } from "./security/funciones/funciones.routes.js";
 import { router as ObraSocialRouter } from "./entities/obrasocial/obrasocial.routes.js";
-import { seeder } from "./seed/seeder.js";
 import { errorHandler } from "./shared/errorHandler.js";
 import { initializeOrm, orm } from "./shared/orm.js";
 import { RequestContext } from "@mikro-orm/mongodb";
@@ -16,17 +15,7 @@ import cors from "cors";
 import { NextFunction, Request, Response } from "express";
 
 const app = express();
-
 const server = http.createServer(app);
-
-// Inicializa MikroORM antes de usar cualquier ruta
-initializeOrm()
-  .then(() => {
-    console.log("MikroORM inicializado correctamente");
-  })
-  .catch((err) => {
-    console.error("Error inicializando MikroORM", err);
-  });
 
 // Configuración de middlewares
 const corsOptions = {
@@ -39,6 +28,13 @@ app.use(express.json());
 
 // Middleware para crear un contexto para las rutas
 app.use((req: Request, res: Response, next: NextFunction) => {
+  if (!orm) {
+    return res.status(500).json({
+      message: "ORM no está inicializado.",
+      error: true,
+      data: null,
+    });
+  }
   const em = orm.em.fork();
   RequestContext.create(em, next);
 });
@@ -56,14 +52,18 @@ app.use("/api/obrasocial", ObraSocialRouter);
 // Middleware de manejo de errores
 app.use(errorHandler);
 
-// Seeder
-// await seeder();
-// console.log("Seeder ejecutado correctamente");
+initializeOrm()
+  .then(() => {
+    console.log("MikroORM inicializado correctamente");
+    const PORT = process.env.PORT || 4000;
 
-const PORT = process.env.PORT || 4000;
-// Iniciar el servidor
-server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+    server.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error("Error inicializando MikroORM", err);
+    process.exit(1);
+  });
 
 export default app;
