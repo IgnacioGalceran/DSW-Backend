@@ -13,6 +13,8 @@ dotenv.config();
 
 let orm: MikroORM;
 
+console.log(process.env.MONGODB_URI);
+
 export async function initializeOrm() {
   orm = await MikroORM.init({
     entities: [
@@ -26,7 +28,7 @@ export async function initializeOrm() {
       Funciones,
     ],
     dbName: "turnos-medicos",
-    clientUrl: process.env.db_url,
+    clientUrl: process.env.MONGODB_URI,
     highlighter: new MongoHighlighter(),
     debug: true,
     schemaGenerator: {
