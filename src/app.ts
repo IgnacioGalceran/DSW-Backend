@@ -15,50 +15,43 @@ import cors from "cors";
 
 const app = express();
 
-(async () => {
-  try {
-    // Inicializa MikroORM antes de usar cualquier ruta
-    await initializeOrm();
-    console.log("MikroORM inicializado correctamente");
+// Inicializa MikroORM antes de usar cualquier ruta
+await initializeOrm();
+console.log("MikroORM inicializado correctamente");
 
-    // Configuración de middlewares
-    const corsOptions = {
-      origin: "http://localhost:3000",
-      optionsSuccessStatus: 200,
-    };
+// Configuración de middlewares
+const corsOptions = {
+  origin: "http://localhost:3000",
+  optionsSuccessStatus: 200,
+};
 
-    app.use(cors(corsOptions));
-    app.use(express.json());
+app.use(cors(corsOptions));
+app.use(express.json());
 
-    // Middleware para crear un contexto para las rutas
-    app.use((req, res, next) => {
-      const em = orm.em.fork(); // Crea un nuevo EntityManager
-      RequestContext.create(em, next); // Crea un nuevo contexto
-    });
+// Middleware para crear un contexto para las rutas
+app.use((req, res, next) => {
+  const em = orm.em.fork();
+  RequestContext.create(em, next);
+});
 
-    // Rutas
-    app.use("/api/pacientes", PacientesRouter);
-    app.use("/api/medicos", MedicosRouter);
-    app.use("/api/especialidades", EspecialidadesRouter);
-    app.use("/api/turnos", TurnosRouter);
-    app.use("/api/roles", RolesRouter);
-    app.use("/api/funciones", FuncionesRouter);
-    app.use("/api/auth", AuthRouter);
-    app.use("/api/obrasocial", ObraSocialRouter);
+// Rutas
+app.use("/api/pacientes", PacientesRouter);
+app.use("/api/medicos", MedicosRouter);
+app.use("/api/especialidades", EspecialidadesRouter);
+app.use("/api/turnos", TurnosRouter);
+app.use("/api/roles", RolesRouter);
+app.use("/api/funciones", FuncionesRouter);
+app.use("/api/auth", AuthRouter);
+app.use("/api/obrasocial", ObraSocialRouter);
 
-    // Seeder
-    await seeder();
-    console.log("Seeder ejecutado correctamente");
+// Seeder
+await seeder();
+console.log("Seeder ejecutado correctamente");
 
-    // Middleware de manejo de errores
-    app.use(errorHandler);
+// Middleware de manejo de errores
+app.use(errorHandler);
 
-    // Iniciar el servidor
-    app.listen(4000, () => {
-      console.log("Servidor corriendo en http://localhost:4000");
-    });
-  } catch (error) {
-    console.error("Error inicializando la aplicación:", error);
-    process.exit(1); // Salir si ocurre un error crítico
-  }
-})();
+// Iniciar el servidor
+app.listen(4000, () => {
+  console.log("Servidor corriendo en http://localhost:4000");
+});
