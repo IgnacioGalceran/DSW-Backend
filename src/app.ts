@@ -11,13 +11,21 @@ import { seeder } from "./seed/seeder.js";
 import { errorHandler } from "./shared/errorHandler.js";
 import { initializeOrm, orm } from "./shared/orm.js";
 import { RequestContext } from "@mikro-orm/mongodb";
+import http from "http";
 import cors from "cors";
 
 const app = express();
 
+const server = http.createServer(app);
+
 // Inicializa MikroORM antes de usar cualquier ruta
-await initializeOrm();
-console.log("MikroORM inicializado correctamente");
+initializeOrm()
+  .then(() => {
+    console.log("MikroORM inicializado correctamente");
+  })
+  .catch((err) => {
+    console.error("Error inicializando MikroORM", err);
+  });
 
 // Configuración de middlewares
 const corsOptions = {
@@ -51,7 +59,8 @@ app.use("/api/obrasocial", ObraSocialRouter);
 // Middleware de manejo de errores
 app.use(errorHandler);
 
+const PORT = process.env.PORT || 4000;
 // Iniciar el servidor
-app.listen(4000, () => {
-  console.log("Servidor corriendo en http://localhost:4000");
+server.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
