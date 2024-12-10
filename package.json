@@ -5,7 +5,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "dev": "tsc-watch --noClear -p ./tsconfig.json --onSuccess \"node ./dist/src/app.js\"",
+    "dev": "tsc-watch --noClear -p ./tsconfig.json --onSuccess \"node ./dist/app.js\"",
     "test": "jest",
     "build": "tsc --outDir dist --exclude src/tests"
   },
