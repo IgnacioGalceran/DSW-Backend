@@ -13,6 +13,7 @@ import { RequestContext } from "@mikro-orm/mongodb";
 import http from "http";
 import cors from "cors";
 import { NextFunction, Request, Response } from "express";
+import { seeder } from "./seed/seeder.js";
 
 const app = express();
 const server = http.createServer(app);
@@ -50,6 +51,9 @@ app.use("/api/obrasocial", ObraSocialRouter);
 
 // Middleware de manejo de errores
 app.use(errorHandler);
+
+// Ejecutamos el seeder
+await seeder();
 
 console.log("MikroORM inicializado correctamente");
 const PORT = process.env.PORT || 4000;
