@@ -11,8 +11,6 @@ import { seeder } from "./seed/seeder.js";
 import { errorHandler } from "./shared/errorHandler.js";
 import { initializeOrm, orm } from "./shared/orm.js";
 import { RequestContext } from "@mikro-orm/mongodb";
-import swaggerSpec from "./swagger/swagger.config.js";
-import swaggerUi from "swagger-ui-express";
 import cors from "cors";
 
 const app = express();
@@ -47,7 +45,6 @@ const app = express();
     app.use("/api/funciones", FuncionesRouter);
     app.use("/api/auth", AuthRouter);
     app.use("/api/obrasocial", ObraSocialRouter);
-    app.use("/api-endpoints", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
     // Seeder
     await seeder();
@@ -59,9 +56,6 @@ const app = express();
     // Iniciar el servidor
     app.listen(4000, () => {
       console.log("Servidor corriendo en http://localhost:4000");
-      console.log(
-        "Documentación de API disponible en http://localhost:4000/api-endpoints."
-      );
     });
   } catch (error) {
     console.error("Error inicializando la aplicación:", error);
