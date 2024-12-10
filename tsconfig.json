@@ -12,6 +12,6 @@
     "outDir": "./dist",
     "rootDir": ""
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "src/tests/**", "**/*.test.ts"]
+  "include": ["src/**/*", "tests"],
+  "exclude": ["node_modules", "tests/**", "*.test.ts", "jest.config.js", "babel.config.json", "tests/*.test.ts", "tests", "tests/setup.ts", "tests/turnos.test.ts"]
 }

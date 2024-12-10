@@ -1,8 +1,8 @@
-import { TurnosService } from "../entities/turnos/turnos.service";
-import { Turnos } from "../entities/turnos/turnos.entity";
-import { Pacientes } from "../entities/pacientes/pacientes.entity";
-import { Medicos } from "../entities/medicos/medicos.entity";
-import { Usuarios } from "../auth/usuarios.entity";
+import { TurnosService } from "../src/entities/turnos/turnos.service";
+import { Turnos } from "../src/entities/turnos/turnos.entity";
+import { Pacientes } from "../src/entities/pacientes/pacientes.entity";
+import { Medicos } from "../src/entities/medicos/medicos.entity";
+import { Usuarios } from "../src/auth/usuarios.entity";
 import { orm } from "./setup";
 
 const crearDatosDePrueba = async () => {

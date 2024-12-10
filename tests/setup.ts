@@ -2,10 +2,10 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import { MikroORM, defineConfig } from "@mikro-orm/core";
 import { MongoDriver } from "@mikro-orm/mongodb";
 import { MongoEntityManager } from "@mikro-orm/mongodb";
-import { Turnos } from "../entities/turnos/turnos.entity";
-import { Pacientes } from "../entities/pacientes/pacientes.entity";
-import { Medicos } from "../entities/medicos/medicos.entity";
-import { Usuarios } from "../auth/usuarios.entity";
+import { Turnos } from "../src/entities/turnos/turnos.entity";
+import { Pacientes } from "../src/entities/pacientes/pacientes.entity";
+import { Medicos } from "../src/entities/medicos/medicos.entity";
+import { Usuarios } from "../src/auth/usuarios.entity";
 
 let mongoServer: MongoMemoryServer;
 export let orm: MikroORM<MongoDriver>;
