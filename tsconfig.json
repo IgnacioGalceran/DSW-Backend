@@ -1,17 +1,19 @@
 {
   "compilerOptions": {
-    "target": "es2022",           // Soporte para decoradores modernos y Top-Level Await
-    "module": "esnext",           // Usa módulos ES
-    "moduleResolution": "node",
-    "experimentalDecorators": true, // Activa los decoradores experimentales
-    "emitDecoratorMetadata": true, // Genera metadatos para los decoradores
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "allowJs": true,
+    "incremental": true,
+    "target": "es2020",
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "sourceMap": true,
     "outDir": "./dist",
-    "rootDir": ""
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "alwaysStrict": true,
+    "skipLibCheck": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
   },
-  "include": ["src/**/*", "tests"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "tests/**", "*.test.ts", "jest.config.js", "babel.config.json", "tests/*.test.ts", "tests", "tests/setup.ts", "tests/turnos.test.ts"]
 }

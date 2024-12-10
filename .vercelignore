@@ -5,3 +5,6 @@ tests/turnos.test.ts
 jest.config.js
 babel.config.json
 node_modules/
+.env
+.vscode/
+*.test.ts
