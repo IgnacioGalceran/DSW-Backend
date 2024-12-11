@@ -27,7 +27,7 @@ const config: any = {
   dbName: "turnos-medicos",
   clientUrl: process.env.MONGODB_URI,
   highlighter: new MongoHighlighter(),
-  debug: true,
+  debug: false,
   schemaGenerator: {
     disableForeignKeys: true,
     createForeignKeyConstraints: true,
