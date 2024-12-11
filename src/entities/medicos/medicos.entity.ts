@@ -43,5 +43,5 @@ export class Medicos extends BaseEntity {
   @ManyToMany(() => ObrasSociales, (os) => os.medicos, {
     owner: true,
   })
-  obrasocial = new Collection<ObrasSociales>(this);
+  obrasocial? = new Collection<ObrasSociales>(this);
 }

@@ -123,7 +123,7 @@ export class MedicoService implements Service<Medicos> {
 
       console.log("Obras sociales encontradas:", obrasSociales);
 
-      medico.obrasocial.set(obrasSociales);
+      medico.obrasocial?.set(obrasSociales);
 
       // Asignar relaciones adicionales
       medico.usuario = usuario;
@@ -234,11 +234,19 @@ export class MedicoService implements Service<Medicos> {
 
   public async remove(item: { id: string }): Promise<Medicos | undefined> {
     const em = this.em;
-    const medicosABorrar = em.getReference(Medicos, new ObjectId(item.id));
-    console.log(medicosABorrar);
+    console.log("item id", item.id);
+
+    const usuarioABorrar = await em.findOne(Usuarios, new ObjectId(item.id));
+
+    if (!usuarioABorrar) throw new NotFound(item.id);
+
+    const medicosABorrar = await em.findOne(Medicos, {
+      usuario: usuarioABorrar,
+    });
+
     if (!medicosABorrar) throw new NotFound(item.id);
 
-    await em.removeAndFlush(medicosABorrar);
+    await em.removeAndFlush([usuarioABorrar, medicosABorrar]);
 
     return medicosABorrar;
   }

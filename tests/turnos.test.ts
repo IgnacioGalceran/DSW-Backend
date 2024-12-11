@@ -80,8 +80,6 @@ describe("TurnosService", () => {
       medico: { id: medico.id?.toString() },
     };
 
-    console.log("turnooo", turno);
-
     const resultado = await turnosService.add(turno);
 
     expect(resultado).toBeDefined();
@@ -95,20 +93,16 @@ describe("TurnosService", () => {
   it("debería devolver todos los turnos", async () => {
     const turnos = await turnosService.findAll();
 
-    console.log("turnosss", turnos);
     expect(turnos).toBeDefined();
     expect(turnos?.length).toBeGreaterThan(0);
   });
+
   it("debería devolver un turno por su ID", async () => {
     const em = orm.em.fork();
     const turnos = await em.find(Turnos, {});
     let turnoId;
 
-    if (turnos.length > 0) {
-      turnoId = turnos[0].id;
-    } else {
-      console.error("No se encontraron turnos.");
-    }
+    turnoId = turnos[0].id;
 
     let turno;
 
@@ -137,6 +131,29 @@ describe("TurnosService", () => {
       expect(error.message).toBe(
         "El paciente no fue encontrado en base de datos."
       );
+      expect(error.statusCode).toBe(401);
+    }
+  });
+
+  it("debería fallar al crear un turno sin médico", async () => {
+    const em = orm.em.fork();
+    const pacientes = await em.find(Pacientes, {});
+    const paciente = pacientes[0];
+
+    try {
+      await turnosService.add({
+        fecha: new Date(),
+        inicio: "10:00",
+        fin: "10:30",
+        paciente: { id: paciente.usuario.id },
+      });
+    } catch (error: any) {
+      console.log(error);
+      expect(error).toBeDefined();
+      expect(error.message).toBe(
+        "El medico no fue encontrado en base de datos."
+      );
+      expect(error.statusCode).toBe(401);
     }
   });
 
@@ -158,14 +175,16 @@ describe("TurnosService", () => {
 
       await turnosService.add({
         fecha: new Date(),
-        inicio: "10:15",
-        fin: "10:45",
+        inicio: "10:00",
+        fin: "10:30",
         paciente: { id: paciente.usuario.id },
         medico: { id: medico.id },
       });
     } catch (error: any) {
+      console.log(error);
       expect(error).toBeDefined();
       expect(error.message).toBe("El médico ya tiene un turno en este horario");
+      expect(error.statusCode).toBe(400);
     }
   });
 });
