@@ -66,30 +66,30 @@ export class MedicoService implements Service<Medicos> {
     item: Medicos & { email: string; password: string }
   ): Promise<any> {
     const em = this.em;
-    console.log(item);
+
     if (!item.obrasocial || !item.obrasocial.length) {
       throw new InvalidJson("obrasocial");
     }
 
     try {
+      // Crear usuario en Firebase
       const medicoNuevo = await admin.auth().createUser({
         email: item.email,
         password: item.password,
       });
 
+      // Cargar especialidad y rol
       const especialidad = await em.findOne(Especialidades, {
         _id: new ObjectId(item.especialidad?.id),
       });
 
-      const rol = await em.findOne(Roles, {
-        nombre: "Medico",
-      });
+      const rol = await em.findOne(Roles, { nombre: "Medico" });
 
+      // Crear entidades de Usuarios y Medicos
       const usuario = new Usuarios();
       const medico = new Medicos();
 
       item.usuario.uid = medicoNuevo.uid;
-
       Object.assign(usuario, item.usuario);
 
       medico.matricula = item.matricula;
@@ -98,37 +98,40 @@ export class MedicoService implements Service<Medicos> {
       medico.horaDesde = item.horaDesde;
       medico.horaHasta = item.horaHasta;
 
-      let obrasSociales: ObrasSociales[] = [];
+      // Cargar obras sociales
+      const obrasSocialesIds = item.obrasocial.map(
+        (os: any) => new ObjectId(os)
+      );
+      console.log("obrasSocialesIds", obrasSocialesIds);
 
-      if (item.obrasocial.length > 0) {
-        const obrasSocialesIds = item.obrasocial.map(
-          (os) => new ObjectId(os.id)
-        );
+      const obrasSociales = [];
+      for (const id of obrasSocialesIds) {
+        const obraSocial = await em.findOne(ObrasSociales, { _id: id });
+        if (!obraSocial) {
+          console.warn(`No se encontró la obra social con ID: ${id}`);
+        } else {
+          obrasSociales.push(obraSocial);
+          console.log(`Obra social encontrada con ID ${id}:`, obraSocial);
+        }
+      }
 
-        obrasSociales = await em.find(
-          ObrasSociales,
-          {
-            _id: { $in: obrasSocialesIds },
-          },
-          {
-            fields: ["_id", "nombre", "cuit", "telefono", "email", "direccion"],
-          }
+      if (!obrasSociales.length) {
+        throw new Error(
+          "No se encontraron obras sociales con los IDs proporcionados"
         );
       }
 
-      console.log(obrasSociales);
+      console.log("Obras sociales encontradas:", obrasSociales);
 
-      if (obrasSociales.length === 0) {
-        medico.obrasocial?.set([]);
-      } else {
-        medico.obrasocial?.set(obrasSociales);
-      }
+      medico.obrasocial.set(obrasSociales);
 
+      // Asignar relaciones adicionales
       medico.usuario = usuario;
       usuario.rol = rol;
       usuario.email = item.email;
       usuario.verificado = true;
 
+      // Persistir las entidades
       em.persist(usuario);
       em.persist(medico);
 
@@ -142,7 +145,6 @@ export class MedicoService implements Service<Medicos> {
   }
 
   public async update(item: Medicos): Promise<Medicos | undefined> {
-    console.log("service medicos", item);
     const em = this.em;
     const medicoAActualizar = await em.findOne(
       Medicos,
@@ -153,20 +155,6 @@ export class MedicoService implements Service<Medicos> {
     );
 
     if (!medicoAActualizar) throw new NotFound(item.id);
-
-    item.diasAtencion = item.diasAtencion
-      ? item.diasAtencion
-      : medicoAActualizar.diasAtencion;
-    item.horaDesde = item.horaDesde
-      ? item.horaDesde
-      : medicoAActualizar.horaDesde;
-    item.horaHasta = item.horaHasta
-      ? item.horaHasta
-      : medicoAActualizar.horaHasta;
-    item.telefono = item.telefono ? item.telefono : medicoAActualizar.telefono;
-    item.matricula = item.matricula
-      ? item.matricula
-      : medicoAActualizar.matricula;
 
     if (item.especialidad?.id) {
       const especialidad = await em.findOne(Especialidades, {
@@ -182,65 +170,13 @@ export class MedicoService implements Service<Medicos> {
       item.especialidad = medicoAActualizar.especialidad;
     }
 
-    let obrasSociales: ObrasSociales[] = [];
-
-    if (item.obrasocial && item.obrasocial.length > 0) {
-      const obrasSocialesIds = item.obrasocial.map((os) => new ObjectId(os.id));
-
-      obrasSociales = await em.find(
-        ObrasSociales,
-        {
-          _id: { $in: obrasSocialesIds },
-        },
-        {
-          fields: ["_id", "nombre", "cuit", "telefono", "email", "direccion"],
-        }
-      );
-    }
-
-    console.log(obrasSociales);
-
-    if (obrasSociales.length === 0) {
-      medicoAActualizar.obrasocial?.set([]);
-    } else {
-      medicoAActualizar.obrasocial?.set(obrasSociales);
-    }
-
     item.usuario._id = medicoAActualizar.usuario._id;
     item.usuario.uid = medicoAActualizar.usuario.uid;
-    item.usuario.nombre = item.usuario.nombre
-      ? item.usuario.nombre
-      : medicoAActualizar.usuario.nombre;
-    item.usuario.apellido = item.usuario.apellido
-      ? item.usuario.apellido
-      : medicoAActualizar.usuario.apellido;
-    item.usuario.tipoDni = item.usuario.tipoDni
-      ? item.usuario.tipoDni
-      : medicoAActualizar.usuario.tipoDni;
-    item.usuario.dni = item.usuario.dni
-      ? item.usuario.dni
-      : medicoAActualizar.usuario.dni;
-
-    if (item.obrasocial && item.obrasocial.length > 0) {
-      const nuevasObrasSociales = await em.find(ObrasSociales, {
-        _id: {
-          $in: item.obrasocial.map((os) => new ObjectId(os.id)),
-        },
-      });
-
-      nuevasObrasSociales.forEach((os) => {
-        if (!medicoAActualizar.obrasocial?.contains(os)) {
-          medicoAActualizar.obrasocial?.add(os);
-        }
-      });
-    }
-
-    console.log(medicoAActualizar);
+    item.usuario.email = medicoAActualizar.usuario.email;
 
     const usuarioAActualizar = medicoAActualizar.usuario;
     em.assign(usuarioAActualizar, item.usuario);
     em.assign(medicoAActualizar, item);
-    console.log(medicoAActualizar);
 
     await em.flush();
 
@@ -269,23 +205,6 @@ export class MedicoService implements Service<Medicos> {
 
     if (!medicoAActualizar) throw new NotFound(item.id);
 
-    item.diasAtencion = item.diasAtencion
-      ? item.diasAtencion
-      : medicoAActualizar.diasAtencion;
-    item.horaDesde = item.horaDesde
-      ? item.horaDesde
-      : medicoAActualizar.horaDesde;
-    item.horaHasta = item.horaHasta
-      ? item.horaHasta
-      : medicoAActualizar.horaHasta;
-    item.diasAtencion = item.diasAtencion
-      ? item.diasAtencion
-      : medicoAActualizar.diasAtencion;
-    item.telefono = item.telefono ? item.telefono : medicoAActualizar.telefono;
-    item.matricula = item.matricula
-      ? item.matricula
-      : medicoAActualizar.matricula;
-
     if (item.especialidad?.id) {
       const especialidad = await em.findOne(Especialidades, {
         _id: new ObjectId(item.especialidad.id),
@@ -303,32 +222,7 @@ export class MedicoService implements Service<Medicos> {
 
     item.usuario._id = medicoAActualizar.usuario._id;
     item.usuario.uid = medicoAActualizar.usuario.uid;
-    item.usuario.nombre = item.usuario.nombre
-      ? item.usuario.nombre
-      : medicoAActualizar.usuario.nombre;
-    item.usuario.apellido = item.usuario.apellido
-      ? item.usuario.apellido
-      : medicoAActualizar.usuario.apellido;
-    item.usuario.tipoDni = item.usuario.tipoDni
-      ? item.usuario.tipoDni
-      : medicoAActualizar.usuario.tipoDni;
-    item.usuario.dni = item.usuario.dni
-      ? item.usuario.dni
-      : medicoAActualizar.usuario.dni;
-
-    if (item.usuario.rol?.id) {
-      const rol = await em.findOne(Roles, {
-        _id: new ObjectId(item.usuario.rol.id),
-      });
-
-      if (rol) {
-        item.usuario.rol = rol;
-      } else {
-        item.usuario.rol = medicoAActualizar.usuario.rol;
-      }
-    } else {
-      item.usuario.rol = medicoAActualizar.usuario.rol;
-    }
+    item.usuario.email = medicoAActualizar.usuario.email;
 
     const usuarioAActualizar = medicoAActualizar.usuario;
     em.assign(usuarioAActualizar, item.usuario);
@@ -341,7 +235,7 @@ export class MedicoService implements Service<Medicos> {
   public async remove(item: { id: string }): Promise<Medicos | undefined> {
     const em = this.em;
     const medicosABorrar = em.getReference(Medicos, new ObjectId(item.id));
-
+    console.log(medicosABorrar);
     if (!medicosABorrar) throw new NotFound(item.id);
 
     await em.removeAndFlush(medicosABorrar);

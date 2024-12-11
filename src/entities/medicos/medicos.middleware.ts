@@ -24,7 +24,7 @@ export default function sanitizeMedicosInput(
     diasAtencion: req.body?.diasAtencion,
   };
 
-  // console.log(req.body.sanitizedInput);
+  console.log(req.body.sanitizedInput);
 
   Object.keys(req.body.sanitizedInput).forEach((key) => {
     if (req.body.sanitizedInput[key] === undefined) {

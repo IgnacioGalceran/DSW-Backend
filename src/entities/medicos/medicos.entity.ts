@@ -40,9 +40,8 @@ export class Medicos extends BaseEntity {
   @OneToMany(() => Turnos, (turno) => turno.medico)
   turnos? = new Collection<Turnos>(this);
 
-  @ManyToMany(() => ObrasSociales, "medicos", {
+  @ManyToMany(() => ObrasSociales, (os) => os.medicos, {
     owner: true,
-    cascade: [Cascade.ALL],
   })
-  obrasocial? = new Collection<ObrasSociales>(this);
+  obrasocial = new Collection<ObrasSociales>(this);
 }

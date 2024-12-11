@@ -248,7 +248,7 @@ export const validateInputProfile = (
   res: Response,
   next: NextFunction
 ) => {
-  const { error } = medicoUpdateProfile.validate(req.body);
+  const { error } = medicoUpdateProfile.validate(req.body.sanitizeMedicosInput);
 
   if (error) {
     next(new InvalidFields(error.details[0].message));
