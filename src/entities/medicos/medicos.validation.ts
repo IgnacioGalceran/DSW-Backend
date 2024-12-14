@@ -27,10 +27,14 @@ export const medicoAdd = Joi.object({
     "string.empty": "Este campo no puede estar vacío",
     "any.required": "Este campo es requerido *",
   }),
-  especialidad: Joi.string().min(24).max(24).messages({
-    "string.min": "La longitud mínima es de 24 caracteres",
-    "string.max": "La longitud máxima es de 24 caracteres",
-  }),
+  especialidad: Joi.string()
+    .min(24)
+    .max(24)
+    .messages({
+      "string.min": "La longitud mínima es de 24 caracteres",
+      "string.max": "La longitud máxima es de 24 caracteres",
+    })
+    .allow(null),
   obrasocial: Joi.array()
     .messages({
       "string.min": "La longitud mínima es de 24 caracteres",
@@ -120,6 +124,7 @@ const medicoUpdate = Joi.object({
     "string.empty": "Este campo no puede estar vacío",
     "any.required": "Este campo es requerido *",
   }),
+  indisponibilidad: Joi.date().allow(null),
   usuario: Joi.object({
     uid: Joi.string().min(0).max(50).allow(null),
     nombre: Joi.string().min(2).max(30).optional().messages({
@@ -182,6 +187,7 @@ const medicoUpdateProfile = Joi.object({
     })
     .allow(null)
     .default([]),
+  indisponibilidad: Joi.date().allow(null),
   usuario: Joi.object({
     uid: Joi.string().min(0).max(50).allow(null),
     nombre: Joi.string().min(2).max(30).required().messages({

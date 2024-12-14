@@ -7,6 +7,7 @@ import {
   add,
   findMedicoByEspecialidad,
   updateProfile,
+  updateIndisponibilidad,
 } from "./medicos.controller.js";
 import sanitizeMedicosInput from "./medicos.middleware.js";
 import { verifyToken } from "../../auth/auth.middleware.js";
@@ -32,7 +33,13 @@ router
     validateInputProfile,
     updateProfile
   )
+  .put("/indisponibilidad/:uid", sanitizeMedicosInput, updateIndisponibilidad)
   .put("/:id", checkPermissions, sanitizeMedicosInput, validateInput, update)
-  .post("/", checkPermissions, validateInput, sanitizeMedicosInput, add)
+  .post("/", checkPermissions, sanitizeMedicosInput, validateInput, add)
   .patch("/:id", checkPermissions, validateInput, sanitizeMedicosInput, update)
+  .delete(
+    "/indisponibilidad/:uid",
+    sanitizeMedicosInput,
+    updateIndisponibilidad
+  )
   .delete("/:id", checkPermissions, validateInput, remove);

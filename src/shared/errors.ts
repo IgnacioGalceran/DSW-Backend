@@ -7,6 +7,12 @@ export class AppError extends Error {
   }
 }
 
+export class AlreadyInUse extends AppError {
+  constructor(valor: string) {
+    super(`El ${valor} ya se encuentra en uso.`, 400);
+  }
+}
+
 export class NotFound extends AppError {
   constructor(id: string | undefined) {
     super(`El recurso con id: '${id}' no fue encontrado.`, 404);

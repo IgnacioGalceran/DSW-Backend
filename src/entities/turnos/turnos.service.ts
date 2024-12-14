@@ -112,7 +112,10 @@ export class TurnosService implements Service<Turnos> {
       {
         medico: medico,
       },
-      { populate: ["paciente.usuario"] }
+      {
+        populate: ["paciente.usuario"],
+        orderBy: { fecha: "asc", inicio: "asc" },
+      }
     );
 
     console.log(turnos);
