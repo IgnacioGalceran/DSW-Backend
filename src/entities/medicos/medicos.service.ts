@@ -3,7 +3,7 @@ import { Medicos } from "./medicos.entity.js";
 import { Service } from "../../shared/service.js";
 import { ObjectId } from "mongodb";
 import { Especialidades } from "../especialidades/especialidades.entity.js";
-import { InvalidJson, NotFound } from "../../shared/errors.js";
+import { AlreadyInUse, InvalidJson, NotFound } from "../../shared/errors.js";
 import { Roles } from "../../security/roles/roles.entity.js";
 import admin from "../../firebaseConfig.js";
 import { Usuarios } from "../../auth/usuarios.entity.js";
@@ -38,8 +38,6 @@ export class MedicoService implements Service<Medicos> {
       {}
     );
 
-    console.log(usuario);
-
     const medico = await em.findOne(
       Medicos,
       { usuario: usuario },
@@ -54,9 +52,6 @@ export class MedicoService implements Service<Medicos> {
       }
     );
 
-    console.log(usuario);
-    console.log(medico);
-
     if (!medico) throw new NotFound(item.id);
 
     return medico;
@@ -66,22 +61,31 @@ export class MedicoService implements Service<Medicos> {
     item: Medicos & { email: string; password: string }
   ): Promise<any> {
     const em = this.em;
+    let medicoNuevo;
 
-    if (!item.obrasocial || !item.obrasocial.length) {
+    if (!item.obrasocial) {
       throw new InvalidJson("obrasocial");
     }
 
     try {
       // Crear usuario en Firebase
-      const medicoNuevo = await admin.auth().createUser({
+      medicoNuevo = await admin.auth().createUser({
         email: item.email,
         password: item.password,
       });
+    } catch (error) {
+      throw new AlreadyInUse("email");
+    }
 
+    try {
+      let especialidad!: any;
+
+      if (item.especialidad?.id) {
+        especialidad = await em.findOne(Especialidades, {
+          _id: new ObjectId(item.especialidad?.id),
+        });
+      }
       // Cargar especialidad y rol
-      const especialidad = await em.findOne(Especialidades, {
-        _id: new ObjectId(item.especialidad?.id),
-      });
 
       const rol = await em.findOne(Roles, { nombre: "Medico" });
 
@@ -93,35 +97,31 @@ export class MedicoService implements Service<Medicos> {
       Object.assign(usuario, item.usuario);
 
       medico.matricula = item.matricula;
-      medico.especialidad = especialidad;
+      medico.especialidad = especialidad || null;
       medico.diasAtencion = item.diasAtencion;
       medico.horaDesde = item.horaDesde;
       medico.horaHasta = item.horaHasta;
 
-      // Cargar obras sociales
-      const obrasSocialesIds = item.obrasocial.map(
-        (os: any) => new ObjectId(os)
-      );
-      console.log("obrasSocialesIds", obrasSocialesIds);
-
+      let obrasSocialesIds!: ObjectId[];
       const obrasSociales = [];
-      for (const id of obrasSocialesIds) {
-        const obraSocial = await em.findOne(ObrasSociales, { _id: id });
-        if (!obraSocial) {
-          console.warn(`No se encontró la obra social con ID: ${id}`);
-        } else {
-          obrasSociales.push(obraSocial);
-          console.log(`Obra social encontrada con ID ${id}:`, obraSocial);
+
+      if (item.obrasocial.length) {
+        obrasSocialesIds = item.obrasocial.map((os: any) => new ObjectId(os));
+        for (const id of obrasSocialesIds) {
+          const obraSocial = await em.findOne(ObrasSociales, { _id: id });
+          if (!obraSocial) {
+            console.warn(`No se encontró la obra social con ID: ${id}`);
+          } else {
+            obrasSociales.push(obraSocial);
+          }
+        }
+
+        if (!obrasSociales.length) {
+          throw new Error(
+            "No se encontraron obras sociales con los IDs proporcionados"
+          );
         }
       }
-
-      if (!obrasSociales.length) {
-        throw new Error(
-          "No se encontraron obras sociales con los IDs proporcionados"
-        );
-      }
-
-      console.log("Obras sociales encontradas:", obrasSociales);
 
       medico.obrasocial?.set(obrasSociales);
 
@@ -209,7 +209,6 @@ export class MedicoService implements Service<Medicos> {
       const especialidad = await em.findOne(Especialidades, {
         _id: new ObjectId(item.especialidad.id),
       });
-      console.log(especialidad);
 
       if (especialidad) {
         item.especialidad = especialidad;
@@ -249,6 +248,74 @@ export class MedicoService implements Service<Medicos> {
     await em.removeAndFlush([usuarioABorrar, medicosABorrar]);
 
     return medicosABorrar;
+  }
+
+  public async updateIndisponibilidad(item: {
+    uid: string;
+    indisponibilidad: Date;
+    isUpdate: boolean;
+  }): Promise<Medicos | undefined> {
+    const em = this.em;
+    console.log("item", item);
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+
+    const mañana = new Date(hoy);
+    mañana.setDate(hoy.getDate() + 1);
+    mañana.setHours(0, 0, 0, 0);
+
+    const fecha = new Date(item.indisponibilidad + "T00:00:00");
+    fecha.setHours(0, 0, 0, 0);
+
+    if (fecha <= hoy) {
+      throw new Error("La fecha de indisponibilidad debe ser mayor a hoy.");
+    }
+
+    const usuarioAActualizar = await em.findOne(Usuarios, { uid: item.uid });
+    if (!usuarioAActualizar) throw new NotFound(item.uid);
+
+    const medicoAActualizar = await em.findOne(Medicos, {
+      usuario: usuarioAActualizar,
+    });
+    if (!medicoAActualizar) throw new NotFound(item.uid);
+
+    medicoAActualizar.indisponibilidades =
+      medicoAActualizar.indisponibilidades || [];
+
+    const indiceFechaExistente = medicoAActualizar.indisponibilidades.findIndex(
+      (f) => {
+        let fec = new Date(f);
+        return fec.setHours(0, 0, 0, 0) === fecha.setHours(0, 0, 0, 0);
+      }
+    );
+
+    console.log(item.isUpdate);
+
+    if (indiceFechaExistente !== -1) {
+      if (item.isUpdate) {
+        throw new Error("La fecha ya se encuentra ingresada.");
+      }
+
+      medicoAActualizar.indisponibilidades.splice(indiceFechaExistente, 1);
+
+      em.assign(medicoAActualizar, {
+        indisponibilidades: medicoAActualizar.indisponibilidades,
+      });
+
+      await em.persistAndFlush(medicoAActualizar);
+
+      return medicoAActualizar;
+    }
+
+    medicoAActualizar.indisponibilidades.push(fecha);
+
+    em.assign(medicoAActualizar, {
+      indisponibilidades: medicoAActualizar.indisponibilidades,
+    });
+
+    await em.persistAndFlush(medicoAActualizar);
+
+    return medicoAActualizar;
   }
 
   public async findMedicoByEspecialidad(item: {

@@ -88,16 +88,56 @@ export async function update(
   }
 }
 
+export async function updateIndisponibilidad(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    // if (req.headers.firebaseUid !== req.params.uid)
+    //   throw new Unauthorized("Actualizar otro médico");
+
+    let isUpdate: boolean = true;
+    let indisponibilidad!: any;
+    const em = orm.em.fork();
+    const service = new MedicoService(em);
+
+    console.log("params", req.query);
+
+    if (req.method === "DELETE") {
+      isUpdate = false;
+      indisponibilidad = req.query.indisponibilidad;
+    } else {
+      indisponibilidad = req.body.sanitizedInput.indisponibilidad;
+    }
+
+    const medicoActualizar = await service.updateIndisponibilidad({
+      uid: req.params.uid,
+      indisponibilidad: indisponibilidad,
+      isUpdate: isUpdate,
+    });
+
+    res.status(200).json({
+      message: "Medico actualizado.",
+      error: false,
+      data: medicoActualizar,
+    });
+  } catch (error: any) {
+    next(error);
+  }
+}
+
 export async function updateProfile(
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> {
   try {
-    const em = orm.em.fork();
-    const service = new MedicoService(em);
     if (req.headers.firebaseUid !== req.params.uid)
       throw new Unauthorized("Actualizar otro perfil");
+
+    const em = orm.em.fork();
+    const service = new MedicoService(em);
 
     const medicoActualizar = await service.updateProfile({
       uid: req.params.uid,

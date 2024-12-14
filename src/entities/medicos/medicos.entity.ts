@@ -44,4 +44,7 @@ export class Medicos extends BaseEntity {
     owner: true,
   })
   obrasocial? = new Collection<ObrasSociales>(this);
+
+  @Property({ nullable: true })
+  indisponibilidades?: Date[];
 }

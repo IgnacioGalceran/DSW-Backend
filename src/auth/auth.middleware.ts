@@ -12,6 +12,8 @@ export async function verifyToken(
       ?.toString()
       .replace(/^Bearer\s/, "") || "";
 
+  console.log(token);
+
   if (token === "") {
     return next(new InvalidToken());
   }
@@ -47,11 +49,13 @@ export function sanitizeAdministradorInput(
     },
   };
 
-  Object.keys(req.body.sanitizedInput).forEach((key) => {
-    if (req.body.sanitizedInput[key] === undefined) {
-      delete req.body.sanitizedInput[key];
+  Object.keys(req.body.sanitizedInput.usuario).forEach((key) => {
+    if (req.body.sanitizedInput.usuario[key] === undefined) {
+      delete req.body.sanitizedInput.usuario[key];
     }
   });
+
+  console.log(req.body.sanitizeAdministradorInput);
 
   next();
 }

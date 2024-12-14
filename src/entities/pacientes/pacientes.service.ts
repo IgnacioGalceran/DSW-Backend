@@ -38,10 +38,8 @@ export class PacienteService implements Service<Pacientes> {
           ],
         }
       );
-      // console.log("paciente: ", paciente);
 
       if (!paciente) return undefined;
-      // / new NotFound(item.id);
 
       return paciente;
     } catch (error) {
@@ -51,18 +49,15 @@ export class PacienteService implements Service<Pacientes> {
   }
 
   public async add(item: Pacientes): Promise<any> {
-    console.log(item);
     try {
       const em = this.em;
       const rol = await em.findOne(Roles, {
         nombre: "Paciente",
       });
-      console.log(rol);
 
       const usuario = new Usuarios();
       const paciente = new Pacientes();
 
-      console.log(item);
       Object.assign(usuario, item.usuario);
       paciente.usuario = usuario;
       usuario.rol = rol;

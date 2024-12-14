@@ -16,7 +16,6 @@ export default function sanitizePacientesInput(
       dni: req.body?.usuario.dni,
       tipoDni: req.body?.usuario.tipoDni,
       email: req.body?.usuario.email,
-      // rol: { id: req.body.usuario.rol },
     },
   };
   Object.keys(req.body.sanitizedInput.usuario).forEach((key) => {

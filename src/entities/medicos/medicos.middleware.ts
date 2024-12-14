@@ -22,9 +22,8 @@ export default function sanitizeMedicosInput(
     horaDesde: req.body?.horaDesde,
     horaHasta: req.body?.horaHasta,
     diasAtencion: req.body?.diasAtencion,
+    indisponibilidad: req.body?.indisponibilidad,
   };
-
-  console.log(req.body.sanitizedInput);
 
   Object.keys(req.body.sanitizedInput).forEach((key) => {
     if (req.body.sanitizedInput[key] === undefined) {
@@ -37,6 +36,7 @@ export default function sanitizeMedicosInput(
       delete req.body.sanitizedInput.usuario[key];
     }
   });
+  console.log(req.body.sanitizedInput);
 
   next();
 }
