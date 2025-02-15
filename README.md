@@ -6,7 +6,6 @@ Repositorio backend del proyecto 'Turnos médico'.
 
 - 46211 - Fonseca, José
 - 45337 - Galcerán, Ignacio Agustín
-- 42101 - Gómez, Fernando
 
 ## Pasos para levantar el proyecto
 
